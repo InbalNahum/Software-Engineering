@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane fx:id="window" prefHeight="400.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.ParkingOrderOccesionalController">
    <children>
       <Label layoutX="53.0" layoutY="44.0" prefHeight="47.0" prefWidth="173.0" text="Order Details:">
          <font>
@@ -30,13 +30,13 @@
             <Label text="Customer Id:" GridPane.rowIndex="1" />
             <Label text="Email:" GridPane.rowIndex="2" />
             <Label text="Leaving Time:" GridPane.rowIndex="3" />
-            <TextField prefHeight="31.0" prefWidth="232.0" GridPane.columnIndex="1" />
-            <TextField prefHeight="31.0" prefWidth="232.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField prefHeight="31.0" prefWidth="232.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField prefHeight="31.0" prefWidth="232.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField prefHeight="31.0" prefWidth="232.0" promptText="carNumberTf" GridPane.columnIndex="1" />
+            <TextField prefHeight="31.0" prefWidth="232.0" promptText="customerIdTf" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField prefHeight="31.0" prefWidth="232.0" promptText="emailTf" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField prefHeight="31.0" prefWidth="232.0" promptText="leavingTimeTf" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <Button layoutX="387.0" layoutY="355.0" mnemonicParsing="false" text="Make Order" />
-      <Button layoutX="305.0" layoutY="355.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="makeOrderBtn" layoutX="387.0" layoutY="355.0" mnemonicParsing="false" onAction="#makeOrder" text="Make Order" />
+      <Button fx:id="cancelBtn" layoutX="305.0" layoutY="355.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
    </children>
 </AnchorPane>
