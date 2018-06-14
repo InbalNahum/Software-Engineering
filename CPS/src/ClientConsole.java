@@ -51,7 +51,7 @@ public class ClientConsole implements ChatIF
 	{  
 		try 
 		{
-			client= new SqlClient(host, port, this);
+			client = new SqlClient(host, port);
 		} 
 		catch(IOException exception) 
 		{
