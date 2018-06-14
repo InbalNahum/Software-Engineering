@@ -2,17 +2,12 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import client.ClientRequest;
-import client.ClientRequest.TYPE;
-import common.SqlResult;
-import common.SqlResultConverter;
+import common.CpsGlobals;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -53,50 +48,38 @@ public class SQLServer extends AbstractServer
 	/**
 	 * This method handles any messages received from the client.
 	 *
-	 * @param msg The message received from the client.
+	 * @param object The message received from the client.
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient
-	(Object msg, ConnectionToClient client)
+	(Object object, ConnectionToClient client)
 	{
-		if(! (msg instanceof ClientRequest)){
-			try {
-				client.sendToClient("Server can handle only 'ClientRequest' requests\n");
-			} catch (IOException e) {
-				System.out.println("Cannot sent response to client: " + e.getMessage());
-			}
-			return;
+		Connection sqlServer = getSqlServerConnection();
+		ClientRequest clientRequest = (ClientRequest) object;
+		
+		switch(clientRequest.getServerOperation()) {
+		case writeCasualCustomer:
+			writeCasualCustomer(clientRequest,sqlServer);
+			break;
+		
+		case writeOneTimePreOrder:
+			writeOneTimePreOrder(clientRequest,sqlServer);
+			break;
 		}
-		Connection sqlServer = null;
-		try {
-
-			sqlServer = getSqlServerConnection();
-			if(sqlServer == null)return;//TODO report to client
-			Statement statement = sqlServer.createStatement();
-			ClientRequest clientRequest = (ClientRequest) msg;
-
-			if(clientRequest.getType() == TYPE.Read){
-				ResultSet readResults =  statement.executeQuery(clientRequest.getSqlCommand());
-				SqlResult toSend = SqlResultConverter.convertResultToSqlResult(readResults);
-				client.sendToClient(toSend);
-				sqlServer.close();
-			}
-			else{
-				statement.executeUpdate(clientRequest.getSqlCommand());
-				client.sendToClient("Update Done successfully");
-				sqlServer.close();
-			}
-
-		} catch (SQLException se) {
-			try {
-				client.sendToClient(buildSQLErrorMessage(se));
-			} catch (IOException ie) {
-				System.out.println("Cannot sent response to client: " + ie.getMessage());
-			}
-		} catch (IOException ie) {
-			System.out.println("Cannot sent response to client: " + ie.getMessage());
-		}
+		
+		
 	}
+
+	private void writeOneTimePreOrder(ClientRequest clientRequest, Connection sqlServer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) {
+		
+	}
+
 
 	private String buildSQLErrorMessage(SQLException e){
 		String toRet = "SQLException: " + e.getMessage() + "\n";

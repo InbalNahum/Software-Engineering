@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import jfxtras.scene.control.CalendarTimeTextField?>
 
-<AnchorPane prefHeight="448.0" prefWidth="499.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OneTimePreOrderWindowController">
+<AnchorPane prefHeight="448.0" prefWidth="499.0" fx:controller="application.OneTimePreOrderWindowController">
 		   <children>
       <Label layoutX="53.0" layoutY="32.0" prefHeight="47.0" prefWidth="234.0" text="Enter Order Details:">
          <font>
