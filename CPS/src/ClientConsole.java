@@ -36,7 +36,7 @@ public class ClientConsole implements ChatIF
 	/**
 	 * The instance of the client that created this ConsoleChat.
 	 */
-	ChatClient client;
+	SqlClient client;
 
 
 	//Constructors ****************************************************
@@ -51,7 +51,7 @@ public class ClientConsole implements ChatIF
 	{  
 		try 
 		{
-			client= new ChatClient(host, port, this);
+			client= new SqlClient(host, port, this);
 		} 
 		catch(IOException exception) 
 		{
@@ -94,7 +94,7 @@ public class ClientConsole implements ChatIF
 				String sqlCommand = message.toString().replaceAll(requestType,"").trim();
 				TYPE type = requestType.equalsIgnoreCase(LOWER_READ_COMMAND) ? TYPE.Read : TYPE.Write;
 				ClientRequest clientRequest = new ClientRequest(type, sqlCommand);
-				client.handleMessageFromClientUI(clientRequest);
+				client.handleMessageFromGuiClient(clientRequest);
 			}
 		} 
 		catch (Exception ex) 

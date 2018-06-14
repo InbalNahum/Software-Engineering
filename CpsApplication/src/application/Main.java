@@ -21,7 +21,7 @@ public class Main extends Application {
 	    
 	    // setting the stage
 	    primaryStage.setScene( scene );
-	    primaryStage.setTitle( "Hello World Demo" );
+	    primaryStage.setTitle( "Casual customer - parking reservation" );
 	    primaryStage.show();
 	}
 	
