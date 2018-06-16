@@ -33,23 +33,25 @@
               </rowConstraints>
                <children>
                   <Label prefHeight="17.0" prefWidth="76.0" text="Customer Id:" />
-                  <Label prefHeight="17.0" prefWidth="78.0" text="Car Number:" GridPane.rowIndex="1" />
+                  <Label prefHeight="21.0" prefWidth="110.0" text="Customer Id:" />
+                  <Label prefHeight="21.0" prefWidth="103.0" text="Car Number:" GridPane.rowIndex="1" />
                   <Label prefHeight="17.0" prefWidth="71.0" text="Email:" GridPane.rowIndex="2" />
                   <Label prefHeight="17.0" prefWidth="82.0" text="Leanving Time:" GridPane.rowIndex="6" />
+                  <Label prefHeight="21.0" prefWidth="104.0" text="Leanving Time:" GridPane.rowIndex="6" />
                   <TextField fx:id="tf_Id" prefHeight="25.0" prefWidth="169.0" promptText="Example: 123456789" GridPane.columnIndex="1" />
                   <TextField fx:id="tf_CarNumber" promptText="Example: 1234567" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="tf_Email" promptText="Example: admin@admin.com" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <DatePicker fx:id="tf_LeavingDate" prefHeight="25.0" prefWidth="263.0" promptText="Date" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <CalendarTimeTextField fx:id="tf_LeavingTime" promptText="Time" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                  <Label prefHeight="17.0" prefWidth="82.0" text="Arriving Time:" GridPane.rowIndex="4" />
+                  <Label prefHeight="21.0" prefWidth="107.0" text="Arriving Time:" GridPane.rowIndex="4" />
                   <DatePicker fx:id="tf_ArrivingDate" prefHeight="25.0" prefWidth="263.0" promptText="Date" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <CalendarTimeTextField fx:id="tf_ArrivingTime" promptText="Time" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <Label prefHeight="17.0" prefWidth="82.0" text="Branch:" GridPane.rowIndex="3" />
                   <ComboBox fx:id="cb_Branch" prefHeight="25.0" prefWidth="237.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <Button fx:id="Btn_MakeOrder" layoutX="409.0" layoutY="677.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="Make Order" />
-            <Button fx:id="btn_Cancel" layoutX="280.0" layoutY="677.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="Cancel" />
+            <Button fx:id="Btn_MakeOrder" layoutX="409.0" layoutY="677.0" mnemonicParsing="false" onAction="#makeOrderClick" prefHeight="25.0" prefWidth="115.0" text="Make Order" />
+            <Button fx:id="btn_Cancel" layoutX="280.0" layoutY="677.0" mnemonicParsing="false" onMouseClicked="#cancelClick" prefHeight="25.0" prefWidth="115.0" text="Cancel" />
          </children>
       </AnchorPane>
    </children>
