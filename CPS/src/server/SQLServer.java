@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import actors.CasualCustomer;
 import client.ClientRequest;
 import common.CpsGlobals;
+import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -61,7 +62,7 @@ public class SQLServer extends AbstractServer
 	{
 		Connection sqlServer = getSqlServerConnection();
 		ClientRequest clientRequest = (ClientRequest) object;
-		
+
 		switch(clientRequest.getServerOperation()) {
 		case writeCasualCustomer:
 			try {
@@ -71,18 +72,33 @@ public class SQLServer extends AbstractServer
 				e.printStackTrace();
 			}
 			break;
-		
+
 		case writeOneTimePreOrder:
-			writeOneTimePreOrder(clientRequest,sqlServer);
+			try {
+				writeOneTimePreOrder(clientRequest,sqlServer);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		}
-		
-		
+
+
 	}
 
-	private void writeOneTimePreOrder(ClientRequest clientRequest, Connection sqlServer) {
-		// TODO Auto-generated method stub
-		
+	private void writeOneTimePreOrder(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		PreOrderCustomer preOrderCustomer = (PreOrderCustomer) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeOneTimePreOrder);
+		statement.setInt(1,preOrderCustomer.getId());
+		statement.setInt(2, preOrderCustomer.getCarNumber());
+		statement.setString(3, preOrderCustomer.getBranchName());
+		Timestamp arrivingDate = new Timestamp(preOrderCustomer.getArriveTime().getTime());
+		statement.setTimestamp(4, arrivingDate);
+		Timestamp leavingDate = new Timestamp(preOrderCustomer.getLeaveTime().getTime());
+		statement.setTimestamp(5, leavingDate);
+		statement.setString(6, preOrderCustomer.getEmail());
+		statement.executeUpdate();
+
 	}
 
 
