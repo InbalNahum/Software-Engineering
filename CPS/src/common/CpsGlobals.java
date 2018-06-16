@@ -2,11 +2,11 @@ package common;
 
 public class CpsGlobals {
 	
-	//Server Details
+	//Server Connection Details
 	public static final int port = 5555;
 	public static final String host = "localhost";
 	
-	//MySql Connection details
+	//MySql Connection Details
 	public static final String url = "jdbc:mysql://cs.telhai.ac.il/studentDB_cs203495098";
 	public static final String user = "cs203495098";
 	public static final String password = "ya0522491015";
@@ -26,5 +26,11 @@ public class CpsGlobals {
 	//Branches
 	public static final String telHaiBranch = "Tel-Hai";
 	public static final String telAvivBranch = "Tel-Aviv";
+	
+	//Windows Titles
+	public static final String oneTimePreOrderTitle = "One time pre order parking";
+	public static final String casualOrderWindowTitle = "Casual customer parking order";
+	public static final String loginWindowTitle = "CPS Login";
+	
 
 }
