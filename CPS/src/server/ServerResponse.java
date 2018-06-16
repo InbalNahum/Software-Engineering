@@ -1,4 +1,4 @@
-package client;
+package server;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,23 +6,24 @@ import java.util.List;
 
 import common.CpsGlobals.ServerOperation;
 
-public class ClientRequest implements Serializable {
-	
+public class ServerResponse implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3072026581614231372L;
+	private static final long serialVersionUID = 1L;
+	
     
-	private ServerOperation serverOperation;
-    List<Object> objects;
-    
-	public ClientRequest(ServerOperation serverOperation, List<Object> objects) {
+	List<Object> objects;
+	ServerOperation serverOperation;
+	
+	public ServerResponse(ServerOperation serverOperation, List<Object> objects) {
 		super();
 		this.serverOperation = serverOperation;
 		this.objects = objects;
 	}
 	
-	public ClientRequest() {}
+	public ServerResponse() {}
 	
 	public ServerOperation getServerOperation() {
 		return serverOperation;
@@ -54,4 +55,5 @@ public class ClientRequest implements Serializable {
 		}
 		objects.add(object);
 	}
+
 }

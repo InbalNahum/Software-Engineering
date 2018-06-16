@@ -13,7 +13,8 @@ public class CpsGlobals {
 	public static final String driver = "com.mysql.jdbc.Driver";
 	
 	//Objects possible types
-	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder};
+	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder,
+		employeeAuthentication};
 	
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -21,12 +22,11 @@ public class CpsGlobals {
 			+ "	CasualCustomer_ID, CasualCustomer_CarNumber, "
 			+ "CasualCustomer_Email, CasualCustomer_LeaveTime, "
 			+ "CasualCustomer_ArriveTime) VALUES (?, ?, ?, ?, ?)";
-	
 	public static final String writeOneTimePreOrder = "INSERT INTO OneTimePreOrder("
 			+ "	OneTimePreOrder_ID, OneTimePreOrder_CarNumber, "
 			+ "OneTimePreOrder_BranchName, OneTimePreOrder_ArriveTime, "
 			+ "OneTimePreOrder_LeaveTime, OneTimePreOrder_Email) VALUES (?, ?, ?, ?, ?, ?)";
-
+    public static final String employeeAuthentication = "select Employee_Password from Employee where Employee_ID=?";
 	//Branches
 	public static final String telHaiBranch = "Tel-Hai";
 	public static final String telAvivBranch = "Tel-Aviv";
