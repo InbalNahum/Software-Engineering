@@ -62,7 +62,7 @@ public class CasualOrderWindowController {
 		LocalDateTime dt = LocalDateTime.of(date, time);
 		Date leavingDateTime = Date.from(dt.atZone(ZoneId.systemDefault()).toInstant());	
 		try {
-			CasualCustomer casualCustomer = new CasualCustomer(new Date(), CpsGlobals.telAvivBranch,
+			CasualCustomer casualCustomer = new CasualCustomer(new Date(),
 					Integer.parseInt(carNumber),email, Integer.parseInt(id),
 					leavingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
