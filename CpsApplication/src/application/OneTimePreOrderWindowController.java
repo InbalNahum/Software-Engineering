@@ -61,9 +61,9 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML // fx:id="cb_Branch"
 	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
-	
+
 	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch, CpsGlobals.telAvivBranch);
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		cb_Branch.setItems(comboBoxList);
@@ -71,29 +71,31 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML
 	void makeOrderClick(ActionEvent event) {
-		
-		if(!isValidation()) {
-			System.err.println("Error: makeOrderClick");
-			return;
-		}
-		
-		String id = tf_Id.getText();
-		String carNumber = tf_CarNumber.getText();
-		String email = tf_Email.getText();		
-		LocalDate leavingDate = tf_LeavingDate.getValue();
-		Calendar leavingCalendar = tf_LeavingTime.getCalendar();
-		Date leavingDateTime = convertToDateObject(leavingDate, leavingCalendar);	
-		LocalDate arrivingDate = tf_ArrivingDate.getValue();
-		Calendar arrivingCalendar = tf_ArrivingTime.getCalendar();
-		Date arrivingDateTime = convertToDateObject(arrivingDate, arrivingCalendar);
-		String branchName = cb_Branch.getValue();
+
 		try {
+			isValidInput();
+			String id = tf_Id.getText();
+			String carNumber = tf_CarNumber.getText();
+			String email = tf_Email.getText();		
+			String branchName = cb_Branch.getValue();
+
+			LocalDate leavingDate = tf_LeavingDate.getValue();
+			Calendar leavingCalendar = tf_LeavingTime.getCalendar();
+			Date leavingDateTime = convertToDateObject(leavingDate, leavingCalendar);	
+			LocalDate arrivingDate = tf_ArrivingDate.getValue();
+			Calendar arrivingCalendar = tf_ArrivingTime.getCalendar();
+			Date arrivingDateTime = convertToDateObject(arrivingDate, arrivingCalendar);
+			FieldValidation.dateValidation(arrivingDateTime, leavingDateTime);
+
 			PreOrderCustomer preOrderCustomer = new PreOrderCustomer(arrivingDateTime,
 					Integer.parseInt(carNumber), email, Integer.parseInt(id), 
 					leavingDateTime, branchName);
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.addPreOrderCustomer(preOrderCustomer);
-		}catch(IOException e) {}
+
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	private Date convertToDateObject(LocalDate leavingDate, Calendar leavingCalendar) {
@@ -110,21 +112,19 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	}
 
-	private boolean isValidation() {
-		FieldValidation.emailValidation(tf_Email.getText());
+	private void isValidInput() throws Exception {
+
 		FieldValidation.idValidation(tf_Id.getText());
-		if(    tf_Id.getText().equals("")
-				|| tf_CarNumber.getText().equals("")
-				|| tf_Email.getText().equals("")
-				|| tf_LeavingDate.getValue() == null 
+		FieldValidation.carNumberValidation(tf_CarNumber.getText());
+		FieldValidation.emailValidation(tf_Email.getText());
+		FieldValidation.branchNameValidation(cb_Branch.getValue());
+
+		if(   tf_LeavingDate.getValue() == null 
 				|| tf_ArrivingDate.getValue() == null 
 				|| tf_LeavingTime.getCalendar() == null
-				|| tf_ArrivingTime.getCalendar() == null
-				|| cb_Branch.getValue() == null) {
-			return false;
+				|| tf_ArrivingTime.getCalendar() == null) {
+			throw new Exception("Error: Select date and time"); 
 		}
-
-		return true;
 	}
 
 }
