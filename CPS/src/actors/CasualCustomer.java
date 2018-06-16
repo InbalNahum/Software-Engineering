@@ -1,15 +1,21 @@
 package actors;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class CasualCustomer {
+public class CasualCustomer implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Date arriveTime;
+	private Date leaveTime;
 	private String branchName;
 	private int carNumber;
 	private String email;
 	private int id;
-	private Date leaveTime;
+
 	
 	public CasualCustomer() {
 		

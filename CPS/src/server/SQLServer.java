@@ -1,3 +1,4 @@
+package server;
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
@@ -6,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import actors.CasualCustomer;
 import client.ClientRequest;
 import common.CpsGlobals;
 import ocsf.server.AbstractServer;
@@ -77,7 +79,8 @@ public class SQLServer extends AbstractServer
 
 
 	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) {
-		
+		CasualCustomer customer = (CasualCustomer) clientRequest.getObjects().get(0);
+		System.out.println(customer.getEmail());
 	}
 
 
