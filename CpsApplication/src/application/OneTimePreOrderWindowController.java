@@ -51,7 +51,7 @@ public class OneTimePreOrderWindowController {
 			System.err.println("Error: makeOrderClick");
 
 	}
-	
+
 	@FXML  
 	void cancelClick(ActionEvent event) {
 
@@ -59,6 +59,13 @@ public class OneTimePreOrderWindowController {
 
 	private boolean isValidation() {
 
+		if(tf_Id.getText().equals("") ||
+				tf_CarNumber.getText().equals("") ||
+				tf_Email.getText().equals("") ||
+				tf_LeavingDate.getValue() == null ||
+				tf_LeavingTime.getCalendar() == null) {
+			return false;
+		}
 
 		return true;
 	}
