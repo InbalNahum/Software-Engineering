@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import actors.CasualCustomer;
 import client.SqlClient;
 import common.CpsGlobals;
+import common.FieldValidation;
 import entity.PreOrderCustomer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -86,7 +87,6 @@ public class OneTimePreOrderWindowController implements Initializable{
 		Calendar arrivingCalendar = tf_ArrivingTime.getCalendar();
 		Date arrivingDateTime = convertToDateObject(arrivingDate, arrivingCalendar);
 		String branchName = cb_Branch.getValue();
-
 		try {
 			PreOrderCustomer preOrderCustomer = new PreOrderCustomer(arrivingDateTime,
 					Integer.parseInt(carNumber), email, Integer.parseInt(id), 
@@ -111,7 +111,8 @@ public class OneTimePreOrderWindowController implements Initializable{
 	}
 
 	private boolean isValidation() {
-
+		FieldValidation.emailValidation(tf_Email.getText());
+		FieldValidation.idValidation(tf_Id.getText());
 		if(    tf_Id.getText().equals("")
 				|| tf_CarNumber.getText().equals("")
 				|| tf_Email.getText().equals("")
