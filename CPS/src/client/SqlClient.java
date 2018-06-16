@@ -7,6 +7,7 @@ package client;
 import ocsf.client.*;
 import common.*;
 import common.CpsGlobals.ServerOperation;
+import entity.PreOrderCustomer;
 
 import java.io.*;
 import java.util.Date;
@@ -62,11 +63,10 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	}
 
 	@Override
-	public void addCasualCustomer(CasualCustomer customer) {
-		System.out.println("im in the client");
+	public void addCasualCustomer(CasualCustomer casualCustomer) {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.writeCasualCustomer);
-		clientRequest.addTolist(customer);
+		clientRequest.addTolist(casualCustomer);
 		handleMessageFromGuiClient(clientRequest);
 	}
 
@@ -74,6 +74,15 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	public void addCasualParkingOrder(Date arriveTime, String branchName,
 			int carNumber,String email, int id, Date leaveTime) {
 
+	}
+
+
+	@Override
+	public void addPreOrderCustomer(PreOrderCustomer preOrderCustomer) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.writeOneTimePreOrder);
+		clientRequest.addTolist(preOrderCustomer);
+		handleMessageFromGuiClient(clientRequest);
 	}
 
 }

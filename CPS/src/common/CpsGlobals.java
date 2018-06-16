@@ -21,7 +21,11 @@ public class CpsGlobals {
 			+ "	CasualCustomer_ID, CasualCustomer_CarNumber, "
 			+ "CasualCustomer_Email, CasualCustomer_LeaveTime, "
 			+ "CasualCustomer_ArriveTime) VALUES (?, ?, ?, ?, ?)";
-
+	
+	public static final String writeOneTimePreOrder = "INSERT INTO OneTimePreOrder("
+			+ "	OneTimePreOrder_ID, OneTimePreOrder_CarNumber, "
+			+ "OneTimePreOrder_BranchName, OneTimePreOrder_ArriveTime, "
+			+ "OneTimePreOrder_LeaveTime, OneTimePreOrder_Email) VALUES (?, ?, ?, ?, ?, ?)";
 
 	//Branches
 	public static final String telHaiBranch = "Tel-Hai";
