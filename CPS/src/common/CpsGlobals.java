@@ -41,5 +41,6 @@ public class CpsGlobals {
 	public static final String LeavingBeforeArrivig = "Error: Leaving time before arriving time";
 	public static final String notValidCarNumber = "Error: Car number is not valid";
 	public static final String emptyCarNumber = "Error: Enter your car number";
+	public static final String emptyCalander = "Error: Select date and time";
 	
 }

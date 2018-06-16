@@ -4,7 +4,6 @@
 
 package application;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,7 +12,6 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
-import actors.CasualCustomer;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -27,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 
 public class OneTimePreOrderWindowController implements Initializable{
@@ -96,6 +95,8 @@ public class OneTimePreOrderWindowController implements Initializable{
 		}catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+		
+		 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 	}
 
 	private Date convertToDateObject(LocalDate leavingDate, Calendar leavingCalendar) {
@@ -109,6 +110,8 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML  
 	void cancelClick(ActionEvent event) {
+		 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+
 
 	}
 
@@ -123,7 +126,7 @@ public class OneTimePreOrderWindowController implements Initializable{
 				|| tf_ArrivingDate.getValue() == null 
 				|| tf_LeavingTime.getCalendar() == null
 				|| tf_ArrivingTime.getCalendar() == null) {
-			throw new Exception("Error: Select date and time"); 
+			throw new Exception(CpsGlobals.emptyCalander); 
 		}
 	}
 
