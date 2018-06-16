@@ -1,6 +1,7 @@
 package client;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import common.CpsGlobals.ServerOperation;
@@ -42,4 +43,11 @@ public class ClientRequest implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}	
+	
+	public void addTolist(Object object) {
+		if(objects == null) {
+			objects = new ArrayList<Object>();
+		}
+		objects.add(object);
+	}
 }
