@@ -21,6 +21,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -29,7 +31,6 @@ import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 
 public class OneTimePreOrderWindowController implements Initializable{
-
 
 	@FXML // fx:id="tf_Email"
 	private TextField tf_Email; // Value injected by FXMLLoader
@@ -93,10 +94,26 @@ public class OneTimePreOrderWindowController implements Initializable{
 			sqlClient.addPreOrderCustomer(preOrderCustomer);
 
 		}catch (Exception e) {
-			System.err.println(e.getMessage());
+			alertDialog(AlertType.ERROR, e.getMessage());
+			return;
 		}
-		
-		 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+
+		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
+	}
+
+	private void alertDialog(AlertType alertType, String message) {
+
+		Alert alert = new Alert(alertType);
+
+		if(alertType.equals(AlertType.INFORMATION)) {
+			alert.setTitle(CpsGlobals.informationDialogTitle);
+		}else {
+			alert.setTitle(CpsGlobals.errorDialogTitle);
+		}
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 
 	private Date convertToDateObject(LocalDate leavingDate, Calendar leavingCalendar) {
@@ -110,7 +127,7 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML  
 	void cancelClick(ActionEvent event) {
-		 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
 
 	}

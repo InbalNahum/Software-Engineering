@@ -43,4 +43,10 @@ public class CpsGlobals {
 	public static final String emptyCarNumber = "Error: Enter your car number";
 	public static final String emptyCalander = "Error: Select date and time";
 	
+	//dialog messages
+	public static final String errorDialogTitle = "Error Dialog";
+	public static final String informationDialogTitle = "Information Dialog";
+	public static final String successMessage = "Order done success!";
+
+	
 }
