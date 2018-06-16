@@ -4,8 +4,11 @@ package server;
 // license found at www.lloseng.com 
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import actors.CasualCustomer;
 import client.ClientRequest;
@@ -61,7 +64,12 @@ public class SQLServer extends AbstractServer
 		
 		switch(clientRequest.getServerOperation()) {
 		case writeCasualCustomer:
-			writeCasualCustomer(clientRequest,sqlServer);
+			try {
+				writeCasualCustomer(clientRequest,sqlServer);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		
 		case writeOneTimePreOrder:
@@ -78,9 +86,17 @@ public class SQLServer extends AbstractServer
 	}
 
 
-	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) {
+	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
 		CasualCustomer customer = (CasualCustomer) clientRequest.getObjects().get(0);
-		System.out.println(customer.getEmail());
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeCasualCustomer);
+		statement.setInt(1,customer.getId());
+		statement.setInt(2, customer.getCarNumber());
+		statement.setString(3, customer.getEmail());
+		Timestamp leavingDate = new Timestamp(customer.getLeaveTime().getTime());
+		statement.setTimestamp(4, leavingDate);
+		Timestamp arrivingDate = new Timestamp(customer.getArriveTime().getTime());
+		statement.setTimestamp(5, arrivingDate);
+		statement.executeUpdate();
 	}
 
 
@@ -94,10 +110,10 @@ public class SQLServer extends AbstractServer
 	private Connection getSqlServerConnection() {
 		try 
 		{
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String Url = "jdbc:mysql://cs.telhai.ac.il/studentDB_cs203495098";
-			String user = "cs203495098";
-			String password = "ya0522491015";
+			Class.forName(CpsGlobals.driver).newInstance();
+			String Url = CpsGlobals.url;
+			String user = CpsGlobals.user;
+			String password = CpsGlobals.password;
 			Connection connection = DriverManager.getConnection(Url,user,password);
 			return connection;
 		}

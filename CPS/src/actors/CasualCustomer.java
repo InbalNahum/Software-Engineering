@@ -11,7 +11,6 @@ public class CasualCustomer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Date arriveTime;
 	private Date leaveTime;
-	private String branchName;
 	private int carNumber;
 	private String email;
 	private int id;
@@ -21,9 +20,8 @@ public class CasualCustomer implements Serializable {
 		
 	}
 	
-	public CasualCustomer(Date arriveTime, String branchName, int carNumber, String email, int id, Date leaveTime) {
+	public CasualCustomer(Date arriveTime, int carNumber, String email, int id, Date leaveTime) {
 		this.arriveTime = arriveTime;
-		this.branchName = branchName;
 		this.carNumber = carNumber;
 		this.email = email;
 		this.id = id;
@@ -34,12 +32,6 @@ public class CasualCustomer implements Serializable {
 	}
 	public void setArriveTime(Date arriveTime) {
 		this.arriveTime = arriveTime;
-	}
-	public String getBranchName() {
-		return branchName;
-	}
-	public void setBranchName(String branchName) {
-		this.branchName = branchName;
 	}
 	public int getCarNumber() {
 		return carNumber;
