@@ -31,4 +31,15 @@ public class CpsGlobals {
 	public static final String telHaiBranch = "Tel-Hai";
 	public static final String telAvivBranch = "Tel-Aviv";
 
+	//exception messages 
+	public static final String emptyString = "";
+	public static final String emptyId = "Error: Enter your id";
+	public static final String notValidId = "Error: Id is not valid";
+	public static final String emptyEmail = "Error: Enter your email";
+	public static final String notValidEmail = "Error: Email is not valid";
+	public static final String emptyBranchName = "Error: Select branch name";
+	public static final String LeavingBeforeArrivig = "Error: Leaving time before arriving time";
+	public static final String notValidCarNumber = "Error: Car number is not valid";
+	public static final String emptyCarNumber = "Error: Enter your car number";
+	
 }
