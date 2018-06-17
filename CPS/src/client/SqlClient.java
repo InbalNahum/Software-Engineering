@@ -6,9 +6,12 @@ package client;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import actors.CasualCustomer;
+import actors.MonthlySubscription;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import common.CpsServerCommunicator;
@@ -16,18 +19,11 @@ import entity.PreOrderCustomer;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
 
-import ocsf.client.*;
-import common.*;
-import common.CpsGlobals.ServerOperation;
-import entity.PreOrderCustomer;
-import java.io.*;
-import actors.CasualCustomer;
-import actors.MonthlySubscription;
-
 public class SqlClient extends AbstractClient implements CpsServerCommunicator
 {
 	private static SqlClient instance = null;
-	List<ServerResponse> responseQueue = null;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	Map<Integer,ServerResponse> responseMap = new HashMap();
 
 	public static SqlClient getInstance() throws IOException {
 		if(instance == null) {
@@ -45,12 +41,8 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 
 	public void handleMessageFromServer(Object msg) 
 	{
-		if(responseQueue == null) {
-			responseQueue = new ArrayList<ServerResponse>();
-		}
 		ServerResponse serverResponse = (ServerResponse) msg;
-		
-		responseQueue.add(serverResponse);
+		responseMap.put(serverResponse.getCommunicateToken(), serverResponse);
 	}
 
 
@@ -76,51 +68,64 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		System.exit(0);
 	}
 	
-	public ServerResponse getLastResponse() {
+	public Optional<ServerResponse> getResponseByToken(int token) {
+		Optional<ServerResponse> toRet;
 		synchronized (this) {
-			return (responseQueue == null) ? null : responseQueue.get(responseQueue.size()-1);
+			if(responseMap.containsKey(token)) {
+				toRet = Optional.ofNullable(responseMap.get(token));
+			}
+			else {
+				toRet = Optional.empty();
+			}
 		}
+		return toRet;
 	}
-
+	
 	@Override
-	public void addCasualCustomer(CasualCustomer casualCustomer) {
+	public void addCasualCustomer(CasualCustomer casualCustomer, int token) {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.writeCasualCustomer);
 		clientRequest.addTolist(casualCustomer);
+		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
 
 	@Override
-	public void addPreOrderCustomer(PreOrderCustomer preOrderCustomer) {
+	public void addPreOrderCustomer(PreOrderCustomer preOrderCustomer,int token) {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.writeOneTimePreOrder);
 		clientRequest.addTolist(preOrderCustomer);
+		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
 
 
 	@Override
-	public void employeeAuthentication(String id, String password) throws InterruptedException {
+	public void employeeAuthentication(String id, String password,int token) throws InterruptedException {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.employeeAuthentication);
 		clientRequest.addTolist(Integer.parseInt(id));
 		clientRequest.addTolist(password);
+		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
 
 
-	
-	public void addMonthlySubscription(MonthlySubscription monthlySubscription) {
+	@Override
+	public void addMonthlySubscription(MonthlySubscription monthlySubscription,int token) {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.monthlySubscription);
 		clientRequest.addTolist(monthlySubscription);
+		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
 	
-	public void renewMonthlySubscription(MonthlySubscription monthlySubscription) {
+	@Override
+	public void renewMonthlySubscription(MonthlySubscription monthlySubscription,int token) {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.renewMonthlySubscription);
 		clientRequest.addTolist(monthlySubscription);
+		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
 

@@ -59,7 +59,8 @@ public class RenewMonthlySubscriptionWindowController {
 			FieldValidation.dateValidation(startingDateTime);
 			MonthlySubscription monthlySubscription = new MonthlySubscription(Integer.parseInt(id), Integer.parseInt(carNumber), startingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			sqlClient.renewMonthlySubscription(monthlySubscription);
+			int requestToken = CpsGlobals.getNextToken();
+			sqlClient.renewMonthlySubscription(monthlySubscription,requestToken);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;

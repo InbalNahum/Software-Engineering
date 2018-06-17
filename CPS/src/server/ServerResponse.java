@@ -14,13 +14,16 @@ public class ServerResponse implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
     
-	List<Object> objects;
-	ServerOperation serverOperation;
-	
-	public ServerResponse(ServerOperation serverOperation, List<Object> objects) {
+	private List<Object> objects;
+	private ServerOperation serverOperation;
+	private int communicateToken;
+
+	public ServerResponse(ServerOperation serverOperation,
+			List<Object> objects, int communicateToken) {
 		super();
 		this.serverOperation = serverOperation;
 		this.objects = objects;
+		this.communicateToken = communicateToken;
 	}
 	
 	public ServerResponse() {}
@@ -54,6 +57,14 @@ public class ServerResponse implements Serializable {
 			objects = new ArrayList<Object>();
 		}
 		objects.add(object);
+	}
+	
+	public int getCommunicateToken() {
+		return communicateToken;
+	}
+
+	public void setCommunicateToken(int communicateToken) {
+		this.communicateToken = communicateToken;
 	}
 
 }

@@ -3,6 +3,7 @@ package client;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import common.CpsGlobals.ServerOperation;
 
@@ -15,11 +16,14 @@ public class ClientRequest implements Serializable {
     
 	private ServerOperation serverOperation;
     List<Object> objects;
-    
-	public ClientRequest(ServerOperation serverOperation, List<Object> objects) {
+    private int communicateToken;
+
+	public ClientRequest(ServerOperation serverOperation,
+			List<Object> objects,int communicateToken) {
 		super();
 		this.serverOperation = serverOperation;
 		this.objects = objects;
+		this.communicateToken = communicateToken;
 	}
 	
 	public ClientRequest() {}
@@ -53,5 +57,13 @@ public class ClientRequest implements Serializable {
 			objects = new ArrayList<Object>();
 		}
 		objects.add(object);
+	}
+	
+	public int getCommunicateToken() {
+		return communicateToken;
+	}
+
+	public void setCommunicateToken(int communicateToken) {
+		this.communicateToken = communicateToken;
 	}
 }

@@ -1,6 +1,14 @@
 package common;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class CpsGlobals {
+	
+	//Communicate Token
+	public static AtomicInteger communicateToken = new AtomicInteger();
+	public static int getNextToken() {
+		return communicateToken.incrementAndGet();
+	}
 
 	//Server Connection Details
 	public static final int port = 5555;
@@ -65,7 +73,12 @@ public class CpsGlobals {
 		//dialog messages
 		public static final String errorDialogTitle = "Error Dialog";
 		public static final String informationDialogTitle = "Information Dialog";
-		public static final String successMessage = "Order done success!";
+		public static final String successMessage = "Order done successfully!";
+		public static final String somethingGoWrone = "Something go wrong";
+		public static final String wrongUserOrPassword = "User name or password are incorrect";
+		
+		//column names
+		public static final String employeePassword = "Employee_Password";
 
 
 }

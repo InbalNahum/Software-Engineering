@@ -63,7 +63,8 @@ public class CasualOrderWindowController {
 		CasualCustomer casualCustomer = new CasualCustomer(arrivingDateTime,
 				Integer.parseInt(carNumber),email, Integer.parseInt(id),leavingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			sqlClient.addCasualCustomer(casualCustomer);
+			int requestToken = CpsGlobals.getNextToken();
+			sqlClient.addCasualCustomer(casualCustomer,requestToken);
 	}catch(Exception e) {
 		ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		return;

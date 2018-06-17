@@ -91,6 +91,7 @@ public class SQLServer extends AbstractServer
 				ServerResponse serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
 				serverResponse.addTolist(result);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
 			} catch (SQLException | IOException e) {
 				// TODO Auto-generated catch block
@@ -125,12 +126,19 @@ public class SQLServer extends AbstractServer
 	 * @throws SQLException
 	 */
 	private boolean employeeAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		boolean answer = false;
 		int id = (int) clientRequest.getObjectAtIndex(0);
 		String password = (String) clientRequest.getObjectAtIndex(1);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.employeeAuthentication);
 		statement.setInt(1, id);
 		ResultSet result = statement.executeQuery();
-		return true;
+		if(result.next()) {
+			String databasePass = result.getString(CpsGlobals.employeePassword);
+			if(databasePass.equals(password)) {
+				answer = true;
+			}
+		}
+		return answer;
 	}
 
 
