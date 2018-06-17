@@ -5,22 +5,21 @@ package server;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLRecoverableException;
 import java.sql.Timestamp;
 
 import actors.CasualCustomer;
+import actors.MonthlySubscription;
 import client.ClientRequest;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
-import common.SqlResultConverter;
 import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+
 
 /**
  * This class overrides some of the methods in the abstract 
@@ -89,19 +88,34 @@ public class SQLServer extends AbstractServer
 		case employeeAuthentication:
 			try {
 				boolean result = employeeAuthentication(clientRequest,serverConnection);
-			    ServerResponse serverResponse = new ServerResponse();
-			    serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
-			    serverResponse.addTolist(result);
-			    client.sendToClient(serverResponse);
+				ServerResponse serverResponse = new ServerResponse();
+				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+				serverResponse.addTolist(result);
+				client.sendToClient(serverResponse);
 			} catch (SQLException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}	
+			break;
+		case monthlySubscription:
+			try {
+				writeMonthlySubscription(clientRequest,serverConnection);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		default:
+			break;
+		case renewMonthlySubscription:
+			try {
+				writeRenewMonthlySubscription(clientRequest,serverConnection);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		 default:
 			break;
 		}
-
-
 	}
 
 	/**
@@ -132,7 +146,6 @@ public class SQLServer extends AbstractServer
 		statement.setTimestamp(5, leavingDate);
 		statement.setString(6, preOrderCustomer.getEmail());
 		statement.executeUpdate();
-
 	}
 
 
@@ -147,6 +160,34 @@ public class SQLServer extends AbstractServer
 		Timestamp arrivingDate = new Timestamp(customer.getArriveTime().getTime());
 		statement.setTimestamp(5, arrivingDate);
 		statement.executeUpdate();
+	}
+
+
+	private void writeMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		MonthlySubscription monthlySubscription = (MonthlySubscription) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeMonthlySubscription);
+		statement.setInt(1,monthlySubscription.getId());
+		statement.setInt(2, monthlySubscription.getCarNumber());
+		Timestamp startingDate = new Timestamp(monthlySubscription.getStartingTime().getTime());
+		statement.setTimestamp(3, startingDate);
+		statement.executeUpdate();
+	}
+
+	private void writeRenewMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		MonthlySubscription monthlySubscription = (MonthlySubscription) clientRequest.getObjects().get(0);	
+		PreparedStatement readStatement = serverConnection.prepareStatement(CpsGlobals.readRenewMonthlySubscription);
+		readStatement.setInt(1, monthlySubscription.getId());
+		ResultSet res = readStatement.executeQuery();
+		if(res.next()) {
+			PreparedStatement writeStatement = serverConnection.prepareStatement(CpsGlobals.writeRenewMonthlySubscription);
+			writeStatement.setInt(1,monthlySubscription.getId());
+			writeStatement.setInt(2, monthlySubscription.getCarNumber());
+			Timestamp startingDate = new Timestamp(monthlySubscription.getStartingTime().getTime());
+			writeStatement.setTimestamp(3, startingDate);
+			writeStatement.executeUpdate();						
+		} else {
+			throw new SQLException("Error: row was not found");
+		}
 	}
 
 

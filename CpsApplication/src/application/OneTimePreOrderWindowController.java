@@ -4,32 +4,30 @@
 
 package application;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
-
 import client.SqlClient;
 import common.CpsGlobals;
+import common.FieldValidation;
+import common.ServiceMethods;
 import entity.PreOrderCustomer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 
 public class OneTimePreOrderWindowController implements Initializable{
-
 
 	@FXML // fx:id="tf_Email"
 	private TextField tf_Email; // Value injected by FXMLLoader
@@ -60,9 +58,9 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML // fx:id="cb_Branch"
 	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
-	
+
 	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch, CpsGlobals.telAvivBranch);
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		cb_Branch.setItems(comboBoxList);
@@ -70,60 +68,47 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML
 	void makeOrderClick(ActionEvent event) {
-		
-		if(!isValidation()) {
-			System.err.println("Error: makeOrderClick");
-			return;
-		}
-		
-		String id = tf_Id.getText();
-		String carNumber = tf_CarNumber.getText();
-		String email = tf_Email.getText();		
-		LocalDate leavingDate = tf_LeavingDate.getValue();
-		Calendar leavingCalendar = tf_LeavingTime.getCalendar();
-		Date leavingDateTime = convertToDateObject(leavingDate, leavingCalendar);	
-		LocalDate arrivingDate = tf_ArrivingDate.getValue();
-		Calendar arrivingCalendar = tf_ArrivingTime.getCalendar();
-		Date arrivingDateTime = convertToDateObject(arrivingDate, arrivingCalendar);
-		String branchName = cb_Branch.getValue();
-
 		try {
+			isValidInput();
+			String id = tf_Id.getText();
+			String carNumber = tf_CarNumber.getText();
+			String email = tf_Email.getText();		
+			String branchName = cb_Branch.getValue();
+
+			LocalDate leavingDate = tf_LeavingDate.getValue();
+			Calendar leavingCalendar = tf_LeavingTime.getCalendar();
+			Date leavingDateTime = ServiceMethods.convertToDateObject(leavingDate, leavingCalendar);	
+			LocalDate arrivingDate = tf_ArrivingDate.getValue();
+			Calendar arrivingCalendar = tf_ArrivingTime.getCalendar();
+			Date arrivingDateTime = ServiceMethods.convertToDateObject(arrivingDate, arrivingCalendar);
+			FieldValidation.dateValidation(arrivingDateTime);
+			FieldValidation.dateCompareValidation(arrivingDateTime, leavingDateTime);
 			PreOrderCustomer preOrderCustomer = new PreOrderCustomer(arrivingDateTime,
 					Integer.parseInt(carNumber), email, Integer.parseInt(id), 
 					leavingDateTime, branchName);
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.addPreOrderCustomer(preOrderCustomer);
-		}catch(IOException e) {}
-	}
 
-	private Date convertToDateObject(LocalDate leavingDate, Calendar leavingCalendar) {
+		}catch (Exception e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
+			return;
+		}
 
-		Date dateTime = leavingCalendar.getTime();
-		LocalTime time = LocalDateTime.ofInstant(dateTime.toInstant(), ZoneId.systemDefault()).toLocalTime();
-		LocalDateTime dt = LocalDateTime.of(leavingDate, time);
-		Date leavingDateTime = Date.from(dt.atZone(ZoneId.systemDefault()).toInstant());
-		return leavingDateTime;
+		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
 	}
 
 	@FXML  
 	void cancelClick(ActionEvent event) {
-
+		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 	}
 
-	private boolean isValidation() {
-
-		if(    tf_Id.getText().equals("")
-				|| tf_CarNumber.getText().equals("")
-				|| tf_Email.getText().equals("")
-				|| tf_LeavingDate.getValue() == null 
-				|| tf_ArrivingDate.getValue() == null 
-				|| tf_LeavingTime.getCalendar() == null
-				|| tf_ArrivingTime.getCalendar() == null
-				|| cb_Branch.getValue() == null) {
-			return false;
-		}
-
-		return true;
+	private void isValidInput() throws Exception {
+		FieldValidation.idValidation(tf_Id.getText());
+		FieldValidation.carNumberValidation(tf_CarNumber.getText());
+		FieldValidation.emailValidation(tf_Email.getText());
+		FieldValidation.branchNameValidation(cb_Branch.getValue());
+		FieldValidation.calendarValidation(tf_ArrivingDate.getValue(),tf_ArrivingTime.getCalendar());
+		FieldValidation.calendarValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
 	}
-
 }

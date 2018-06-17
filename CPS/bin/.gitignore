@@ -1,6 +1,9 @@
-/common/
-/client/
+/ClientConsole.class
+/SQLServer.class
 /actors/
+/client/
+/common/
 /server/
 /entity/
 *.class
+

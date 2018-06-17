@@ -16,6 +16,14 @@ import entity.PreOrderCustomer;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
 
+import ocsf.client.*;
+import common.*;
+import common.CpsGlobals.ServerOperation;
+import entity.PreOrderCustomer;
+import java.io.*;
+import actors.CasualCustomer;
+import actors.MonthlySubscription;
+
 public class SqlClient extends AbstractClient implements CpsServerCommunicator
 {
 	private static SqlClient instance = null;
@@ -90,12 +98,29 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		handleMessageFromGuiClient(clientRequest);
 	}
 
+
 	@Override
 	public void employeeAuthentication(String id, String password) throws InterruptedException {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.employeeAuthentication);
 		clientRequest.addTolist(Integer.parseInt(id));
 		clientRequest.addTolist(password);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
+
+	
+	public void addMonthlySubscription(MonthlySubscription monthlySubscription) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.monthlySubscription);
+		clientRequest.addTolist(monthlySubscription);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
+	public void renewMonthlySubscription(MonthlySubscription monthlySubscription) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.renewMonthlySubscription);
+		clientRequest.addTolist(monthlySubscription);
 		handleMessageFromGuiClient(clientRequest);
 	}
 
