@@ -91,4 +91,11 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.addTolist(monthlySubscription);
 		handleMessageFromGuiClient(clientRequest);
 	}
+	
+	public void renewMonthlySubscription(MonthlySubscription monthlySubscription) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.renewMonthlySubscription);
+		clientRequest.addTolist(monthlySubscription);
+		handleMessageFromGuiClient(clientRequest);
+	}
 }

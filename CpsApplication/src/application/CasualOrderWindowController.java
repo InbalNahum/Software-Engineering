@@ -81,6 +81,6 @@ public class CasualOrderWindowController {
 		FieldValidation.idValidation(tf_Id.getText());
 		FieldValidation.carNumberValidation(tf_CarNumber.getText());
 		FieldValidation.emailValidation(tf_Email.getText());
-		FieldValidation.calanderValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
+		FieldValidation.calendarValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
 	}
 }

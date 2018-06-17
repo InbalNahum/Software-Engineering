@@ -108,7 +108,7 @@ public class OneTimePreOrderWindowController implements Initializable{
 		FieldValidation.carNumberValidation(tf_CarNumber.getText());
 		FieldValidation.emailValidation(tf_Email.getText());
 		FieldValidation.branchNameValidation(cb_Branch.getValue());
-		FieldValidation.calanderValidation(tf_ArrivingDate.getValue(),tf_ArrivingTime.getCalendar());
-		FieldValidation.calanderValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
+		FieldValidation.calendarValidation(tf_ArrivingDate.getValue(),tf_ArrivingTime.getCalendar());
+		FieldValidation.calendarValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
 	}
 }

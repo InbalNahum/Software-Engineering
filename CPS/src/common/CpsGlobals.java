@@ -13,7 +13,8 @@ public class CpsGlobals {
 	public static final String driver = "com.mysql.jdbc.Driver";
 	
 	//Objects possible types
-	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription};
+	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
+		renewMonthlySubscription};
 	
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -30,7 +31,15 @@ public class CpsGlobals {
 	public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
 			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
 			+ "MonthlySubscription_StartTime) VALUES (?, ?, ?)";
-
+	
+	public static final String writeRenewMonthlySubscription = "REPLACE INTO MonthlySubscription("
+			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
+			+ "MonthlySubscription_StartTime) VALUES (?, ?, ?)";
+	
+	public static final String readRenewMonthlySubscription = "SELECT * FROM MonthlySubscription"
+			+ " WHERE MonthlySubscription_ID = ?";
+	
+	
 	//Branches
 	public static final String telHaiBranch = "Tel-Hai";
 	public static final String telAvivBranch = "Tel-Aviv";

@@ -14,13 +14,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 	    // constructing our scene
-	    URL url = getClass().getResource("CasualOrderWindow.fxml");
+	    URL url = getClass().getResource("RenewMonthlySubscriptionWindow.fxml");
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    
 	    // setting the stage
 	    primaryStage.setScene( scene );
-	    primaryStage.setTitle( "CasualOrderWindow" );
+	    primaryStage.setTitle( "RenewMonthlySubscriptionWindow" );
 	    primaryStage.show();
 	}
 	

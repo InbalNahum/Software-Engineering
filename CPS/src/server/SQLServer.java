@@ -7,8 +7,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import com.mysql.jdbc.Util;
 
 import actors.CasualCustomer;
 import actors.MonthlySubscription;
@@ -17,6 +22,7 @@ import common.CpsGlobals;
 import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+
 
 /**
  * This class overrides some of the methods in the abstract 
@@ -91,6 +97,16 @@ public class SQLServer extends AbstractServer
 				e.printStackTrace();
 			}
 			break;
+		
+		
+		case renewMonthlySubscription:
+			try {
+				writeRenewMonthlySubscription(clientRequest,sqlServer);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 		}
 	}
 
@@ -131,6 +147,23 @@ public class SQLServer extends AbstractServer
 		Timestamp startingDate = new Timestamp(monthlySubscription.getStartingTime().getTime());
 		statement.setTimestamp(3, startingDate);
 		statement.executeUpdate();
+	}
+	
+	private void writeRenewMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		MonthlySubscription monthlySubscription = (MonthlySubscription) clientRequest.getObjects().get(0);	
+		PreparedStatement readStatement = serverConnection.prepareStatement(CpsGlobals.readRenewMonthlySubscription);
+		readStatement.setInt(1, monthlySubscription.getId());
+		ResultSet res = readStatement.executeQuery();
+		if(res.next()) {
+			PreparedStatement writeStatement = serverConnection.prepareStatement(CpsGlobals.writeRenewMonthlySubscription);
+			writeStatement.setInt(1,monthlySubscription.getId());
+			writeStatement.setInt(2, monthlySubscription.getCarNumber());
+			Timestamp startingDate = new Timestamp(monthlySubscription.getStartingTime().getTime());
+			writeStatement.setTimestamp(3, startingDate);
+			writeStatement.executeUpdate();						
+		} else {
+			throw new SQLException("Error: row was not found");
+		}
 	}
 	
 	

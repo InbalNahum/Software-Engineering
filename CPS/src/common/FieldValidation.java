@@ -66,7 +66,7 @@ public class FieldValidation {
 			throw new Exception(CpsGlobals.emptyBranchName); 
 	}
 	
-	public static void calanderValidation(Object date,Object time) throws Exception{
+	public static void calendarValidation(Object date,Object time) throws Exception{
 		if(date == null || time== null) {
 			throw new Exception(CpsGlobals.emptyCalander);
 		}

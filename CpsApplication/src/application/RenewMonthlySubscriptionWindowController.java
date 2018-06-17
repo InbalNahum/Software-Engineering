@@ -3,7 +3,6 @@ package application;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-
 import actors.MonthlySubscription;
 import client.SqlClient;
 import common.CpsGlobals;
@@ -20,7 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 
-public class MonthlySubscriptionOrderWindowController {
+public class RenewMonthlySubscriptionWindowController {
 
     @FXML // fx:id="window"
     private AnchorPane window; // Value injected by FXMLLoader
@@ -50,7 +49,7 @@ public class MonthlySubscriptionOrderWindowController {
 
     @FXML
     void makeOrder_click(ActionEvent event) {
-		try {
+    	try {
 			isValidInput();
 			String id = tf_Id.getText();
 			String carNumber = tf_CarNumber.getText();
@@ -60,12 +59,12 @@ public class MonthlySubscriptionOrderWindowController {
 			FieldValidation.dateValidation(startingDateTime);
 			MonthlySubscription monthlySubscription = new MonthlySubscription(Integer.parseInt(id), Integer.parseInt(carNumber), startingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			sqlClient.addMonthlySubscription(monthlySubscription);
+			sqlClient.renewMonthlySubscription(monthlySubscription);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
 		}
-
+    	
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();	
 		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
     }
@@ -76,5 +75,3 @@ public class MonthlySubscriptionOrderWindowController {
 		FieldValidation.calendarValidation(tf_StartingDate.getValue(), CpsGlobals.emptyCalander);
 	}
 }
-
-
