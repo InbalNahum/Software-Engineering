@@ -9,7 +9,6 @@ import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
 import common.ServiceMethods;
-import entity.PreOrderCustomer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

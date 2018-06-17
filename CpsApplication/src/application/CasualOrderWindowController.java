@@ -4,24 +4,21 @@
 
 package application;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
-
 import actors.CasualCustomer;
-import client.ClientRequest;
 import client.SqlClient;
 import common.CpsGlobals;
-import common.CpsGlobals.ServerOperation;
+import common.FieldValidation;
+import common.ServiceMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 
 public class CasualOrderWindowController {
@@ -49,48 +46,41 @@ public class CasualOrderWindowController {
 
 	@FXML
 	void makeOrder_click(ActionEvent event) {
-		if(!isValidOrder()) {
-			//TODO report to user 
-		}
+
+	try {
+		isValidInput();
 		String id = tf_Id.getText();
 		String carNumber = tf_CarNumber.getText();
 		String email = tf_Email.getText();
-		LocalDate date = tf_LeavingDate.getValue();
-		Calendar calendar = tf_LeavingTime.getCalendar();
-		Date dateTime = calendar.getTime();
-		LocalTime time = LocalDateTime.ofInstant(dateTime.toInstant(), ZoneId.systemDefault()).toLocalTime();
-		LocalDateTime dt = LocalDateTime.of(date, time);
-		Date leavingDateTime = Date.from(dt.atZone(ZoneId.systemDefault()).toInstant());	
-		try {
-			CasualCustomer casualCustomer = new CasualCustomer(new Date(),
-					Integer.parseInt(carNumber),email, Integer.parseInt(id),
-					leavingDateTime);
+		
+		
+		LocalDate leavingDate = tf_LeavingDate.getValue();
+		Calendar leavingCalendar = tf_LeavingTime.getCalendar();
+		
+		Date arrivingDateTime = new Date();
+		Date leavingDateTime = ServiceMethods.convertToDateObject(leavingDate, leavingCalendar);
+	
+		CasualCustomer casualCustomer = new CasualCustomer(arrivingDateTime,
+				Integer.parseInt(carNumber),email, Integer.parseInt(id),leavingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.addCasualCustomer(casualCustomer);
-		}catch(NumberFormatException e) {
-
-		} catch (IOException e) {
-
-		}
+	}catch(Exception e) {
+		ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
+		return;
 	}
+	((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+	ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
+}
 
 	@FXML
 	void cancel_click(ActionEvent event) {
-
+		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 	}
 
-
-
-
-	private boolean isValidOrder() {
-		if(tf_Id.getText().equals("") ||
-				tf_CarNumber.getText().equals("") ||
-				tf_Email.getText().equals("") ||
-				tf_LeavingDate.getValue() == null ||
-				tf_LeavingTime.getCalendar() == null) {
-			return false;
-		}
-		return true;
+	private void isValidInput() throws Exception {
+		FieldValidation.idValidation(tf_Id.getText());
+		FieldValidation.carNumberValidation(tf_CarNumber.getText());
+		FieldValidation.emailValidation(tf_Email.getText());
+		FieldValidation.calanderValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
 	}
-
 }

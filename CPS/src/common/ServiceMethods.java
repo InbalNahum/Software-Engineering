@@ -26,11 +26,11 @@ public class ServiceMethods {
 	}
 	
 	
-	public static Date convertToDateObject(LocalDate leavingDate, Calendar leavingCalendar) {
+	public static Date convertToDateObject(LocalDate date, Calendar calander) {
 
-		Date dateTime = leavingCalendar.getTime();
+		Date dateTime = calander.getTime();
 		LocalTime time = LocalDateTime.ofInstant(dateTime.toInstant(), ZoneId.systemDefault()).toLocalTime();
-		LocalDateTime dt = LocalDateTime.of(leavingDate, time);
+		LocalDateTime dt = LocalDateTime.of(date, time);
 		Date leavingDateTime = Date.from(dt.atZone(ZoneId.systemDefault()).toInstant());
 		return leavingDateTime;
 	}
