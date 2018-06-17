@@ -4,17 +4,11 @@ package server;
 // license found at www.lloseng.com 
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import com.mysql.jdbc.Util;
-
 import actors.CasualCustomer;
 import actors.MonthlySubscription;
 import client.ClientRequest;

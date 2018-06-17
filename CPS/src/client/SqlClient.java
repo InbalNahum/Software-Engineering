@@ -8,10 +8,7 @@ import ocsf.client.*;
 import common.*;
 import common.CpsGlobals.ServerOperation;
 import entity.PreOrderCustomer;
-
 import java.io.*;
-import java.util.Date;
-
 import actors.CasualCustomer;
 import actors.MonthlySubscription;
 
@@ -69,12 +66,6 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setServerOperation(ServerOperation.writeCasualCustomer);
 		clientRequest.addTolist(casualCustomer);
 		handleMessageFromGuiClient(clientRequest);
-	}
-
-	@Override
-	public void addCasualParkingOrder(Date arriveTime, String branchName,
-			int carNumber,String email, int id, Date leaveTime) {
-
 	}
 
 	@Override
