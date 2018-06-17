@@ -9,6 +9,9 @@ public class CpsGlobals {
 	public static int getNextToken() {
 		return communicateToken.incrementAndGet();
 	}
+	
+	//Icons Paths
+	public static final String cpsIconPath = "cps-icon.png";
 
 	//Server Connection Details
 	public static final int port = 5555;

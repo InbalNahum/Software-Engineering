@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
+
 import client.SqlClient;
 import common.CpsGlobals;
 import common.ServiceMethods;
@@ -19,20 +21,25 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
 public class LoginWindowController implements Initializable {
 
-	@FXML // fx:id="btn_cancel"
-	private Button btn_cancel; // Value injected by FXMLLoader
+    @FXML // fx:id="anchor_pane"
+    private AnchorPane anchor_pane; // Value injected by FXMLLoader
 
-	@FXML // fx:id="tf_password"
-	private PasswordField tf_password; // Value injected by FXMLLoader
+    @FXML // fx:id="btn_cancel"
+    private Button btn_cancel; // Value injected by FXMLLoader
 
-	@FXML // fx:id="tf_UserName"
-	private TextField tf_UserName; // Value injected by FXMLLoader
-	
+    @FXML // fx:id="tf_password"
+    private PasswordField tf_password; // Value injected by FXMLLoader
+
+    @FXML // fx:id="tf_UserName"
+    private TextField tf_UserName; // Value injected by FXMLLoader
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	}

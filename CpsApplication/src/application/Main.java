@@ -22,7 +22,7 @@ public class Main extends Application {
 	    
 	    // setting the stage
 	    primaryStage.setScene( scene );
-//	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Cps-Icon.jpg")));
+	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
 	    primaryStage.setTitle( CpsGlobals.loginWindowTitle );
 	    primaryStage.show();
 	}
