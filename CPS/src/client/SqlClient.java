@@ -13,6 +13,7 @@ import java.io.*;
 import java.util.Date;
 
 import actors.CasualCustomer;
+import actors.MonthlySubscription;
 
 public class SqlClient extends AbstractClient implements CpsServerCommunicator
 {
@@ -76,7 +77,6 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 
 	}
 
-
 	@Override
 	public void addPreOrderCustomer(PreOrderCustomer preOrderCustomer) {
 		ClientRequest clientRequest = new ClientRequest();
@@ -84,5 +84,11 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.addTolist(preOrderCustomer);
 		handleMessageFromGuiClient(clientRequest);
 	}
-
+	
+	public void addMonthlySubscription(MonthlySubscription monthlySubscription) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.monthlySubscription);
+		clientRequest.addTolist(monthlySubscription);
+		handleMessageFromGuiClient(clientRequest);
+	}
 }

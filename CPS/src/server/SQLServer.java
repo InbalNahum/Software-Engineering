@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import actors.CasualCustomer;
+import actors.MonthlySubscription;
 import client.ClientRequest;
 import common.CpsGlobals;
 import entity.PreOrderCustomer;
@@ -81,9 +82,16 @@ public class SQLServer extends AbstractServer
 				e.printStackTrace();
 			}
 			break;
+			
+		case monthlySubscription:
+			try {
+				writeMonthlySubscription(clientRequest,sqlServer);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 		}
-
-
 	}
 
 	private void writeOneTimePreOrder(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
@@ -98,7 +106,6 @@ public class SQLServer extends AbstractServer
 		statement.setTimestamp(5, leavingDate);
 		statement.setString(6, preOrderCustomer.getEmail());
 		statement.executeUpdate();
-
 	}
 
 
@@ -116,6 +123,17 @@ public class SQLServer extends AbstractServer
 	}
 
 
+	private void writeMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		MonthlySubscription monthlySubscription = (MonthlySubscription) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeMonthlySubscription);
+		statement.setInt(1,monthlySubscription.getId());
+		statement.setInt(2, monthlySubscription.getCarNumber());
+		Timestamp startingDate = new Timestamp(monthlySubscription.getStartingTime().getTime());
+		statement.setTimestamp(3, startingDate);
+		statement.executeUpdate();
+	}
+	
+	
 	private String buildSQLErrorMessage(SQLException e){
 		String toRet = "SQLException: " + e.getMessage() + "\n";
 		toRet += "SQLState: " + e.getSQLState() + "\n";

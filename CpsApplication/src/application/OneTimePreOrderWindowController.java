@@ -6,22 +6,19 @@ package application;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
+import common.ServiceMethods;
 import entity.PreOrderCustomer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -71,7 +68,6 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML
 	void makeOrderClick(ActionEvent event) {
-
 		try {
 			isValidInput();
 			String id = tf_Id.getText();
@@ -81,12 +77,12 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 			LocalDate leavingDate = tf_LeavingDate.getValue();
 			Calendar leavingCalendar = tf_LeavingTime.getCalendar();
-			Date leavingDateTime = convertToDateObject(leavingDate, leavingCalendar);	
+			Date leavingDateTime = ServiceMethods.convertToDateObject(leavingDate, leavingCalendar);	
 			LocalDate arrivingDate = tf_ArrivingDate.getValue();
 			Calendar arrivingCalendar = tf_ArrivingTime.getCalendar();
-			Date arrivingDateTime = convertToDateObject(arrivingDate, arrivingCalendar);
-			FieldValidation.dateValidation(arrivingDateTime, leavingDateTime);
-
+			Date arrivingDateTime = ServiceMethods.convertToDateObject(arrivingDate, arrivingCalendar);
+			FieldValidation.dateValidation(arrivingDateTime);
+			FieldValidation.dateCompareValidation(arrivingDateTime, leavingDateTime);
 			PreOrderCustomer preOrderCustomer = new PreOrderCustomer(arrivingDateTime,
 					Integer.parseInt(carNumber), email, Integer.parseInt(id), 
 					leavingDateTime, branchName);
@@ -94,57 +90,25 @@ public class OneTimePreOrderWindowController implements Initializable{
 			sqlClient.addPreOrderCustomer(preOrderCustomer);
 
 		}catch (Exception e) {
-			alertDialog(AlertType.ERROR, e.getMessage());
+			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
 		}
 
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-		alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
-	}
-
-	private void alertDialog(AlertType alertType, String message) {
-
-		Alert alert = new Alert(alertType);
-
-		if(alertType.equals(AlertType.INFORMATION)) {
-			alert.setTitle(CpsGlobals.informationDialogTitle);
-		}else {
-			alert.setTitle(CpsGlobals.errorDialogTitle);
-		}
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
-
-	private Date convertToDateObject(LocalDate leavingDate, Calendar leavingCalendar) {
-
-		Date dateTime = leavingCalendar.getTime();
-		LocalTime time = LocalDateTime.ofInstant(dateTime.toInstant(), ZoneId.systemDefault()).toLocalTime();
-		LocalDateTime dt = LocalDateTime.of(leavingDate, time);
-		Date leavingDateTime = Date.from(dt.atZone(ZoneId.systemDefault()).toInstant());
-		return leavingDateTime;
+		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
 	}
 
 	@FXML  
 	void cancelClick(ActionEvent event) {
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-
-
 	}
 
 	private void isValidInput() throws Exception {
-
 		FieldValidation.idValidation(tf_Id.getText());
 		FieldValidation.carNumberValidation(tf_CarNumber.getText());
 		FieldValidation.emailValidation(tf_Email.getText());
 		FieldValidation.branchNameValidation(cb_Branch.getValue());
-
-		if(   tf_LeavingDate.getValue() == null 
-				|| tf_ArrivingDate.getValue() == null 
-				|| tf_LeavingTime.getCalendar() == null
-				|| tf_ArrivingTime.getCalendar() == null) {
-			throw new Exception(CpsGlobals.emptyCalander); 
-		}
+		FieldValidation.calanderValidation(tf_ArrivingDate.getValue(),tf_ArrivingTime.getCalendar());
+		FieldValidation.calanderValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
 	}
-
 }

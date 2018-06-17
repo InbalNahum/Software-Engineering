@@ -13,7 +13,7 @@ public class CpsGlobals {
 	public static final String driver = "com.mysql.jdbc.Driver";
 	
 	//Objects possible types
-	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder};
+	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription};
 	
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -26,6 +26,10 @@ public class CpsGlobals {
 			+ "	OneTimePreOrder_ID, OneTimePreOrder_CarNumber, "
 			+ "OneTimePreOrder_BranchName, OneTimePreOrder_ArriveTime, "
 			+ "OneTimePreOrder_LeaveTime, OneTimePreOrder_Email) VALUES (?, ?, ?, ?, ?, ?)";
+	
+	public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
+			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
+			+ "MonthlySubscription_StartTime) VALUES (?, ?, ?)";
 
 	//Branches
 	public static final String telHaiBranch = "Tel-Hai";
@@ -38,7 +42,8 @@ public class CpsGlobals {
 	public static final String emptyEmail = "Error: Enter your email";
 	public static final String notValidEmail = "Error: Email is not valid";
 	public static final String emptyBranchName = "Error: Select branch name";
-	public static final String LeavingBeforeArrivig = "Error: Leaving time before arriving time";
+	public static final String leavingBeforeArrivig = "Error: Leaving time before arriving time";
+	public static final String invalidDate = "Error: Time is not valid";
 	public static final String notValidCarNumber = "Error: Car number is not valid";
 	public static final String emptyCarNumber = "Error: Enter your car number";
 	public static final String emptyCalander = "Error: Select date and time";

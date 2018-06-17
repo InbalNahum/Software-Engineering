@@ -1,5 +1,6 @@
 package common;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,11 +48,16 @@ public class FieldValidation {
 			throw new Exception(CpsGlobals.notValidCarNumber); 
 	}
 
-	public static void dateValidation(Date arrivingDate, Date leavingDate) throws Exception {
+	public static void dateCompareValidation(Date arrivingDate, Date leavingDate) throws Exception {
 
 		if(leavingDate.before(arrivingDate))
-			throw new Exception(CpsGlobals.LeavingBeforeArrivig); 
+			throw new Exception(CpsGlobals.leavingBeforeArrivig); 
+	}
+	
+	public static void dateValidation(Date date) throws Exception {
 
+		if(date.before(new Date()))
+			throw new Exception(CpsGlobals.invalidDate); 
 	}
 
 	public static void branchNameValidation(String branchName) throws Exception {
@@ -59,5 +65,10 @@ public class FieldValidation {
 		if(branchName.equals(CpsGlobals.emptyString))
 			throw new Exception(CpsGlobals.emptyBranchName); 
 	}
-
+	
+	public static void calanderValidation(Object date,Object time) throws Exception{
+		if(date == null || time== null) {
+			throw new Exception(CpsGlobals.emptyCalander);
+		}
+	}
 }
