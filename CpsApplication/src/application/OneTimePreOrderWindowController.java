@@ -1,42 +1,150 @@
+/**
+ * Sample Skeleton for 'OneTimePreOrderWindow.fxml' Controller Class
+ */
+
 package application;
 
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.ResourceBundle;
+import client.SqlClient;
+import common.CpsGlobals;
+import common.FieldValidation;
+import entity.PreOrderCustomer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 
-public class OneTimePreOrderWindowController {
+public class OneTimePreOrderWindowController implements Initializable{
 
-    @FXML // fx:id="tf_Email"
-    private TextField tf_Email; // Value injected by FXMLLoader
+	@FXML // fx:id="tf_Email"
+	private TextField tf_Email; // Value injected by FXMLLoader
 
-    @FXML // fx:id="btn_Cancel"
-    private Button btn_Cancel; // Value injected by FXMLLoader
+	@FXML // fx:id="btn_Cancel"
+	private Button btn_Cancel; // Value injected by FXMLLoader
 
-    @FXML // fx:id="tf_LeavingDate"
-    private DatePicker tf_LeavingDate; // Value injected by FXMLLoader
+	@FXML // fx:id="tf_LeavingDate"
+	private DatePicker tf_LeavingDate; // Value injected by FXMLLoader
 
-    @FXML // fx:id="tf_ArrivingDate"
-    private DatePicker tf_ArrivingDate; // Value injected by FXMLLoader
+	@FXML // fx:id="tf_ArrivingDate"
+	private DatePicker tf_ArrivingDate; // Value injected by FXMLLoader
 
-    @FXML // fx:id="tf_Id"
-    private TextField tf_Id; // Value injected by FXMLLoader
+	@FXML // fx:id="tf_Id"
+	private TextField tf_Id; // Value injected by FXMLLoader
 
-    @FXML // fx:id="tf_LeavingTime"
-    private CalendarTimeTextField tf_LeavingTime; // Value injected by FXMLLoader
+	@FXML // fx:id="tf_LeavingTime"
+	private CalendarTimeTextField tf_LeavingTime; // Value injected by FXMLLoader
 
-    @FXML // fx:id="Btn_MakeOrder"
-    private Button Btn_MakeOrder; // Value injected by FXMLLoader
+	@FXML // fx:id="Btn_MakeOrder"
+	private Button Btn_MakeOrder; // Value injected by FXMLLoader
 
-    @FXML // fx:id="cb_Branch"
-    private ComboBox<?> cb_Branch; // Value injected by FXMLLoader
+	@FXML // fx:id="tf_ArrivingTime"
+	private CalendarTimeTextField tf_ArrivingTime; // Value injected by FXMLLoader
 
-    @FXML // fx:id="tf_ArrivingTime"
-    private CalendarTimeTextField tf_ArrivingTime; // Value injected by FXMLLoader
+	@FXML // fx:id="tf_CarNumber"
+	private TextField tf_CarNumber; // Value injected by FXMLLoader
 
-    @FXML // fx:id="tf_CarNumber"
-    private TextField tf_CarNumber; // Value injected by FXMLLoader
+	@FXML // fx:id="cb_Branch"
+	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
+
+	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch, CpsGlobals.telAvivBranch);
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		cb_Branch.setItems(comboBoxList);
+	}
+
+	@FXML
+	void makeOrderClick(ActionEvent event) {
+
+		try {
+			isValidInput();
+			String id = tf_Id.getText();
+			String carNumber = tf_CarNumber.getText();
+			String email = tf_Email.getText();		
+			String branchName = cb_Branch.getValue();
+
+			LocalDate leavingDate = tf_LeavingDate.getValue();
+			Calendar leavingCalendar = tf_LeavingTime.getCalendar();
+			Date leavingDateTime = convertToDateObject(leavingDate, leavingCalendar);	
+			LocalDate arrivingDate = tf_ArrivingDate.getValue();
+			Calendar arrivingCalendar = tf_ArrivingTime.getCalendar();
+			Date arrivingDateTime = convertToDateObject(arrivingDate, arrivingCalendar);
+			FieldValidation.dateValidation(arrivingDateTime, leavingDateTime);
+
+			PreOrderCustomer preOrderCustomer = new PreOrderCustomer(arrivingDateTime,
+					Integer.parseInt(carNumber), email, Integer.parseInt(id), 
+					leavingDateTime, branchName);
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.addPreOrderCustomer(preOrderCustomer);
+
+		}catch (Exception e) {
+			alertDialog(AlertType.ERROR, e.getMessage());
+			return;
+		}
+
+		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
+	}
+
+	private void alertDialog(AlertType alertType, String message) {
+
+		Alert alert = new Alert(alertType);
+
+		if(alertType.equals(AlertType.INFORMATION)) {
+			alert.setTitle(CpsGlobals.informationDialogTitle);
+		}else {
+			alert.setTitle(CpsGlobals.errorDialogTitle);
+		}
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
+
+	private Date convertToDateObject(LocalDate leavingDate, Calendar leavingCalendar) {
+
+		Date dateTime = leavingCalendar.getTime();
+		LocalTime time = LocalDateTime.ofInstant(dateTime.toInstant(), ZoneId.systemDefault()).toLocalTime();
+		LocalDateTime dt = LocalDateTime.of(leavingDate, time);
+		Date leavingDateTime = Date.from(dt.atZone(ZoneId.systemDefault()).toInstant());
+		return leavingDateTime;
+	}
+
+	@FXML  
+	void cancelClick(ActionEvent event) {
+		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+
+
+	}
+
+	private void isValidInput() throws Exception {
+
+		FieldValidation.idValidation(tf_Id.getText());
+		FieldValidation.carNumberValidation(tf_CarNumber.getText());
+		FieldValidation.emailValidation(tf_Email.getText());
+		FieldValidation.branchNameValidation(cb_Branch.getValue());
+
+		if(   tf_LeavingDate.getValue() == null 
+				|| tf_ArrivingDate.getValue() == null 
+				|| tf_LeavingTime.getCalendar() == null
+				|| tf_ArrivingTime.getCalendar() == null) {
+			throw new Exception(CpsGlobals.emptyCalander); 
+		}
+	}
 
 }

@@ -1,10 +1,9 @@
-package actors;
+package entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class CasualCustomer implements Serializable {
-	
+public class PreOrderCustomer implements Serializable{
 	/**
 	 * 
 	 */
@@ -14,19 +13,18 @@ public class CasualCustomer implements Serializable {
 	private int carNumber;
 	private String email;
 	private int id;
+	private String branchName;
 
-	
-	public CasualCustomer() {
-		
-	}
-	
-	public CasualCustomer(Date arriveTime, int carNumber, String email, int id, Date leaveTime) {
+	public PreOrderCustomer(Date arriveTime, int carNumber, String email,
+			int id, Date leaveTime, String branchName) {
 		this.arriveTime = arriveTime;
 		this.carNumber = carNumber;
 		this.email = email;
 		this.id = id;
 		this.leaveTime = leaveTime;
+		this.branchName = branchName;
 	}
+	
 	public Date getArriveTime() {
 		return arriveTime;
 	}
@@ -57,5 +55,10 @@ public class CasualCustomer implements Serializable {
 	public void setLeaveTime(Date leaveTime) {
 		this.leaveTime = leaveTime;
 	}
-
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
 }

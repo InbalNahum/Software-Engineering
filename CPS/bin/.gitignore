@@ -3,3 +3,7 @@
 /actors/
 /client/
 /common/
+/server/
+/entity/
+*.class
+

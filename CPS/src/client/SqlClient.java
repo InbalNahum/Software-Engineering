@@ -6,6 +6,9 @@ package client;
 
 import ocsf.client.*;
 import common.*;
+import common.CpsGlobals.ServerOperation;
+import entity.PreOrderCustomer;
+
 import java.io.*;
 import java.util.Date;
 
@@ -13,53 +16,73 @@ import actors.CasualCustomer;
 
 public class SqlClient extends AbstractClient implements CpsServerCommunicator
 {
-
-  
-  public SqlClient(String host, int port) 
-    throws IOException 
-  {
-    super(host, port); 
-    openConnection();
-  }
-  
-  public void handleMessageFromServer(Object msg) 
-  {
-   
-  }
+	private static SqlClient instance = null;
 
 
-  public void handleMessageFromGuiClient(Object message)
-  {
-    try
-    {	
-    	sendToServer(message);
-    }
-    catch(IOException e)
-    {
-      quit();
-    }
-  }
-  
-  public void quit()
-  {
-    try
-    {
-      closeConnection();
-    }
-    catch(IOException e) {}
-    System.exit(0);
-  }
+	public static SqlClient getInstance() throws IOException {
+		if(instance == null) {
+			instance = new SqlClient(CpsGlobals.host, CpsGlobals.port);			   
+		}
+		return instance;
+	}
 
-@Override
-public void addCasualCustomer(CasualCustomer customer) {
-	
-	
-}
 
-@Override
-public void addCasualParkingOrder(Date arriveTime, String branchName,
-		int carNumber,String email, int id, Date leaveTime) {
-   	
-}
+	private SqlClient(String host, int port) 
+			throws IOException 
+	{
+		super(host, port); 
+		openConnection();
+	}
+
+	public void handleMessageFromServer(Object msg) 
+	{
+
+	}
+
+
+	public void handleMessageFromGuiClient(Object message)
+	{
+		try
+		{	
+			sendToServer(message);
+		}
+		catch(IOException e)
+		{
+			quit();
+		}
+	}
+
+	public void quit()
+	{
+		try
+		{
+			closeConnection();
+		}
+		catch(IOException e) {}
+		System.exit(0);
+	}
+
+	@Override
+	public void addCasualCustomer(CasualCustomer casualCustomer) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.writeCasualCustomer);
+		clientRequest.addTolist(casualCustomer);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
+	@Override
+	public void addCasualParkingOrder(Date arriveTime, String branchName,
+			int carNumber,String email, int id, Date leaveTime) {
+
+	}
+
+
+	@Override
+	public void addPreOrderCustomer(PreOrderCustomer preOrderCustomer) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.writeOneTimePreOrder);
+		clientRequest.addTolist(preOrderCustomer);
+		handleMessageFromGuiClient(clientRequest);
+	}
 
 }

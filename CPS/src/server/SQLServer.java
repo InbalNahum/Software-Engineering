@@ -1,18 +1,19 @@
+package server;
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
-import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Timestamp;
 
+import actors.CasualCustomer;
 import client.ClientRequest;
-import client.ClientRequest.TYPE;
-import common.SqlResult;
-import common.SqlResultConverter;
+import common.CpsGlobals;
+import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -53,50 +54,67 @@ public class SQLServer extends AbstractServer
 	/**
 	 * This method handles any messages received from the client.
 	 *
-	 * @param msg The message received from the client.
+	 * @param object The message received from the client.
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient
-	(Object msg, ConnectionToClient client)
+	(Object object, ConnectionToClient client)
 	{
-		if(! (msg instanceof ClientRequest)){
+		Connection sqlServer = getSqlServerConnection();
+		ClientRequest clientRequest = (ClientRequest) object;
+
+		switch(clientRequest.getServerOperation()) {
+		case writeCasualCustomer:
 			try {
-				client.sendToClient("Server can handle only 'ClientRequest' requests\n");
-			} catch (IOException e) {
-				System.out.println("Cannot sent response to client: " + e.getMessage());
+				writeCasualCustomer(clientRequest,sqlServer);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			return;
-		}
-		Connection sqlServer = null;
-		try {
+			break;
 
-			sqlServer = getSqlServerConnection();
-			if(sqlServer == null)return;//TODO report to client
-			Statement statement = sqlServer.createStatement();
-			ClientRequest clientRequest = (ClientRequest) msg;
-
-			if(clientRequest.getType() == TYPE.Read){
-				ResultSet readResults =  statement.executeQuery(clientRequest.getSqlCommand());
-				SqlResult toSend = SqlResultConverter.convertResultToSqlResult(readResults);
-				client.sendToClient(toSend);
-				sqlServer.close();
-			}
-			else{
-				statement.executeUpdate(clientRequest.getSqlCommand());
-				client.sendToClient("Update Done successfully");
-				sqlServer.close();
-			}
-
-		} catch (SQLException se) {
+		case writeOneTimePreOrder:
 			try {
-				client.sendToClient(buildSQLErrorMessage(se));
-			} catch (IOException ie) {
-				System.out.println("Cannot sent response to client: " + ie.getMessage());
+				writeOneTimePreOrder(clientRequest,sqlServer);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (IOException ie) {
-			System.out.println("Cannot sent response to client: " + ie.getMessage());
+			break;
 		}
+
+
 	}
+
+	private void writeOneTimePreOrder(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		PreOrderCustomer preOrderCustomer = (PreOrderCustomer) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeOneTimePreOrder);
+		statement.setInt(1,preOrderCustomer.getId());
+		statement.setInt(2, preOrderCustomer.getCarNumber());
+		statement.setString(3, preOrderCustomer.getBranchName());
+		Timestamp arrivingDate = new Timestamp(preOrderCustomer.getArriveTime().getTime());
+		statement.setTimestamp(4, arrivingDate);
+		Timestamp leavingDate = new Timestamp(preOrderCustomer.getLeaveTime().getTime());
+		statement.setTimestamp(5, leavingDate);
+		statement.setString(6, preOrderCustomer.getEmail());
+		statement.executeUpdate();
+
+	}
+
+
+	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
+		CasualCustomer customer = (CasualCustomer) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeCasualCustomer);
+		statement.setInt(1,customer.getId());
+		statement.setInt(2, customer.getCarNumber());
+		statement.setString(3, customer.getEmail());
+		Timestamp leavingDate = new Timestamp(customer.getLeaveTime().getTime());
+		statement.setTimestamp(4, leavingDate);
+		Timestamp arrivingDate = new Timestamp(customer.getArriveTime().getTime());
+		statement.setTimestamp(5, arrivingDate);
+		statement.executeUpdate();
+	}
+
 
 	private String buildSQLErrorMessage(SQLException e){
 		String toRet = "SQLException: " + e.getMessage() + "\n";
@@ -108,10 +126,10 @@ public class SQLServer extends AbstractServer
 	private Connection getSqlServerConnection() {
 		try 
 		{
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String Url = "jdbc:mysql://cs.telhai.ac.il/studentDB_cs203495098";
-			String user = "cs203495098";
-			String password = "ya0522491015";
+			Class.forName(CpsGlobals.driver).newInstance();
+			String Url = CpsGlobals.url;
+			String user = CpsGlobals.user;
+			String password = CpsGlobals.password;
 			Connection connection = DriverManager.getConnection(Url,user,password);
 			return connection;
 		}
