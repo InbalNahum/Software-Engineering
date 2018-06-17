@@ -1,32 +1,32 @@
-package client;
+package server;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import common.CpsGlobals.ServerOperation;
 
-public class ClientRequest implements Serializable {
-	
+public class ServerResponse implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3072026581614231372L;
+	private static final long serialVersionUID = 1L;
+	
     
+	private List<Object> objects;
 	private ServerOperation serverOperation;
-    List<Object> objects;
-    private int communicateToken;
+	private int communicateToken;
 
-	public ClientRequest(ServerOperation serverOperation,
-			List<Object> objects,int communicateToken) {
+	public ServerResponse(ServerOperation serverOperation,
+			List<Object> objects, int communicateToken) {
 		super();
 		this.serverOperation = serverOperation;
 		this.objects = objects;
 		this.communicateToken = communicateToken;
 	}
 	
-	public ClientRequest() {}
+	public ServerResponse() {}
 	
 	public ServerOperation getServerOperation() {
 		return serverOperation;
@@ -66,4 +66,5 @@ public class ClientRequest implements Serializable {
 	public void setCommunicateToken(int communicateToken) {
 		this.communicateToken = communicateToken;
 	}
+
 }

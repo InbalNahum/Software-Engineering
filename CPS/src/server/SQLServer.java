@@ -3,16 +3,19 @@ package server;
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
 import actors.CasualCustomer;
 import actors.MonthlySubscription;
 import client.ClientRequest;
 import common.CpsGlobals;
+import common.CpsGlobals.ServerOperation;
 import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -61,13 +64,13 @@ public class SQLServer extends AbstractServer
 	public void handleMessageFromClient
 	(Object object, ConnectionToClient client)
 	{
-		Connection sqlServer = getSqlServerConnection();
+		Connection serverConnection = getSqlServerConnection();
 		ClientRequest clientRequest = (ClientRequest) object;
 
 		switch(clientRequest.getServerOperation()) {
 		case writeCasualCustomer:
 			try {
-				writeCasualCustomer(clientRequest,sqlServer);
+				writeCasualCustomer(clientRequest,serverConnection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -76,36 +79,71 @@ public class SQLServer extends AbstractServer
 
 		case writeOneTimePreOrder:
 			try {
-				writeOneTimePreOrder(clientRequest,sqlServer);
+				writeOneTimePreOrder(clientRequest,serverConnection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			break;
-			
+		case employeeAuthentication:
+			try {
+				boolean result = employeeAuthentication(clientRequest,serverConnection);
+				ServerResponse serverResponse = new ServerResponse();
+				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+				serverResponse.addTolist(result);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+			} catch (SQLException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+			break;
 		case monthlySubscription:
 			try {
-				writeMonthlySubscription(clientRequest,sqlServer);
+				writeMonthlySubscription(clientRequest,serverConnection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			break;
-		
-		
 		case renewMonthlySubscription:
 			try {
-				writeRenewMonthlySubscription(clientRequest,sqlServer);
+				writeRenewMonthlySubscription(clientRequest,serverConnection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			break;
+		 default:
 			break;
 		}
 	}
 
+	/**
+	 * @param clientRequest
+	 * @param serverConnection
+	 * @return
+	 * @throws SQLException
+	 */
+	private boolean employeeAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		boolean answer = false;
+		int id = (int) clientRequest.getObjectAtIndex(0);
+		String password = (String) clientRequest.getObjectAtIndex(1);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.employeeAuthentication);
+		statement.setInt(1, id);
+		ResultSet result = statement.executeQuery();
+		if(result.next()) {
+			String databasePass = result.getString(CpsGlobals.employeePassword);
+			if(databasePass.equals(password)) {
+				answer = true;
+			}
+		}
+		return answer;
+	}
+
+
 	private void writeOneTimePreOrder(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
-		PreOrderCustomer preOrderCustomer = (PreOrderCustomer) clientRequest.getObjects().get(0);
+		PreOrderCustomer preOrderCustomer = (PreOrderCustomer) clientRequest.getObjectAtIndex(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeOneTimePreOrder);
 		statement.setInt(1,preOrderCustomer.getId());
 		statement.setInt(2, preOrderCustomer.getCarNumber());
@@ -120,7 +158,7 @@ public class SQLServer extends AbstractServer
 
 
 	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
-		CasualCustomer customer = (CasualCustomer) clientRequest.getObjects().get(0);
+		CasualCustomer customer = (CasualCustomer) clientRequest.getObjectAtIndex(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeCasualCustomer);
 		statement.setInt(1,customer.getId());
 		statement.setInt(2, customer.getCarNumber());
@@ -142,7 +180,7 @@ public class SQLServer extends AbstractServer
 		statement.setTimestamp(3, startingDate);
 		statement.executeUpdate();
 	}
-	
+
 	private void writeRenewMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
 		MonthlySubscription monthlySubscription = (MonthlySubscription) clientRequest.getObjects().get(0);	
 		PreparedStatement readStatement = serverConnection.prepareStatement(CpsGlobals.readRenewMonthlySubscription);
@@ -159,8 +197,8 @@ public class SQLServer extends AbstractServer
 			throw new SQLException("Error: row was not found");
 		}
 	}
-	
-	
+
+
 	private String buildSQLErrorMessage(SQLException e){
 		String toRet = "SQLException: " + e.getMessage() + "\n";
 		toRet += "SQLState: " + e.getSQLState() + "\n";
