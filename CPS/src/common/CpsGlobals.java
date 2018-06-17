@@ -62,5 +62,6 @@ public class CpsGlobals {
 	public static final String informationDialogTitle = "Information Dialog";
 	public static final String successMessage = "Order done success!";
 
-	
+	//parkingStatus
+	public static enum parkingState{available, unAvailable, anoutOfOrder};	
 }
