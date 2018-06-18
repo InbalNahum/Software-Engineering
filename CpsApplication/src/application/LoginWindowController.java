@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 import client.SqlClient;
 import common.CpsGlobals;
+import common.FieldValidation;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,7 +50,9 @@ public class LoginWindowController implements Initializable {
 	void sigIn_click(ActionEvent event) {
 		String userName = tf_UserName.getText();
 		String password = tf_password.getText();
+
 		try {
+			FieldValidation.idValidation(userName);
 			if(employeeAuthentication(userName,password)) {
                //TODO - ydanan move to the employee operations window
 			}
@@ -58,6 +61,8 @@ public class LoginWindowController implements Initializable {
  			}
 		} catch (InterruptedException e) {
            ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.somethingGoWrone);
+		} catch (Exception e) {
+	           ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.notValidId);
 		}
 	}
 
