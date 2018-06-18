@@ -67,55 +67,48 @@ public class SQLServer extends AbstractServer
 		Connection serverConnection = getSqlServerConnection();
 		ClientRequest clientRequest = (ClientRequest) object;
 
-		switch(clientRequest.getServerOperation()) {
-		case writeCasualCustomer:
-			try {
+		try {
+			switch(clientRequest.getServerOperation()) {
+			case writeCasualCustomer:
 				writeCasualCustomer(clientRequest,serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-
-		case writeOneTimePreOrder:
-			try {
+				sendOperationSuccess(clientRequest.getCommunicateToken(),
+						client);
+				break;
+			case writeOneTimePreOrder:
 				writeOneTimePreOrder(clientRequest,serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		case employeeAuthentication:
-			try {
+				sendOperationSuccess(clientRequest.getCommunicateToken(),
+						client);
+				break;
+			case employeeAuthentication:
 				boolean result = employeeAuthentication(clientRequest,serverConnection);
 				ServerResponse serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
 				serverResponse.addTolist(result);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
-			} catch (SQLException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-			break;
-		case monthlySubscription:
-			try {
+				break;
+			case monthlySubscription:
 				writeMonthlySubscription(clientRequest,serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		case renewMonthlySubscription:
-			try {
+				sendOperationSuccess(clientRequest.getCommunicateToken(),
+						client);
+				break;
+			case renewMonthlySubscription:
 				writeRenewMonthlySubscription(clientRequest,serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				sendOperationSuccess(clientRequest.getCommunicateToken(),
+						client);
+				break;
+			default:
+				break;
 			}
-			break;
-		 default:
-			break;
+		}
+		catch(SQLException e) {
+         try {
+			sendOperationFailure(clientRequest.getCommunicateToken(), client);
+		} catch (IOException e1) {
+	          System.out.println(e1.getMessage());
+		}
+		} catch (IOException e) {
+          System.out.println(e.getMessage());
 		}
 	}
 
@@ -220,6 +213,24 @@ public class SQLServer extends AbstractServer
 			System.out.println("Connection Failed: " + ex.getMessage());
 			return null;
 		}
+	}
+
+	private void sendOperationSuccess(int requestToken,
+			ConnectionToClient client) throws IOException {
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+		serverResponse.addTolist(CpsGlobals.operationSuccess);
+		serverResponse.setCommunicateToken(requestToken);
+		client.sendToClient(serverResponse);
+	}
+
+	private void sendOperationFailure(int requestToken,
+			ConnectionToClient client) throws IOException {
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+		serverResponse.addTolist(CpsGlobals.operationFailure);
+		serverResponse.setCommunicateToken(requestToken);
+		client.sendToClient(serverResponse);
 	}
 
 
