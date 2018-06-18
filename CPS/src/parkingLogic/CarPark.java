@@ -3,12 +3,10 @@ package parkingLogic;
 import common.CpsGlobals.parkingState;
 
 public class CarPark {
-
 	private parkingState state;
 	private Car car = null;
 
 	public CarPark(parkingState state) {
-
 		this.state = state;
 	}
 

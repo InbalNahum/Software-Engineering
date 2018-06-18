@@ -2,21 +2,20 @@ package parkingLogic;
 
 public class Car {
 	
-	private int ownnerId;
+	private int ownerId;
 	private int carNumber; 
 	
-	public Car(int ownnerId, int carNumber) {
-		
-		this.ownnerId = ownnerId;
+	public Car(int ownerId, int carNumber) {	
+		this.ownerId = ownerId;
 		this.carNumber = carNumber;
 	}
 
-	public int getOwnnerId() {
-		return ownnerId;
+	public int getOwnerId() {
+		return ownerId;
 	}
 
-	public void setOwnnerId(int ownnerId) {
-		this.ownnerId = ownnerId;
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
 	}
 
 	public int getCarNumber() {

@@ -86,6 +86,6 @@ public class CpsGlobals {
 
 
 		//parkingStatus
-		public static enum parkingState{available, unAvailable, anoutOfOrder};	
+		public static enum parkingState{available, unAvailable, outOfOrder};	
 
 }
