@@ -1,15 +1,10 @@
 package common;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class CpsGlobals {
-
-	//Communicate Token
-	public static AtomicInteger communicateToken = new AtomicInteger();
-	public static int getNextToken() {
-		return communicateToken.incrementAndGet();
-	}
-
+	
+	//Files paths
+	public static final String tokenFile = "tokenHolder.txt";
+	
 	//Icons Paths
 	public static final String cpsIconPath = "cps-icon.png";
 

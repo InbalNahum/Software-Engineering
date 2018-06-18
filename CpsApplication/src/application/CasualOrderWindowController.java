@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
+import token.TokenProvider;
 
 public class CasualOrderWindowController {
 
@@ -63,7 +64,8 @@ public class CasualOrderWindowController {
 		CasualCustomer casualCustomer = new CasualCustomer(arrivingDateTime,
 				Integer.parseInt(carNumber),email, Integer.parseInt(id),leavingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			int requestToken = CpsGlobals.getNextToken();
+			TokenProvider tokenProvider = new TokenProvider();
+			int requestToken = tokenProvider.getCommunicateToken();
 			sqlClient.addCasualCustomer(casualCustomer,requestToken);
 	}catch(Exception e) {
 		ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());

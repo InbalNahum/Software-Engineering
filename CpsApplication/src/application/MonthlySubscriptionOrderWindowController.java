@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
+import token.TokenProvider;
 
 public class MonthlySubscriptionOrderWindowController {
 
@@ -60,7 +61,8 @@ public class MonthlySubscriptionOrderWindowController {
 			FieldValidation.dateValidation(startingDateTime);
 			MonthlySubscription monthlySubscription = new MonthlySubscription(Integer.parseInt(id), Integer.parseInt(carNumber), startingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			int requestToken = CpsGlobals.getNextToken();
+			TokenProvider tokenProvider = new TokenProvider();
+			int requestToken = tokenProvider.getCommunicateToken();
 			sqlClient.addMonthlySubscription(monthlySubscription,requestToken);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());

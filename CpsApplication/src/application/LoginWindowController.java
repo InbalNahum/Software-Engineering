@@ -25,6 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
+import token.TokenProvider;
 
 public class LoginWindowController implements Initializable {
 
@@ -64,7 +65,9 @@ public class LoginWindowController implements Initializable {
 		boolean isAuth = false;
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
-			int requestToken = CpsGlobals.getNextToken();
+			TokenProvider tokenProvider = new TokenProvider();
+			int requestToken = tokenProvider.getCommunicateToken();
+			System.out.println(requestToken);
 			sqlClient.employeeAuthentication(userName,password,requestToken);
 			Optional<ServerResponse> serverResponse = waitToServerResponse(sqlClient,requestToken);
 			isAuth = (boolean) serverResponse.get().getObjectAtIndex(0);
