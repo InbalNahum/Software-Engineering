@@ -3,13 +3,13 @@ package common;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CpsGlobals {
-	
+
 	//Communicate Token
 	public static AtomicInteger communicateToken = new AtomicInteger();
 	public static int getNextToken() {
 		return communicateToken.incrementAndGet();
 	}
-	
+
 	//Icons Paths
 	public static final String cpsIconPath = "cps-icon.png";
 
@@ -79,14 +79,13 @@ public class CpsGlobals {
 		public static final String successMessage = "Order done successfully!";
 		public static final String somethingGoWrone = "Something go wrong";
 		public static final String wrongUserOrPassword = "User name or password are incorrect";
-		
+
 		//column names
 		public static final String employeePassword = "Employee_Password";
 
 
-<<<<<<< HEAD
-	//parkingStatus
-	public static enum parkingState{available, unAvailable, anoutOfOrder};	
-=======
->>>>>>> yarden's-branch
+
+		//parkingStatus
+		public static enum parkingState{available, unAvailable, anoutOfOrder};	
+
 }
