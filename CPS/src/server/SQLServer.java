@@ -33,34 +33,15 @@ import ocsf.server.ConnectionToClient;
  */
 public class SQLServer extends AbstractServer 
 {
-	//Class variables *************************************************
 
-	/**
-	 * The default port to listen on.
-	 */
 	final public static int DEFAULT_PORT = 5555;
 
-	//Constructors ****************************************************
 
-	/**
-	 * Constructs an instance of the echo server.
-	 *
-	 * @param port The port number to connect on.
-	 */
 	public SQLServer(int port) 
 	{
 		super(port);
 	}
 
-
-	//Instance methods ************************************************
-
-	/**
-	 * This method handles any messages received from the client.
-	 *
-	 * @param object The message received from the client.
-	 * @param client The connection from which the message originated.
-	 */
 	public void handleMessageFromClient
 	(Object object, ConnectionToClient client)
 	{
@@ -112,12 +93,6 @@ public class SQLServer extends AbstractServer
 		}
 	}
 
-	/**
-	 * @param clientRequest
-	 * @param serverConnection
-	 * @return
-	 * @throws SQLException
-	 */
 	private boolean employeeAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
 		boolean answer = false;
 		int id = (int) clientRequest.getObjectAtIndex(0);
@@ -191,14 +166,6 @@ public class SQLServer extends AbstractServer
 		}
 	}
 
-
-	private String buildSQLErrorMessage(SQLException e){
-		String toRet = "SQLException: " + e.getMessage() + "\n";
-		toRet += "SQLState: " + e.getSQLState() + "\n";
-		toRet += "VendorError: " + e.getErrorCode() + "\n";
-		return toRet;
-	}
-
 	private Connection getSqlServerConnection() {
 		try 
 		{
@@ -234,35 +201,21 @@ public class SQLServer extends AbstractServer
 	}
 
 
-	/**
-	 * This method overrides the one in the superclass.  Called
-	 * when the server starts listening for connections.
-	 */
+
 	protected void serverStarted()
 	{
 		System.out.println
 		("Server listening for connections on port " + getPort());
 	}
 
-	/**
-	 * This method overrides the one in the superclass.  Called
-	 * when the server stops listening for connections.
-	 */
+
 	protected void serverStopped()
 	{
 		System.out.println
 		("Server has stopped listening for connections.");
 	}
 
-	//Class methods ***************************************************
 
-	/**
-	 * This method is responsible for the creation of 
-	 * the server instance (there is no UI in this phase).
-	 *
-	 * @param args[0] The port number to listen on.  Defaults to 5555 
-	 *          if no argument is entered.
-	 */
 	public static void main(String[] args) 
 	{
 		int port = 0; //Port to listen on
