@@ -53,6 +53,10 @@ public class SQLServer extends AbstractServer
 		ServerResponse serverResponse = new ServerResponse();
 		try {
 			switch(clientRequest.getServerOperation()) {
+			case branchListRequest:
+				serverResponse = getBranchList(clientRequest,serverConnection);
+				client.sendToClient(serverResponse);
+				break;
 			case tokenRequest:
 				serverResponse = getNextToken(serverConnection);
 				client.sendToClient(serverResponse);
@@ -102,6 +106,19 @@ public class SQLServer extends AbstractServer
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	private ServerResponse getBranchList(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
+		PreparedStatement queryStatement = serverConnection.prepareStatement(CpsGlobals.getBranchList);
+		ResultSet result = queryStatement.executeQuery();
+		ServerResponse serverResponse = new ServerResponse();
+		while(result.next()) {
+			String toAdd = result.getString(2);
+			serverResponse.addTolist(toAdd);
+		}
+		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+		serverResponse.setServerOperation(ServerOperation.branchListRequest);
+		return serverResponse;
 	}
 
 	private ServerResponse getNextToken(Connection serverConnection) throws SQLException {
@@ -210,7 +227,7 @@ public class SQLServer extends AbstractServer
 	private void sendOperationSuccess(int requestToken,
 			ConnectionToClient client) throws IOException {
 		ServerResponse serverResponse = new ServerResponse();
-		serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+		serverResponse.setServerOperation(ServerOperation.feedback);
 		serverResponse.addTolist(CpsGlobals.operationSuccess);
 		serverResponse.setCommunicateToken(requestToken);
 		client.sendToClient(serverResponse);
@@ -219,7 +236,7 @@ public class SQLServer extends AbstractServer
 	private void sendOperationFailure(int requestToken,
 			ConnectionToClient client) throws IOException {
 		ServerResponse serverResponse = new ServerResponse();
-		serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+		serverResponse.setServerOperation(ServerOperation.feedback);
 		serverResponse.addTolist(CpsGlobals.operationFailure);
 		serverResponse.setCommunicateToken(requestToken);
 		client.sendToClient(serverResponse);

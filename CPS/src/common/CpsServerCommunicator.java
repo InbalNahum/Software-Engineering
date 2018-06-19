@@ -6,6 +6,7 @@ import actors.CasualCustomer;
 import entity.MonthlySubscription;
 import entity.Branch;
 import entity.PreOrderCustomer;
+import javafx.collections.ObservableList;
 
 public interface CpsServerCommunicator {
 	
@@ -17,4 +18,5 @@ public interface CpsServerCommunicator {
 	public void addMonthlySubscription(MonthlySubscription monthlySubscription, int token);
 	public void renewMonthlySubscription(MonthlySubscription monthlySubscription, int token);
 	public void addBranch(Branch branch,int token);
+	public void sendBranchListRequest(int requestToken);
 }
