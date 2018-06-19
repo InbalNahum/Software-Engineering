@@ -22,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
-import token.TokenProvider;
 
 public class LoginWindowController implements Initializable {
 
@@ -67,34 +66,15 @@ public class LoginWindowController implements Initializable {
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
             sqlClient.sendTokenRequest();
-            int requestToken = waitForServerToken(sqlClient);
+            int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.employeeAuthentication(userName,password,requestToken);
-			Optional<ServerResponse> serverResponse = waitToServerResponse(sqlClient,requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient,requestToken);
 			isAuth = (boolean) serverResponse.get().getObjectAtIndex(0);
 		} catch (IOException e) {
 			isAuth = false;
 			e.printStackTrace();
 		}
 		return isAuth;
-	}
-
-	private Optional<ServerResponse> waitToServerResponse(SqlClient sqlClient,
-			int requestToken) {
-		Optional<ServerResponse> toRet;
-		
-		do {
-			toRet = sqlClient.getResponseByToken(requestToken);
-		} while (!toRet.isPresent());
-		return toRet;
-	}
-	
-	private int waitForServerToken(SqlClient sqlClient) throws InterruptedException {
-		Optional<Integer> toRet;
-		
-		do {
-			toRet = sqlClient.fetchToken();
-		} while (!toRet.isPresent());
-		return toRet.get();
 	}
 
 	@FXML
