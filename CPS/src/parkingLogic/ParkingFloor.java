@@ -1,11 +1,15 @@
 package parkingLogic;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import common.CpsGlobals.parkingState;
 
-public class ParkingFloor {
-
+public class ParkingFloor implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private CarPark[][] parkingFloor;
 	private int rows = 3; 
 	private int columns;
@@ -13,7 +17,6 @@ public class ParkingFloor {
 	private boolean isFull;
 
 	public ParkingFloor(int columns) {
-
 		parkingFloor = new CarPark[rows][columns];
 		optimalPlace = new Point(0, 0);
 		isFull = false;
@@ -22,7 +25,6 @@ public class ParkingFloor {
 	}
 
 	private void initialParkingFloor() {
-
 		for(int i = 0; i<rows; i++) {
 			for(int j=0; j<columns; j++) {
 				parkingFloor[i][j] = new CarPark(parkingState.available);
@@ -39,7 +41,6 @@ public class ParkingFloor {
 	}
 
 	public void removeCarFromPark(Point carLocation) {
-
 		isFull = false;
 		CarPark carPark = parkingFloor[carLocation.x][carLocation.y];
 		carPark.removeCar();
@@ -47,16 +48,14 @@ public class ParkingFloor {
 	}
 	
 	public Point enterCarToPark(Car car) {
-
 		CarPark carPark = parkingFloor[optimalPlace.x][optimalPlace.y];
 		carPark.addCar(car);
+		Point carLocation = new Point(optimalPlace.x,optimalPlace.y);
 		calculateOptimal();
-
-		return optimalPlace;
+		return carLocation;
 	}
 
 	private void calculateOptimal() {
-
 		for(int i = 0; i<rows; i++) {
 			for(int j=0; j<columns; j++) {
 				if(parkingFloor[i][j].getState() == parkingState.available) {
@@ -66,5 +65,19 @@ public class ParkingFloor {
 			}
 		}
 		isFull = true;
+	}
+	
+	public parkingState[][] getFloorState(){
+		parkingState[][] state = new parkingState[rows][columns];
+		for(int i=0; i<rows; i++) {
+			for(int j=0; j<columns; j++) {
+				state[i][j] = parkingFloor[i][j].getState();
+			}
+		}
+		return state;
+	}
+	
+	public void setParkingState(Point Location, parkingState state) {
+		parkingFloor[Location.x][Location.y].setState(state); 
 	}
 }

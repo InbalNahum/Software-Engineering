@@ -15,6 +15,7 @@ import actors.MonthlySubscription;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import common.CpsServerCommunicator;
+import entity.Branch;
 import entity.PreOrderCustomer;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
@@ -128,5 +129,13 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
-
+	
+	@Override
+	public void addBranch(Branch branch,int token) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.createNewBranch);
+		clientRequest.addTolist(branch);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
 }
