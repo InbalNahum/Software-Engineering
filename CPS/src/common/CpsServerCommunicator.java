@@ -3,7 +3,7 @@ package common;
 import java.util.Optional;
 
 import actors.CasualCustomer;
-import actors.MonthlySubscription;
+import entity.MonthlySubscription;
 import entity.Branch;
 import entity.PreOrderCustomer;
 

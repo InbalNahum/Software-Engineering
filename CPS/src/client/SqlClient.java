@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import actors.CasualCustomer;
-import actors.MonthlySubscription;
+import entity.MonthlySubscription;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import common.CpsServerCommunicator;
