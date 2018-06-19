@@ -1,20 +1,19 @@
 package entity;
 
 import java.io.Serializable;
-import java.sql.Blob;
+import parkingLogic.BranchPark;
 
 public class Branch implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	private int id;
 	private String branchName;
-	private Blob carPark;
+	private BranchPark carPark;
 	public Branch() {}
-	public Branch(int id, String branchName, Blob carPark) {
+	public Branch(int id, String branchName, BranchPark carPark) {
 		super();
 		this.id = id;
 		this.branchName = branchName;
@@ -32,11 +31,13 @@ public class Branch implements Serializable {
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
 	}
-	public Blob getCarPark() {
+	public BranchPark getCarPark() {
 		return carPark;
 	}
-	public void setCarPark(Blob carPark) {
+	public void setCarPark(BranchPark carPark) {
 		this.carPark = carPark;
 	}
-
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 }
