@@ -124,7 +124,6 @@ public class SQLServer extends AbstractServer
 		statement.executeUpdate();
 	}
 
-
 	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
 		CasualCustomer customer = (CasualCustomer) clientRequest.getObjectAtIndex(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeCasualCustomer);
@@ -137,7 +136,6 @@ public class SQLServer extends AbstractServer
 		statement.setTimestamp(5, arrivingDate);
 		statement.executeUpdate();
 	}
-
 
 	private void writeMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
 		MonthlySubscription monthlySubscription = (MonthlySubscription) clientRequest.getObjects().get(0);
