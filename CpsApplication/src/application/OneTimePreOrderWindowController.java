@@ -62,15 +62,15 @@ public class OneTimePreOrderWindowController implements Initializable{
 	@FXML // fx:id="cb_Branch"
 	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
 
-//	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch, CpsGlobals.telAvivBranch);
+	//	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch, CpsGlobals.telAvivBranch);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
-            sqlClient.sendTokenRequest();
-            int requestToken = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.sendTokenRequest();
+			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.sendBranchListRequest(requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			for(Object obj : serverResponse.get().getObjects()) {
@@ -104,17 +104,16 @@ public class OneTimePreOrderWindowController implements Initializable{
 					Integer.parseInt(carNumber), email, Integer.parseInt(id), 
 					leavingDateTime, branchName);
 			SqlClient sqlClient = SqlClient.getInstance();
-            sqlClient.sendTokenRequest();
-            int requestToken = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.sendTokenRequest();
+			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addPreOrderCustomer(preOrderCustomer,requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			ServiceMethods.alertFeedback(serverResponse,event);
 
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
 		}
-
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
 	}
 
 	@FXML  
