@@ -3,7 +3,11 @@ package server;
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,6 +20,7 @@ import actors.MonthlySubscription;
 import client.ClientRequest;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
+import entity.Branch;
 import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -85,6 +90,7 @@ public class SQLServer extends AbstractServer
 				e.printStackTrace();
 			}
 			break;
+			
 		case employeeAuthentication:
 			try {
 				boolean result = employeeAuthentication(clientRequest,serverConnection);
@@ -98,6 +104,7 @@ public class SQLServer extends AbstractServer
 				e.printStackTrace();
 			}	
 			break;
+			
 		case monthlySubscription:
 			try {
 				writeMonthlySubscription(clientRequest,serverConnection);
@@ -106,6 +113,7 @@ public class SQLServer extends AbstractServer
 				e.printStackTrace();
 			}
 			break;
+			
 		case renewMonthlySubscription:
 			try {
 				writeRenewMonthlySubscription(clientRequest,serverConnection);
@@ -113,7 +121,20 @@ public class SQLServer extends AbstractServer
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			break;
+			break;	
+			
+		case createNewBranch:
+			try {
+				writeNewBranch(clientRequest, serverConnection);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;	
+			
 		 default:
 			break;
 		}
@@ -196,6 +217,20 @@ public class SQLServer extends AbstractServer
 		} else {
 			throw new SQLException("Error: row was not found");
 		}
+	}
+	
+	private void writeNewBranch(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException {
+		Branch branch = (Branch) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeNewBranch);
+		statement.setInt(1,branch.getId());
+		statement.setString(2,branch.getBranchName());
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    ObjectOutputStream oos = new ObjectOutputStream(baos);
+	    oos.writeObject(branch.getCarPark());
+	    byte[] carParkAsBytes = baos.toByteArray();
+	    ByteArrayInputStream bais = new ByteArrayInputStream(carParkAsBytes);
+		statement.setBinaryStream(3, bais, carParkAsBytes.length);
+		statement.executeUpdate();
 	}
 
 

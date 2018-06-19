@@ -1,8 +1,14 @@
 package parkingLogic;
 
+import java.io.Serializable;
+
 import common.CpsGlobals.parkingState;
 
-public class BranchParkState {
+public class BranchParkState implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	parkingState[][] floorOne;
 	parkingState[][] floorTwo;
 	parkingState[][] floorThree;

@@ -25,7 +25,7 @@ public class CpsGlobals {
 
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
-		renewMonthlySubscription, employeeAuthentication};
+		renewMonthlySubscription, employeeAuthentication, createNewBranch};
 
 		//Sql commands
 		public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -42,6 +42,9 @@ public class CpsGlobals {
 		public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
 				+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
 				+ "MonthlySubscription_StartTime) VALUES (?, ?, ?)";
+		
+		public static final String writeNewBranch = "INSERT INTO Branch("
+				+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";
 
 		public static final String writeRenewMonthlySubscription = "REPLACE INTO MonthlySubscription("
 				+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
@@ -58,15 +61,20 @@ public class CpsGlobals {
 		public static final String oneTimePreOrderTitle = "One time pre order parking";
 		public static final String casualOrderWindowTitle = "Casual customer parking order";
 		public static final String loginWindowTitle = "CPS Login";
+		public static final String CreateNewBranchWindowTitle = "Create new branch";
 
 
 		//exception messages 
 		public static final String emptyString = "";
 		public static final String emptyId = "Error: Enter your id";
+		public static final String emptyBranchId = "Error: Enter Branch id";
 		public static final String notValidId = "Error: Id is not valid";
+		public static final String notValidBranchId = "Error: Id is not valid";
+		public static final String notValidWidth = "Error: Width is not valid";
 		public static final String emptyEmail = "Error: Enter your email";
 		public static final String notValidEmail = "Error: Email is not valid";
 		public static final String emptyBranchName = "Error: Select branch name";
+		public static final String emptyWidth = "Error: Select width";
 		public static final String leavingBeforeArrivig = "Error: Leaving time before arriving time";
 		public static final String invalidDate = "Error: Time is not valid";
 		public static final String notValidCarNumber = "Error: Car number is not valid";

@@ -1,10 +1,15 @@
 package parkingLogic;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import common.CpsGlobals.parkingState;
 
-public class ParkingFloor {
+public class ParkingFloor implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private CarPark[][] parkingFloor;
 	private int rows = 3; 
 	private int columns;

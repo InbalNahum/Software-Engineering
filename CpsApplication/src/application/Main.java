@@ -16,14 +16,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 	    // constructing our scene
-	    URL url = getClass().getResource("LoginWindow.fxml");
+	    URL url = getClass().getResource("CreateNewBranchWindow.fxml");
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    
 	    // setting the stage
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
-	    primaryStage.setTitle( CpsGlobals.loginWindowTitle );
+	    primaryStage.setTitle( CpsGlobals.CreateNewBranchWindowTitle);
 	    primaryStage.show();
 	}
 	

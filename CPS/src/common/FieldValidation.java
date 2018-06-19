@@ -70,4 +70,39 @@ public class FieldValidation {
 			throw new Exception(CpsGlobals.emptyCalander);
 		}
 	}
+	
+	public static void nameValidation(String name) throws Exception {
+
+		if(name.equals(CpsGlobals.emptyString)) {
+			throw new Exception(CpsGlobals.emptyBranchName); 
+		}
+	}
+	
+	public static void widthValidation(String width) throws Exception {
+
+		if(width.equals(CpsGlobals.emptyString)) {
+			throw new Exception(CpsGlobals.emptyWidth); 
+		}
+		
+		String regex = "^([0-9])+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(width);
+
+		if(!matcher.matches())
+			throw new Exception(CpsGlobals.notValidWidth); 
+	}
+	
+	public static void branchIdValidation(String id) throws Exception {
+		
+		if(id.equals(CpsGlobals.emptyString)) {
+			throw new Exception(CpsGlobals.emptyBranchId); 
+		}
+
+		String regex = "^([0-9])+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(id);
+
+		if(!matcher.matches())
+			throw new Exception(CpsGlobals.notValidBranchId); 
+	}
 }

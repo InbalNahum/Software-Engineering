@@ -1,12 +1,17 @@
 package parkingLogic;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import common.CpsGlobals.parkingState;
 
-public class BranchPark {
+public class BranchPark implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ParkingFloor[] park;
 	private int numOfFloors = 3;
 	private Map<Integer, Location> carPlacement;

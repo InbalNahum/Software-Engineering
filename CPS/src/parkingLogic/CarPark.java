@@ -1,8 +1,14 @@
 package parkingLogic;
 
+import java.io.Serializable;
+
 import common.CpsGlobals.parkingState;
 
-public class CarPark {
+public class CarPark implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private parkingState state;
 	private Car car = null;
 
