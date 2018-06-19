@@ -36,7 +36,7 @@ public class CpsGlobals {
 
 		public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
 				+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
-				+ "MonthlySubscription_StartTime) VALUES (?, ?, ?)";
+				+ "MonthlySubscription_StartTime, CustomerAccount) VALUES (?, ?, ?, ?)";
 		
 		public static final String writeNewBranch = "INSERT INTO Branch("
 				+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";

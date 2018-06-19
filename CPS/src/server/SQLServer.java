@@ -46,8 +46,7 @@ public class SQLServer extends AbstractServer
 		super(port);
 	}
 
-	public void handleMessageFromClient
-	(Object object, ConnectionToClient client)
+	public void handleMessageFromClient(Object object, ConnectionToClient client)
 	{
 		Connection serverConnection = getSqlServerConnection();
 		ClientRequest clientRequest = (ClientRequest) object;
@@ -153,6 +152,7 @@ public class SQLServer extends AbstractServer
 		statement.setInt(2, monthlySubscription.getCarNumber());
 		Timestamp startingDate = new Timestamp(monthlySubscription.getStartingTime().getTime());
 		statement.setTimestamp(3, startingDate);
+		statement.setInt(4, 0);
 		statement.executeUpdate();
 	}
 
