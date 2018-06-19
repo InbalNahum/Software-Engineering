@@ -84,7 +84,7 @@ public class FieldValidation {
 			throw new Exception(CpsGlobals.emptyWidth); 
 		}
 		
-		String regex = "^([0-9])+$";
+		String regex = "^([4-8])+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(width);
 
