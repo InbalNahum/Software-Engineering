@@ -88,8 +88,8 @@ public class OneTimePreOrderWindowController implements Initializable{
 					Integer.parseInt(carNumber), email, Integer.parseInt(id), 
 					leavingDateTime, branchName);
 			SqlClient sqlClient = SqlClient.getInstance();
-			TokenProvider tokenProvider = new TokenProvider();
-			int requestToken = tokenProvider.getCommunicateToken();
+            sqlClient.sendTokenRequest();
+            int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addPreOrderCustomer(preOrderCustomer,requestToken);
 
 		}catch (Exception e) {

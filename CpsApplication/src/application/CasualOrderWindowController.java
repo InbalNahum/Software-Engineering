@@ -64,8 +64,8 @@ public class CasualOrderWindowController {
 		CasualCustomer casualCustomer = new CasualCustomer(arrivingDateTime,
 				Integer.parseInt(carNumber),email, Integer.parseInt(id),leavingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			TokenProvider tokenProvider = new TokenProvider();
-			int requestToken = tokenProvider.getCommunicateToken();
+            sqlClient.sendTokenRequest();
+            int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addCasualCustomer(casualCustomer,requestToken);
 	}catch(Exception e) {
 		ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());

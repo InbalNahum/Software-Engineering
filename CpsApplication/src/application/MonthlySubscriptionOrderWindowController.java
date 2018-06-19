@@ -61,8 +61,8 @@ public class MonthlySubscriptionOrderWindowController {
 			FieldValidation.dateValidation(startingDateTime);
 			MonthlySubscription monthlySubscription = new MonthlySubscription(Integer.parseInt(id), Integer.parseInt(carNumber), startingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			TokenProvider tokenProvider = new TokenProvider();
-			int requestToken = tokenProvider.getCommunicateToken();
+            sqlClient.sendTokenRequest();
+            int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addMonthlySubscription(monthlySubscription,requestToken);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());

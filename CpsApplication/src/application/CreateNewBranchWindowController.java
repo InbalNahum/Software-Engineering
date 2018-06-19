@@ -54,8 +54,8 @@ public class CreateNewBranchWindowController {
     		int columns[] = {firstWidth, secondWidth, thirdWidth};
     		Branch branch = new Branch(id,name, new BranchPark(columns));
     		SqlClient sqlClient = SqlClient.getInstance();
-			TokenProvider tokenProvider = new TokenProvider();
-			int requestToken = tokenProvider.getCommunicateToken();
+            sqlClient.sendTokenRequest();
+            int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addBranch(branch, requestToken);		
 		} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
