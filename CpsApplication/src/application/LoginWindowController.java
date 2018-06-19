@@ -68,7 +68,6 @@ public class LoginWindowController implements Initializable {
 			SqlClient sqlClient = SqlClient.getInstance();
 			TokenProvider tokenProvider = new TokenProvider();
 			int requestToken = tokenProvider.getCommunicateToken();
-			System.out.println(requestToken);
 			sqlClient.employeeAuthentication(userName,password,requestToken);
 			Optional<ServerResponse> serverResponse = waitToServerResponse(sqlClient,requestToken);
 			isAuth = (boolean) serverResponse.get().getObjectAtIndex(0);
