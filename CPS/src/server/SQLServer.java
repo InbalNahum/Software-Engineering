@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import actors.CasualCustomer;
-import actors.MonthlySubscription;
+import entity.MonthlySubscription;
 import client.ClientRequest;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
-import actors.MonthlySubscription;
+import entity.MonthlySubscription;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;

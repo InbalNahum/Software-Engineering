@@ -1,11 +1,7 @@
-/ClientConsole.class
-/SQLServer.class
+/common/
+/entity/
+/parkingLogic/
+/server/
+/token/
 /actors/
 /client/
-/common/
-/server/
-/entity/
-*.class
-
-/parkingLogic/
-/token/
