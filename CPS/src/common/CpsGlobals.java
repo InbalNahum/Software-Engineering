@@ -21,7 +21,9 @@ public class CpsGlobals {
 
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
-		renewMonthlySubscription, employeeAuthentication, createNewBranch, tokenRequest, createNewComplain};
+		renewMonthlySubscription, employeeAuthentication, createNewBranch, tokenRequest, createNewComplain
+		, branchListRequest,feedback};
+
 
 		//Sql commands
 		public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -57,7 +59,7 @@ public class CpsGlobals {
 		
 		public static final String fetchToken = "SELECT * FROM TokenHolder";
 		public static final String increaseToken = "UPDATE TokenHolder SET token=token+1";
-
+		public static final String getBranchList = "SELECT * FROM Branch";
 		//Branches
 		public static final String telHaiBranch = "Tel-Hai";
 		public static final String telAvivBranch = "Tel-Aviv";
@@ -71,20 +73,21 @@ public class CpsGlobals {
 
 		//exception messages 
 		public static final String emptyString = "";
-		public static final String emptyId = "Error: Enter your id";
-		public static final String emptyBranchId = "Error: Enter Branch id";
-		public static final String notValidId = "Error: Id is not valid";
-		public static final String notValidBranchId = "Error: Id is not valid";
-		public static final String notValidWidth = "Error: Width is not valid";
-		public static final String emptyEmail = "Error: Enter your email";
-		public static final String notValidEmail = "Error: Email is not valid";
-		public static final String emptyBranchName = "Error: Select branch name";
-		public static final String emptyWidth = "Error: Select width";
-		public static final String leavingBeforeArrivig = "Error: Leaving time before arriving time";
-		public static final String invalidDate = "Error: Time is not valid";
-		public static final String notValidCarNumber = "Error: Car number is not valid";
-		public static final String emptyCarNumber = "Error: Enter your car number";
-		public static final String emptyCalander = "Error: Select date and time";
+		public static final String emptyId = "Enter your id";
+		public static final String emptyBranchId = "Enter Branch id";
+		public static final String notValidId = "Id is not valid";
+		public static final String notValidBranchId = "Id is not valid";
+		public static final String notValidWidth = "Width is not valid";
+		public static final String emptyEmail = "Enter your email";
+		public static final String notValidEmail = "Email is not valid";
+		public static final String emptyBranchName = "Select branch name";
+		public static final String emptyWidth = "Select width";
+		public static final String leavingBeforeArrivig = "Leaving time before arriving time";
+		public static final String invalidDate = "Time is not valid";
+		public static final String notValidCarNumber = "Car number is not valid";
+		public static final String emptyCarNumber = "Enter your car number";
+		public static final String emptyCalander = "Select date and time";
+		public static final String serverIssue = "Server issues";
 
 		//dialog messages
 		public static final String errorDialogTitle = "Error Dialog";
@@ -102,5 +105,6 @@ public class CpsGlobals {
 		//operation indicators
 		public static final String operationSuccess = "operation success";
 		public static final String operationFailure = "operation failure";
+
 
 }

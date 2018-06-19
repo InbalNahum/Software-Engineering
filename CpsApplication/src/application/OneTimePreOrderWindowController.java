@@ -4,10 +4,12 @@
 
 package application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import client.SqlClient;
 import common.CpsGlobals;
@@ -26,6 +28,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
+import server.ServerResponse;
 
 public class OneTimePreOrderWindowController implements Initializable{
 
@@ -59,10 +62,24 @@ public class OneTimePreOrderWindowController implements Initializable{
 	@FXML // fx:id="cb_Branch"
 	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
 
-	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch, CpsGlobals.telAvivBranch);
+//	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch, CpsGlobals.telAvivBranch);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+		try {
+			SqlClient sqlClient = SqlClient.getInstance();
+            sqlClient.sendTokenRequest();
+            int requestToken = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.sendBranchListRequest(requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			for(Object obj : serverResponse.get().getObjects()) {
+				String branchName = (String) obj;
+				comboBoxList.add(branchName);
+			}
+		} catch (IOException | InterruptedException e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);
+		}
 		cb_Branch.setItems(comboBoxList);
 	}
 

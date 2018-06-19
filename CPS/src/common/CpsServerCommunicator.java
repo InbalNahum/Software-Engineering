@@ -3,9 +3,9 @@ package common;
 import java.util.Optional;
 
 import actors.CasualCustomer;
-import entity.MonthlySubscription;
 import entity.Branch;
 import entity.CustomerComplaint;
+import entity.MonthlySubscription;
 import entity.PreOrderCustomer;
 
 public interface CpsServerCommunicator {
@@ -19,4 +19,6 @@ public interface CpsServerCommunicator {
 	public void renewMonthlySubscription(MonthlySubscription monthlySubscription, int token);
 	public void addBranch(Branch branch,int token);
 	public void addComplain(CustomerComplaint branch,int token);
+	public void sendBranchListRequest(int requestToken);
+
 }

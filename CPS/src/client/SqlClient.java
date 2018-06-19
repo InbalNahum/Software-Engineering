@@ -19,6 +19,7 @@ import common.CpsServerCommunicator;
 import entity.Branch;
 import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
+import javafx.collections.ObservableList;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
 
@@ -177,6 +178,13 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setServerOperation(ServerOperation.createNewComplain);
 		clientRequest.addTolist(customerComplaint);
 		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	@Override
+	public void sendBranchListRequest(int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setCommunicateToken(requestToken);
+		clientRequest.setServerOperation(ServerOperation.branchListRequest);
 		handleMessageFromGuiClient(clientRequest);
 	}
 }
