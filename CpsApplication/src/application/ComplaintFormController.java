@@ -1,6 +1,8 @@
 package application;
 
 import java.util.Date;
+import java.util.Optional;
+
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -14,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import server.ServerResponse;
 
 public class ComplaintFormController {
 
@@ -57,14 +60,13 @@ public class ComplaintFormController {
 			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addComplain(customerComplaint,requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			ServiceMethods.alertFeedback(serverResponse,event);
 
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
 		}
-
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
 	}
 
 	@FXML
