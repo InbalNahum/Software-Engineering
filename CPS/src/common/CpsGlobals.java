@@ -1,10 +1,11 @@
 package common;
 
 public class CpsGlobals {
-	
+
 	//Files paths
 	public static final String tokenFile = "tokenHolder.txt";
-	
+	public static final String tokenName = "token";
+
 	//Icons Paths
 	public static final String cpsIconPath = "cps-icon.png";
 
@@ -20,7 +21,7 @@ public class CpsGlobals {
 
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
-		renewMonthlySubscription, employeeAuthentication, createNewBranch};
+		renewMonthlySubscription, employeeAuthentication, createNewBranch, tokenRequest};
 
 		//Sql commands
 		public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -37,7 +38,7 @@ public class CpsGlobals {
 		public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
 				+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
 				+ "MonthlySubscription_StartTime) VALUES (?, ?, ?)";
-		
+
 		public static final String writeNewBranch = "INSERT INTO Branch("
 				+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";
 
@@ -47,6 +48,9 @@ public class CpsGlobals {
 
 		public static final String readRenewMonthlySubscription = "SELECT * FROM MonthlySubscription"
 				+ " WHERE MonthlySubscription_ID = ?";
+		
+		public static final String fetchToken = "SELECT * FROM TokenHolder";
+		public static final String increaseToken = "UPDATE TokenHolder SET token=token+1";
 
 		//Branches
 		public static final String telHaiBranch = "Tel-Hai";
@@ -86,13 +90,11 @@ public class CpsGlobals {
 		//column names
 		public static final String employeePassword = "Employee_Password";
 
-
-
 		//parkingStatus
 		public static enum parkingState{available, unAvailable, outOfOrder,anoutOfOrder};	
 
 		//operation indicators
 		public static final String operationSuccess = "operation success";
 		public static final String operationFailure = "operation failure";
-        
+
 }
