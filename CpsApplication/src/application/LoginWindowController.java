@@ -66,9 +66,8 @@ public class LoginWindowController implements Initializable {
 		boolean isAuth = false;
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
-			TokenProvider tokenProvider = new TokenProvider();
-			int requestToken = tokenProvider.getCommunicateToken();
-			System.out.println(requestToken);
+            sqlClient.sendTokenRequest();
+            int requestToken = waitForServerToken(sqlClient);
 			sqlClient.employeeAuthentication(userName,password,requestToken);
 			Optional<ServerResponse> serverResponse = waitToServerResponse(sqlClient,requestToken);
 			isAuth = (boolean) serverResponse.get().getObjectAtIndex(0);
@@ -87,6 +86,15 @@ public class LoginWindowController implements Initializable {
 			toRet = sqlClient.getResponseByToken(requestToken);
 		} while (!toRet.isPresent());
 		return toRet;
+	}
+	
+	private int waitForServerToken(SqlClient sqlClient) throws InterruptedException {
+		Optional<Integer> toRet;
+		
+		do {
+			toRet = sqlClient.fetchToken();
+		} while (!toRet.isPresent());
+		return toRet.get();
 	}
 
 	@FXML
