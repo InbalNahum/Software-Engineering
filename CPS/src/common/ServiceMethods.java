@@ -46,7 +46,7 @@ public class ServiceMethods {
 		String result = (String)serverResponse.get().getObjectAtIndex(0);
 		if(result.equals(CpsGlobals.operationSuccess)) {
 			((Stage)(((Button)event.getSource()).getScene().getWindow())).close();	
-			ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
+			ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.operationSuccess);
 		}
 		else {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.operationFailure);

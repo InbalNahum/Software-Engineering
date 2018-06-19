@@ -103,8 +103,8 @@ public class CpsGlobals {
 		public static enum parkingState{available, unAvailable, outOfOrder,anoutOfOrder};	
 
 		//operation indicators
-		public static final String operationSuccess = "operation success";
-		public static final String operationFailure = "operation failure";
+		public static final String operationSuccess = "Operation done successfully";
+		public static final String operationFailure = "Operation failure";
 
 
 }
