@@ -20,6 +20,7 @@ import client.ClientRequest;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import entity.Branch;
+import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -88,7 +89,12 @@ public class SQLServer extends AbstractServer
 				writeNewBranch(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),
 						client);
-				break;	
+				break;
+			case createNewComplain:
+				writeNewComplain(clientRequest,serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),
+						client);
+				break;
 			default:
 				break;
 			}
@@ -102,6 +108,20 @@ public class SQLServer extends AbstractServer
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	private void writeNewComplain(ClientRequest clientRequest, Connection serverConnection) throws SQLException{
+		CustomerComplaint customerComplaint = (CustomerComplaint) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeNewComplain);
+		statement.setInt(1,customerComplaint.getCarNumber());
+		statement.setInt(2,customerComplaint.getUserId());
+		statement.setString(3,customerComplaint.getFirstName());
+		statement.setString(4,customerComplaint.getLastName());
+		statement.setString(5,customerComplaint.getDescription());
+		Timestamp arrivingDate = new Timestamp(customerComplaint.getSendTime().getTime());
+		statement.setTimestamp(6,arrivingDate);
+		statement.setInt(7, customerComplaint.getStatus().ordinal());
+		statement.executeUpdate();		
 	}
 
 	private ServerResponse getNextToken(Connection serverConnection) throws SQLException {

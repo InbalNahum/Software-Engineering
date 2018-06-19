@@ -21,7 +21,7 @@ public class CpsGlobals {
 
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
-		renewMonthlySubscription, employeeAuthentication, createNewBranch, tokenRequest};
+		renewMonthlySubscription, employeeAuthentication, createNewBranch, tokenRequest, createNewComplain};
 
 		//Sql commands
 		public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -42,6 +42,11 @@ public class CpsGlobals {
 
 		public static final String writeNewBranch = "INSERT INTO Branch("
 				+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";
+		
+		public static final String writeNewComplain = "INSERT INTO CustomerComplaint("
+				+ "ComplainCarNumber, ComplainUserId, ComplainFirstName,"
+				+ "ComplainLastName, ComplainDescription, "
+				+ "CustomerComplaint_CreateTime, CustomerComplaint_Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 		public static final String writeRenewMonthlySubscription = "REPLACE INTO MonthlySubscription("
 				+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "

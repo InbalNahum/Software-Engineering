@@ -12,43 +12,86 @@ public class CustomerComplaint implements Serializable {
 	
 	public enum Status{opened,closed};
 	
-	private int id;
-	private String body;
-	private Date createTime;
+	private String firstName;
+	private String lastName;
+	private int userId;
+	private int carNumber;
+	private String Description;
+	private Date sendTime;
 	private Status status;
+	private String email;
 	
-	public CustomerComplaint() {}
-	
-	public CustomerComplaint(int id, String body, Date createTime, Status status) {
+	public CustomerComplaint(String firstName, String lastName, int userId, int carNumber,
+							String Description, Date sendTime, String email) {
 		super();
-		this.id = id;
-		this.body = body;
-		this.createTime = createTime;
-		this.status = status;
+		this.firstName =  firstName;
+		this.lastName = lastName;
+		this.userId = userId;
+		this.carNumber = carNumber;
+		this.Description = Description;
+		this.sendTime = sendTime;
+		this.status = Status.opened;
 	}
-	public int getId() {
-		return id;
+
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setId(int id) {
-		this.id = id;
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public String getBody() {
-		return body;
+
+	public String getLastName() {
+		return lastName;
 	}
-	public void setBody(String body) {
-		this.body = body;
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
-	public Date getCreateTime() {
-		return createTime;
+
+	public int getUserId() {
+		return userId;
 	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
+
+	public int getCarNumber() {
+		return carNumber;
+	}
+
+	public void setCarNumber(int carNumber) {
+		this.carNumber = carNumber;
+	}
+
+	public String getDescription() {
+		return Description;
+	}
+
+	public void setDescription(String description) {
+		Description = description;
+	}
+
+	public Date getSendTime() {
+		return sendTime;
+	}
+
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
+	}
+
 	public Status getStatus() {
 		return status;
 	}
+
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 
 }
