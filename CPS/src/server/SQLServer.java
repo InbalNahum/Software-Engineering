@@ -50,9 +50,13 @@ public class SQLServer extends AbstractServer
 	{
 		Connection serverConnection = getSqlServerConnection();
 		ClientRequest clientRequest = (ClientRequest) object;
-
+		ServerResponse serverResponse = new ServerResponse();
 		try {
 			switch(clientRequest.getServerOperation()) {
+			case tokenRequest:
+				serverResponse = getNextToken(serverConnection);
+				client.sendToClient(serverResponse);
+				break;
 			case writeCasualCustomer:
 				writeCasualCustomer(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),
@@ -65,7 +69,6 @@ public class SQLServer extends AbstractServer
 				break;
 			case employeeAuthentication:
 				boolean result = employeeAuthentication(clientRequest,serverConnection);
-				ServerResponse serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
 				serverResponse.addTolist(result);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
@@ -99,6 +102,21 @@ public class SQLServer extends AbstractServer
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	private ServerResponse getNextToken(Connection serverConnection) throws SQLException {
+		PreparedStatement queryStatement = serverConnection.prepareStatement(CpsGlobals.fetchToken);
+		ResultSet result = queryStatement.executeQuery();
+		int tokenToRet = -1;
+		if(result.next()) {
+			tokenToRet = result.getInt(CpsGlobals.tokenName);
+		}
+		PreparedStatement updateStatement = serverConnection.prepareStatement(CpsGlobals.increaseToken);
+		updateStatement.executeUpdate();
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setServerOperation(ServerOperation.tokenRequest);
+		serverResponse.addTolist(tokenToRet);
+		return serverResponse;
 	}
 
 	private boolean employeeAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
