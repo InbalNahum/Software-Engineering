@@ -12,7 +12,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import parkingLogic.BranchPark;
-import token.TokenProvider;
 
 public class CreateNewBranchWindowController {
 

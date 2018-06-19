@@ -19,7 +19,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
-import token.TokenProvider;
 
 public class MonthlySubscriptionOrderWindowController {
 

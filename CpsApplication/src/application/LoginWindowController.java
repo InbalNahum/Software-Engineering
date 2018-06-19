@@ -22,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
-import token.TokenProvider;
 
 public class LoginWindowController implements Initializable {
 

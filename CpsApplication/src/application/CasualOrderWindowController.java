@@ -20,7 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
-import token.TokenProvider;
 
 public class CasualOrderWindowController {
 
