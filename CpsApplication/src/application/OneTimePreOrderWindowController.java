@@ -4,10 +4,12 @@
 
 package application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import client.SqlClient;
 import common.CpsGlobals;
@@ -26,6 +28,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
+import server.ServerResponse;
 
 public class OneTimePreOrderWindowController implements Initializable{
 
@@ -64,6 +67,20 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+		try {
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
+			int requestToken = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.sendBranchListRequest(requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			for(Object obj : serverResponse.get().getObjects()) {
+				String branchName = (String) obj;
+				comboBoxList.add(branchName);
+			}
+		} catch (IOException | InterruptedException e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);
+		}
 		cb_Branch.setItems(comboBoxList);
 	}
 
@@ -88,16 +105,16 @@ public class OneTimePreOrderWindowController implements Initializable{
 					Integer.parseInt(carNumber), email, Integer.parseInt(id), 
 					leavingDateTime, branchName);
 			SqlClient sqlClient = SqlClient.getInstance();
-			int requestToken = CpsGlobals.getNextToken();
+			sqlClient.sendTokenRequest();
+			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addPreOrderCustomer(preOrderCustomer,requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			ServiceMethods.alertFeedback(serverResponse,event);
 
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
 		}
-
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
 	}
 
 	@FXML  

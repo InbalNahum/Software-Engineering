@@ -3,7 +3,9 @@ package application;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import actors.MonthlySubscription;
+import java.util.Optional;
+
+import entity.MonthlySubscription;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -18,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
+import server.ServerResponse;
 
 public class RenewMonthlySubscriptionWindowController {
 
@@ -59,15 +62,16 @@ public class RenewMonthlySubscriptionWindowController {
 			FieldValidation.dateValidation(startingDateTime);
 			MonthlySubscription monthlySubscription = new MonthlySubscription(Integer.parseInt(id), Integer.parseInt(carNumber), startingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			int requestToken = CpsGlobals.getNextToken();
+            sqlClient.sendTokenRequest();
+            int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.renewMonthlySubscription(monthlySubscription,requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			ServiceMethods.alertFeedback(serverResponse,event);
+			
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
 		}
-    	
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();	
-		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
     }
     
 	private void isValidInput() throws Exception {

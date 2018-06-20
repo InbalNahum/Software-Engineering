@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import client.SqlClient;
 import common.CpsGlobals;
+import common.FieldValidation;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +45,9 @@ public class LoginWindowController implements Initializable {
 	void sigIn_click(ActionEvent event) {
 		String userName = tf_UserName.getText();
 		String password = tf_password.getText();
+
 		try {
+			FieldValidation.idValidation(userName);
 			if(employeeAuthentication(userName,password)) {
                //TODO - ydanan move to the employee operations window
 			}
@@ -53,6 +56,8 @@ public class LoginWindowController implements Initializable {
  			}
 		} catch (InterruptedException e) {
            ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.somethingGoWrone);
+		} catch (Exception e) {
+	           ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.notValidId);
 		}
 	}
 
@@ -60,9 +65,11 @@ public class LoginWindowController implements Initializable {
 		boolean isAuth = false;
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
-			int requestToken = CpsGlobals.getNextToken();
+            sqlClient.sendTokenRequest();
+            int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.employeeAuthentication(userName,password,requestToken);
 			Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
+
 			isAuth = (boolean) serverResponse.get().getObjectAtIndex(0);
 		} catch (IOException e) {
 			isAuth = false;
@@ -71,10 +78,8 @@ public class LoginWindowController implements Initializable {
 		return isAuth;
 	}
 
-
 	@FXML
 	void cancel_click(ActionEvent event) {
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 	}
-
 }

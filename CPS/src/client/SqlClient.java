@@ -7,16 +7,17 @@ package client;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import actors.CasualCustomer;
-import actors.MonthlySubscription;
+import entity.MonthlySubscription;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import common.CpsServerCommunicator;
 import entity.Branch;
 import entity.BranchStateRequest;
+import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
@@ -26,6 +27,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	private static SqlClient instance = null;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	Map<Integer,ServerResponse> responseMap = new HashMap();
+	List<Integer> freeTokenList = new ArrayList<Integer>();
 
 	public static SqlClient getInstance() throws IOException {
 		if(instance == null) {
@@ -44,7 +46,13 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	public void handleMessageFromServer(Object msg) 
 	{
 		ServerResponse serverResponse = (ServerResponse) msg;
-		responseMap.put(serverResponse.getCommunicateToken(), serverResponse);
+		if(serverResponse.getServerOperation().equals(ServerOperation.tokenRequest)) {
+			int toAdd = (int) serverResponse.getObjectAtIndex(0);
+			freeTokenList.add(toAdd);
+		}
+		else {			
+			responseMap.put(serverResponse.getCommunicateToken(), serverResponse);
+		}
 	}
 
 
@@ -69,12 +77,13 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		catch(IOException e) {}
 		System.exit(0);
 	}
-	
+
 	public Optional<ServerResponse> getResponseByToken(int token) {
 		Optional<ServerResponse> toRet;
 		synchronized (this) {
 			if(responseMap.containsKey(token)) {
 				toRet = Optional.ofNullable(responseMap.get(token));
+				responseMap.remove(token);
 			}
 			else {
 				toRet = Optional.empty();
@@ -82,7 +91,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		}
 		return toRet;
 	}
-	
+
 	@Override
 	public void addCasualCustomer(CasualCustomer casualCustomer, int token) {
 		ClientRequest clientRequest = new ClientRequest();
@@ -130,7 +139,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
-	
+
 	@Override
 	public void renewMonthlySubscription(MonthlySubscription monthlySubscription,int token) {
 		ClientRequest clientRequest = new ClientRequest();
@@ -139,13 +148,51 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
-	
+
 	@Override
 	public void addBranch(Branch branch,int token) {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.createNewBranch);
 		clientRequest.addTolist(branch);
 		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
+	@Override
+	public void sendTokenRequest() {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.tokenRequest);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
+	@Override
+	public Optional<Integer> fetchToken() {
+		Optional<Integer> toRet;
+		synchronized (this) {
+			if(freeTokenList.isEmpty()) {
+				toRet = Optional.empty();
+			}
+			else {
+				toRet = Optional.ofNullable(freeTokenList.get(0));
+				freeTokenList.remove(0);
+			}
+		}
+		return toRet;
+	}
+
+	@Override
+	public void addComplain(CustomerComplaint customerComplaint, int token) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.createNewComplain);
+		clientRequest.addTolist(customerComplaint);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	@Override
+	public void sendBranchListRequest(int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setCommunicateToken(requestToken);
+		clientRequest.setServerOperation(ServerOperation.branchListRequest);
 		handleMessageFromGuiClient(clientRequest);
 	}
 }

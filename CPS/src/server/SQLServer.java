@@ -8,21 +8,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
 import actors.CasualCustomer;
-import actors.MonthlySubscription;
+import entity.MonthlySubscription;
 import client.ClientRequest;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import entity.Branch;
 import entity.BranchStateRequest;
+import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -42,107 +41,80 @@ import parkingLogic.BranchParkState;
  */
 public class SQLServer extends AbstractServer 
 {
-	//Class variables *************************************************
 
-	/**
-	 * The default port to listen on.
-	 */
 	final public static int DEFAULT_PORT = 5555;
 
-	//Constructors ****************************************************
 
-	/**
-	 * Constructs an instance of the echo server.
-	 *
-	 * @param port The port number to connect on.
-	 */
 	public SQLServer(int port) 
 	{
 		super(port);
 	}
 
-
-	//Instance methods ************************************************
-
-	/**
-	 * This method handles any messages received from the client.
-	 *
-	 * @param object The message received from the client.
-	 * @param client The connection from which the message originated.
-	 */
-	public void handleMessageFromClient
-	(Object object, ConnectionToClient client)
+	public void handleMessageFromClient(Object object, ConnectionToClient client)
 	{
 		Connection serverConnection = getSqlServerConnection();
 		ClientRequest clientRequest = (ClientRequest) object;
-
-		switch(clientRequest.getServerOperation()) {
-		case writeCasualCustomer:
-			try {
-				writeCasualCustomer(clientRequest,serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-
-		case writeOneTimePreOrder:
-			try {
-				writeOneTimePreOrder(clientRequest,serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-			
-		case employeeAuthentication:
-			try {
-				boolean result = employeeAuthentication(clientRequest,serverConnection);
-				ServerResponse serverResponse = new ServerResponse();
-				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
-				serverResponse.addTolist(result);
-				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+		ServerResponse serverResponse = new ServerResponse();
+		try {
+			switch(clientRequest.getServerOperation()) {
+			case branchListRequest:
+				serverResponse = getBranchList(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
-			} catch (SQLException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			break;
+				break;
+				
+			case tokenRequest:
+				serverResponse = getNextToken(serverConnection);
+				client.sendToClient(serverResponse);
+				break;
+				
+			case writeCasualCustomer:
+				writeCasualCustomer(clientRequest,serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),
+						client);
+				break;
+				
+			case writeOneTimePreOrder:
+				writeOneTimePreOrder(clientRequest,serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;
+				
+			case employeeAuthentication:
+				try {		     
+					boolean result = employeeAuthentication(clientRequest,serverConnection);
+					serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+					serverResponse.addTolist(result);
+					serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+					client.sendToClient(serverResponse);
+				} catch (SQLException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				break;
 			
-		case monthlySubscription:
-			try {
+			case monthlySubscription:
 				writeMonthlySubscription(clientRequest,serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-			
-		case renewMonthlySubscription:
-			try {
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;
+				
+			case renewMonthlySubscription:
 				writeRenewMonthlySubscription(clientRequest,serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;	
-			
-		case createNewBranch:
-			try {
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;
+			case createNewBranch:
+				
 				writeNewBranch(clientRequest, serverConnection);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;	
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;
+				
+			case createNewComplain:
+				writeNewComplain(clientRequest,serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;
 			
 		case getBranchState:
 			try {
 				BranchParkState State = readBranchState(clientRequest, serverConnection);
-				ServerResponse serverResponse = new ServerResponse();
+				serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.getBranchState);
 				serverResponse.addTolist(State);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
@@ -151,19 +123,59 @@ public class SQLServer extends AbstractServer
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
-			break;	
-			
-		 default:
 			break;
+			
+			default:
+				break;
+			}		
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * @param clientRequest
-	 * @param serverConnection
-	 * @return
-	 * @throws SQLException
-	 */
+	
+	private void writeNewComplain(ClientRequest clientRequest, Connection serverConnection) throws SQLException{
+		CustomerComplaint customerComplaint = (CustomerComplaint) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeNewComplain);
+		statement.setInt(1,customerComplaint.getCarNumber());
+		statement.setInt(2,customerComplaint.getUserId());
+		statement.setString(3,customerComplaint.getFirstName());
+		statement.setString(4,customerComplaint.getLastName());
+		statement.setString(5,customerComplaint.getDescription());
+		Timestamp arrivingDate = new Timestamp(customerComplaint.getSendTime().getTime());
+		statement.setTimestamp(6,arrivingDate);
+		statement.setInt(7, customerComplaint.getStatus().ordinal());
+		statement.executeUpdate();	
+	}
+
+	private ServerResponse getBranchList(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
+		PreparedStatement queryStatement = serverConnection.prepareStatement(CpsGlobals.getBranchList);
+		ResultSet result = queryStatement.executeQuery();
+		ServerResponse serverResponse = new ServerResponse();
+		while(result.next()) {
+		String toAdd = result.getString(2);
+		serverResponse.addTolist(toAdd);
+		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+		}
+		serverResponse.setServerOperation(ServerOperation.branchListRequest);
+		return serverResponse;
+	}
+
+	private ServerResponse getNextToken(Connection serverConnection) throws SQLException {
+		PreparedStatement queryStatement = serverConnection.prepareStatement(CpsGlobals.fetchToken);
+		ResultSet result = queryStatement.executeQuery();
+		int tokenToRet = -1;
+		if(result.next()) {
+			tokenToRet = result.getInt(CpsGlobals.tokenName);
+		}
+		PreparedStatement updateStatement = serverConnection.prepareStatement(CpsGlobals.increaseToken);
+		updateStatement.executeUpdate();
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setServerOperation(ServerOperation.tokenRequest);
+		serverResponse.addTolist(tokenToRet);
+		return serverResponse;
+	}
+
 	private boolean employeeAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
 		boolean answer = false;
 		int id = (int) clientRequest.getObjectAtIndex(0);
@@ -195,7 +207,6 @@ public class SQLServer extends AbstractServer
 		statement.executeUpdate();
 	}
 
-
 	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
 		CasualCustomer customer = (CasualCustomer) clientRequest.getObjectAtIndex(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeCasualCustomer);
@@ -209,7 +220,6 @@ public class SQLServer extends AbstractServer
 		statement.executeUpdate();
 	}
 
-
 	private void writeMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
 		MonthlySubscription monthlySubscription = (MonthlySubscription) clientRequest.getObjects().get(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeMonthlySubscription);
@@ -217,6 +227,7 @@ public class SQLServer extends AbstractServer
 		statement.setInt(2, monthlySubscription.getCarNumber());
 		Timestamp startingDate = new Timestamp(monthlySubscription.getStartingTime().getTime());
 		statement.setTimestamp(3, startingDate);
+		statement.setInt(4, 0);
 		statement.executeUpdate();
 	}
 
@@ -231,6 +242,7 @@ public class SQLServer extends AbstractServer
 			writeStatement.setInt(2, monthlySubscription.getCarNumber());
 			Timestamp startingDate = new Timestamp(monthlySubscription.getStartingTime().getTime());
 			writeStatement.setTimestamp(3, startingDate);
+			writeStatement.setInt(4,0);
 			writeStatement.executeUpdate();						
 		} else {
 			throw new SQLException("Error: row was not found");
@@ -250,6 +262,7 @@ public class SQLServer extends AbstractServer
 		statement.setBinaryStream(3, bais, carParkAsBytes.length);
 		statement.executeUpdate();
 	}
+	
 	
 	private BranchParkState readBranchState(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		BranchStateRequest request = (BranchStateRequest) clientRequest.getObjects().get(0);
@@ -291,36 +304,37 @@ public class SQLServer extends AbstractServer
 		}
 	}
 
+	private void sendOperationSuccess(int requestToken,
+			ConnectionToClient client) throws IOException {
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setServerOperation(ServerOperation.feedback);
+		serverResponse.addTolist(CpsGlobals.operationSuccess);
+		serverResponse.setCommunicateToken(requestToken);
+		client.sendToClient(serverResponse);
+	}
 
-	/**
-	 * This method overrides the one in the superclass.  Called
-	 * when the server starts listening for connections.
-	 */
+	private void sendOperationFailure(int requestToken,ConnectionToClient client) throws IOException {
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setServerOperation(ServerOperation.feedback);
+		serverResponse.addTolist(CpsGlobals.operationFailure);
+		serverResponse.setCommunicateToken(requestToken);
+		client.sendToClient(serverResponse);
+	}
+
 	protected void serverStarted()
 	{
 		System.out.println
 		("Server listening for connections on port " + getPort());
 	}
 
-	/**
-	 * This method overrides the one in the superclass.  Called
-	 * when the server stops listening for connections.
-	 */
+
 	protected void serverStopped()
 	{
 		System.out.println
 		("Server has stopped listening for connections.");
 	}
 
-	//Class methods ***************************************************
 
-	/**
-	 * This method is responsible for the creation of 
-	 * the server instance (there is no UI in this phase).
-	 *
-	 * @param args[0] The port number to listen on.  Defaults to 5555 
-	 *          if no argument is entered.
-	 */
 	public static void main(String[] args) 
 	{
 		int port = 0; //Port to listen on

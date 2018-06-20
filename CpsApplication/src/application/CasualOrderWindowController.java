@@ -7,6 +7,8 @@ package application;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
+
 import actors.CasualCustomer;
 import client.SqlClient;
 import common.CpsGlobals;
@@ -20,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
+import server.ServerResponse;
 
 public class CasualOrderWindowController {
 
@@ -47,31 +50,32 @@ public class CasualOrderWindowController {
 	@FXML
 	void makeOrder_click(ActionEvent event) {
 
-	try {
-		isValidInput();
-		String id = tf_Id.getText();
-		String carNumber = tf_CarNumber.getText();
-		String email = tf_Email.getText();
-		
-		
-		LocalDate leavingDate = tf_LeavingDate.getValue();
-		Calendar leavingCalendar = tf_LeavingTime.getCalendar();
-		
-		Date arrivingDateTime = new Date();
-		Date leavingDateTime = ServiceMethods.convertToDateObject(leavingDate, leavingCalendar);
-	
-		CasualCustomer casualCustomer = new CasualCustomer(arrivingDateTime,
-				Integer.parseInt(carNumber),email, Integer.parseInt(id),leavingDateTime);
+		try {
+			isValidInput();
+			String id = tf_Id.getText();
+			String carNumber = tf_CarNumber.getText();
+			String email = tf_Email.getText();
+
+
+			LocalDate leavingDate = tf_LeavingDate.getValue();
+			Calendar leavingCalendar = tf_LeavingTime.getCalendar();
+
+			Date arrivingDateTime = new Date();
+			Date leavingDateTime = ServiceMethods.convertToDateObject(leavingDate, leavingCalendar);
+
+			CasualCustomer casualCustomer = new CasualCustomer(arrivingDateTime,
+					Integer.parseInt(carNumber),email, Integer.parseInt(id),leavingDateTime);
 			SqlClient sqlClient = SqlClient.getInstance();
-			int requestToken = CpsGlobals.getNextToken();
+			sqlClient.sendTokenRequest();
+			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addCasualCustomer(casualCustomer,requestToken);
-	}catch(Exception e) {
-		ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
-		return;
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			ServiceMethods.alertFeedback(serverResponse,event);
+		}catch(Exception e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
+			return;
+		}
 	}
-	((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-	ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.successMessage);
-}
 
 	@FXML
 	void cancel_click(ActionEvent event) {

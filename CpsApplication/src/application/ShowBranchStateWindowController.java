@@ -64,7 +64,8 @@ public class ShowBranchStateWindowController implements Initializable {
         	String name = cb_Branch.getValue();
         	BranchStateRequest request = new BranchStateRequest(name);
         	SqlClient sqlClient = SqlClient.getInstance();
-			int requestToken = CpsGlobals.getNextToken();
+        	sqlClient.sendTokenRequest();
+			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.getBranchState(request,requestToken);
 			Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
 			BranchParkState state = (BranchParkState) serverResponse.get().getObjectAtIndex(0);
