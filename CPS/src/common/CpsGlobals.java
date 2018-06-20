@@ -25,7 +25,7 @@ public class CpsGlobals {
 
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
-		renewMonthlySubscription, employeeAuthentication, createNewBranch};
+		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState};
 
 		//Sql commands
 		public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -52,16 +52,22 @@ public class CpsGlobals {
 
 		public static final String readRenewMonthlySubscription = "SELECT * FROM MonthlySubscription"
 				+ " WHERE MonthlySubscription_ID = ?";
+		
+		public static final String readBranch = "SELECT * FROM Branch"
+				+ " WHERE Branch_Name = ?";
 
 		//Branches
 		public static final String telHaiBranch = "Tel-Hai";
 		public static final String telAvivBranch = "Tel-Aviv";
+		public static final String tiberiasBranch = "Tiberias";
+		public static final String qiryatShemonaBranch = "Qiryat Shemona";
 
 		//Windows Titles
 		public static final String oneTimePreOrderTitle = "One time pre order parking";
 		public static final String casualOrderWindowTitle = "Casual customer parking order";
 		public static final String loginWindowTitle = "CPS Login";
-		public static final String CreateNewBranchWindowTitle = "Create new branch";
+		public static final String createNewBranchWindowTitle = "Create new branch";
+		public static final String showBranchStateWindowTitle = "Show branch state";
 
 
 		//exception messages 

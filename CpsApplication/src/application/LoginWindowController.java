@@ -62,7 +62,7 @@ public class LoginWindowController implements Initializable {
 			SqlClient sqlClient = SqlClient.getInstance();
 			int requestToken = CpsGlobals.getNextToken();
 			sqlClient.employeeAuthentication(userName,password,requestToken);
-			Optional<ServerResponse> serverResponse = waitToServerResponse(sqlClient,requestToken);
+			Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
 			isAuth = (boolean) serverResponse.get().getObjectAtIndex(0);
 		} catch (IOException e) {
 			isAuth = false;
@@ -71,15 +71,6 @@ public class LoginWindowController implements Initializable {
 		return isAuth;
 	}
 
-	private Optional<ServerResponse> waitToServerResponse(SqlClient sqlClient,
-			int requestToken) {
-		Optional<ServerResponse> toRet;
-		
-		do {
-			toRet = sqlClient.getResponseByToken(requestToken);
-		} while (!toRet.isPresent());
-		return toRet;
-	}
 
 	@FXML
 	void cancel_click(ActionEvent event) {

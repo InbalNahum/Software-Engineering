@@ -6,9 +6,12 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
+import client.SqlClient;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import server.ServerResponse;
 
 public class ServiceMethods {
 	
@@ -36,4 +39,11 @@ public class ServiceMethods {
 	}
 	
 	
+	public static Optional<ServerResponse> waitToServerResponse(SqlClient sqlClient,int requestToken) {
+		Optional<ServerResponse> toRet;	
+		do {
+			toRet = sqlClient.getResponseByToken(requestToken);
+		} while (!toRet.isPresent());
+		return toRet;
+	}
 }

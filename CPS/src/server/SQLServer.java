@@ -6,6 +6,7 @@ package server;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -21,9 +22,12 @@ import client.ClientRequest;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import entity.Branch;
+import entity.BranchStateRequest;
 import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+import parkingLogic.BranchPark;
+import parkingLogic.BranchParkState;
 
 
 /**
@@ -102,7 +106,7 @@ public class SQLServer extends AbstractServer
 			} catch (SQLException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}	
+			} 
 			break;
 			
 		case monthlySubscription:
@@ -133,6 +137,20 @@ public class SQLServer extends AbstractServer
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			break;	
+			
+		case getBranchState:
+			try {
+				BranchParkState State = readBranchState(clientRequest, serverConnection);
+				ServerResponse serverResponse = new ServerResponse();
+				serverResponse.setServerOperation(ServerOperation.getBranchState);
+				serverResponse.addTolist(State);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+			} catch (SQLException | IOException | ClassNotFoundException e ) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 			break;	
 			
 		 default:
@@ -231,6 +249,22 @@ public class SQLServer extends AbstractServer
 	    ByteArrayInputStream bais = new ByteArrayInputStream(carParkAsBytes);
 		statement.setBinaryStream(3, bais, carParkAsBytes.length);
 		statement.executeUpdate();
+	}
+	
+	private BranchParkState readBranchState(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
+		BranchStateRequest request = (BranchStateRequest) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranch);
+		statement.setString(1,request.getName());
+		ResultSet result = statement.executeQuery();
+		BranchPark park = null;
+		while (result.next()) {
+		      byte[] branchAsBytes = (byte[]) result.getObject(3);
+		      ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
+		      ObjectInputStream ois = new ObjectInputStream(baip);
+		      park = (BranchPark) ois.readObject();
+		      return park.getBranchState();
+		    }
+		return null;
 	}
 
 

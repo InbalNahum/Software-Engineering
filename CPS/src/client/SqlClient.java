@@ -16,6 +16,7 @@ import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import common.CpsServerCommunicator;
 import entity.Branch;
+import entity.BranchStateRequest;
 import entity.PreOrderCustomer;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
@@ -107,6 +108,15 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setServerOperation(ServerOperation.employeeAuthentication);
 		clientRequest.addTolist(Integer.parseInt(id));
 		clientRequest.addTolist(password);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
+	@Override
+	public void getBranchState(BranchStateRequest request, int token) throws InterruptedException {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.getBranchState);
+		clientRequest.addTolist(request);
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}

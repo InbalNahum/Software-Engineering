@@ -59,9 +59,8 @@ public class FieldValidation {
 			throw new Exception(CpsGlobals.invalidDate); 
 	}
 
-	public static void branchNameValidation(String branchName) throws Exception {
-
-		if(branchName.equals(CpsGlobals.emptyString))
+	public static void branchNameValidation(Object branchName) throws Exception {
+		if(branchName == null)
 			throw new Exception(CpsGlobals.emptyBranchName); 
 	}
 	
@@ -93,7 +92,6 @@ public class FieldValidation {
 	}
 	
 	public static void branchIdValidation(String id) throws Exception {
-		
 		if(id.equals(CpsGlobals.emptyString)) {
 			throw new Exception(CpsGlobals.emptyBranchId); 
 		}

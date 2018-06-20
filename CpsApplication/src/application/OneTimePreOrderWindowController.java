@@ -59,7 +59,8 @@ public class OneTimePreOrderWindowController implements Initializable{
 	@FXML // fx:id="cb_Branch"
 	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
 
-	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch, CpsGlobals.telAvivBranch);
+	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch,
+			CpsGlobals.telAvivBranch, CpsGlobals.tiberiasBranch, CpsGlobals.qiryatShemonaBranch);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
