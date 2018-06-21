@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Optional;
 
 import client.SqlClient;
-import common.CpsGlobals;
 import common.FieldValidation;
 import common.ServiceMethods;
 import entity.CustomerComplaint;

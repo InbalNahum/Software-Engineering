@@ -71,8 +71,6 @@ public class MonthlySubscriptionOrderWindowController {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
 		}
-
-
     }
     
 	private void isValidInput() throws Exception {

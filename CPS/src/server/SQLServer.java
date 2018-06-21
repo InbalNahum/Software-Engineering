@@ -19,7 +19,9 @@ import entity.MonthlySubscription;
 import client.ClientRequest;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
+import common.CpsGlobals.parkingState;
 import entity.Branch;
+import entity.BranchParkParameters;
 import entity.BranchStateRequest;
 import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
@@ -27,6 +29,8 @@ import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import parkingLogic.BranchPark;
 import parkingLogic.BranchParkState;
+import parkingLogic.Location;
+import parkingLogic.ParkingFloor;
 
 
 /**
@@ -86,7 +90,6 @@ public class SQLServer extends AbstractServer
 					serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 					client.sendToClient(serverResponse);
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
 				break;
@@ -120,11 +123,32 @@ public class SQLServer extends AbstractServer
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
 			} catch (SQLException | IOException | ClassNotFoundException e ) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			break;
 			
+		case getBranchParkParameters:
+			try {
+				BranchParkParameters parameters = readBranchParkParameters(clientRequest, serverConnection);
+				serverResponse = new ServerResponse();
+				serverResponse.setServerOperation(ServerOperation.getBranchParkParameters);
+				serverResponse.addTolist(parameters);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+			} catch (SQLException | IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			} 
+			break;
+			
+		case setOutOfOrderParking:
+			try {
+				writeOutOfOrderParking(clientRequest, serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+			} catch (SQLException | IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			} 
+			break;	
+				
 			default:
 				break;
 			}		
@@ -279,6 +303,50 @@ public class SQLServer extends AbstractServer
 		    }
 		return null;
 	}
+	
+	private BranchParkParameters readBranchParkParameters(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
+		String name = (String) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranch);
+		statement.setString(1,name);
+		ResultSet result = statement.executeQuery();
+		BranchPark park = null;
+		while (result.next()) {
+		      byte[] branchAsBytes = (byte[]) result.getObject(3);
+		      ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
+		      ObjectInputStream ois = new ObjectInputStream(baip);
+		      park = (BranchPark) ois.readObject();
+		    }
+		return new BranchParkParameters(park.getNumOfFloors(),3 ,park.getColumns());
+	}
+	
+	private void writeOutOfOrderParking(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
+		String name = (String) clientRequest.getObjects().get(0);
+		BranchParkParameters parameters = (BranchParkParameters) clientRequest.getObjects().get(1);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranch);
+		statement.setString(1,name);
+		ResultSet result = statement.executeQuery();
+		BranchPark park = null;
+		int id = 0;
+		while (result.next()) {
+			  id = result.getInt(1);
+		      byte[] branchAsBytes = (byte[]) result.getObject(3);
+		      ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
+		      ObjectInputStream ois = new ObjectInputStream(baip);
+		      park = (BranchPark) ois.readObject();
+		    }
+		park.setParkingState(new Location(parameters.getFloor(), parameters.getRaw(),
+				parameters.getColumn()[0]),parkingState.outOfOrder);
+		statement = serverConnection.prepareStatement(CpsGlobals.writeBranchUpdate);
+		statement.setInt(1, id);
+		statement.setString(2, name);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    ObjectOutputStream oos = new ObjectOutputStream(baos);
+	    oos.writeObject(park);
+	    byte[] carParkAsBytes = baos.toByteArray();
+	    ByteArrayInputStream bais = new ByteArrayInputStream(carParkAsBytes);
+		statement.setBinaryStream(3, bais, carParkAsBytes.length);	
+		statement.executeUpdate();
+	}
 
 
 	private String buildSQLErrorMessage(SQLException e){
@@ -304,14 +372,15 @@ public class SQLServer extends AbstractServer
 		}
 	}
 
-	private void sendOperationSuccess(int requestToken,
-			ConnectionToClient client) throws IOException {
+	private void sendOperationSuccess(int requestToken,ConnectionToClient client) throws IOException {
 		ServerResponse serverResponse = new ServerResponse();
 		serverResponse.setServerOperation(ServerOperation.feedback);
 		serverResponse.addTolist(CpsGlobals.operationSuccess);
 		serverResponse.setCommunicateToken(requestToken);
 		client.sendToClient(serverResponse);
 	}
+	
+	
 
 	private void sendOperationFailure(int requestToken,ConnectionToClient client) throws IOException {
 		ServerResponse serverResponse = new ServerResponse();

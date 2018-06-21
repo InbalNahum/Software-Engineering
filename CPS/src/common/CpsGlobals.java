@@ -22,7 +22,7 @@ public class CpsGlobals {
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
-		tokenRequest, feedback,createNewComplain};
+		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking};
 
 
 	//Sql commands
@@ -44,6 +44,9 @@ public class CpsGlobals {
 			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
 			+ "MonthlySubscription_StartTime, CustomerAccount) VALUES (?, ?, ?, ?)";
 
+	public static final String writeBranchUpdate = "REPLACE INTO Branch("
+			+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";
+	
 	public static final String writeNewBranch = "INSERT INTO Branch("
 			+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";
 	
@@ -92,6 +95,9 @@ public class CpsGlobals {
 	public static final String emptyEmail = "Enter your email";
 	public static final String notValidEmail = "Email is not valid";
 	public static final String emptyBranchName = "Select branch name";
+	public static final String emptyBranchFloor = "Select floor value";
+	public static final String emptyRawSpinner = "Select Raw value";
+	public static final String emptyColumnSpinner = "Select Column name";
 	public static final String emptyWidth = "Select width";
 	public static final String leavingBeforeArrivig = "Leaving time before arriving time";
 	public static final String invalidDate = "Time is not valid";

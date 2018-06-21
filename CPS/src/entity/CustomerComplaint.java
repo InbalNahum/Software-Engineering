@@ -33,6 +33,14 @@ public class CustomerComplaint implements Serializable {
 		this.status = Status.opened;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}

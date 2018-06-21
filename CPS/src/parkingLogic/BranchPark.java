@@ -66,6 +66,20 @@ public class BranchPark implements Serializable {
 	public void setParkingState(Location carLocation, parkingState state) {
 		park[carLocation.getX()].setParkingState(new Point(carLocation.getY(), carLocation.getZ()), state);
 	}
-	
 
+	public int getNumOfFloors() {
+		return numOfFloors;
+	}
+
+	public void setNumOfFloors(int numOfFloors) {
+		this.numOfFloors = numOfFloors;
+	}
+
+	public int[] getColumns() {
+		return columns;
+	}
+
+	public void setColumns(int[] columns) {
+		this.columns = columns;
+	}
 }

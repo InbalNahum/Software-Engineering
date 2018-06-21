@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -31,11 +32,6 @@ public class ShowBranchStateWindowController implements Initializable {
 
     @FXML // fx:id="btn_Cancel"
     private Button btn_Cancel; // Value injected by FXMLLoader
-
-    @FXML
-    void Cancel_Click(ActionEvent event) {
-    	((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-    }
     
     @FXML // fx:id="canvasOne"
     private Canvas canvasOne; // Value injected by FXMLLoader
@@ -49,11 +45,22 @@ public class ShowBranchStateWindowController implements Initializable {
     @FXML // fx:id="cb_Branch"
     private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
     
-	ObservableList<String> comboBoxList = FXCollections.observableArrayList(CpsGlobals.telHaiBranch,
-			CpsGlobals.telAvivBranch, CpsGlobals.tiberiasBranch, CpsGlobals.qiryatShemonaBranch);
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+		try {
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
+			int requestToken = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.sendBranchListRequest(requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			for(Object obj : serverResponse.get().getObjects()) {
+				String branchName = (String) obj;
+				comboBoxList.add(branchName);
+			}
+		} catch (IOException | InterruptedException e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);
+		}
 		cb_Branch.setItems(comboBoxList);
 	}
 
@@ -79,6 +86,11 @@ public class ShowBranchStateWindowController implements Initializable {
 		} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}	
+    }
+    
+    @FXML
+    void Cancel_Click(ActionEvent event) {
+    	((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
     }
     
     public void drawParkingState(GraphicsContext gc, parkingState[][] floor, int rows, int columns) {

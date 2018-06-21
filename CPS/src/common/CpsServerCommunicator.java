@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import actors.CasualCustomer;
 import entity.Branch;
+import entity.BranchParkParameters;
 import entity.BranchStateRequest;
 import entity.CustomerComplaint;
 import entity.MonthlySubscription;
@@ -22,4 +23,6 @@ public interface CpsServerCommunicator {
 	public void getBranchState(BranchStateRequest request, int token) throws InterruptedException;
 	public void addComplain(CustomerComplaint branch,int token);
 	public void sendBranchListRequest(int requestToken);
+	public void getBranchParkParameters(String name, int token);
+	public void setOutOfOrderParking(String name, BranchParkParameters parameters, int token);
 }

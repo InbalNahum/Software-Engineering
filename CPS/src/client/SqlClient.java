@@ -16,6 +16,7 @@ import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import common.CpsServerCommunicator;
 import entity.Branch;
+import entity.BranchParkParameters;
 import entity.BranchStateRequest;
 import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
@@ -112,7 +113,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 
 
 	@Override
-	public void employeeAuthentication(String id, String password,int token) throws InterruptedException {
+	public void employeeAuthentication(String id, String password,int token)  {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.employeeAuthentication);
 		clientRequest.addTolist(Integer.parseInt(id));
@@ -122,10 +123,29 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	}
 	
 	@Override
-	public void getBranchState(BranchStateRequest request, int token) throws InterruptedException {
+	public void getBranchState(BranchStateRequest request, int token)  {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.getBranchState);
 		clientRequest.addTolist(request);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
+	@Override
+	public void getBranchParkParameters(String name, int token)  {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.getBranchParkParameters);
+		clientRequest.addTolist(name);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
+	@Override
+	public void setOutOfOrderParking(String name, BranchParkParameters parameters, int token)  {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.setOutOfOrderParking);
+		clientRequest.addTolist(name);
+		clientRequest.addTolist(parameters);
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
