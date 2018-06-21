@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.HandleComplaintController">
+   <children>
+      <AnchorPane fx:id="anchor_pane" layoutX="19.0" layoutY="7.0" prefHeight="1000.0" prefWidth="1300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <SplitPane dividerPositions="0.9309576837416481" layoutY="-14.0" orientation="VERTICAL" prefHeight="607.0" prefWidth="819.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="113.0" prefWidth="238.0">
+                     <children>
+                        <TableView fx:id="tableViewId" layoutX="160.0" layoutY="15.0" prefHeight="910.0" prefWidth="1298.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+                          <columns>
+                            <TableColumn id="cFirstName" fx:id="firstNameId" prefWidth="95.0" text="First Name" />
+                            <TableColumn id="cLastName" fx:id="lastNameId" prefWidth="95.0" text="Last Name" />
+                              <TableColumn id="cUserId" fx:id="CustomerId" prefWidth="95.0" text="Customer Id" />
+                              <TableColumn id="cCarNumber" fx:id="CarNumberId" prefWidth="95.0" text="Car Number" />
+                              <TableColumn id="cTime" fx:id="sendTimeId" prefWidth="160.0" text="Send Time" />
+                              <TableColumn id="cDescription" fx:id="descriptionId" prefWidth="472.0" text="Description" />
+                              <TableColumn id="cDescription" fx:id="statusId" minWidth="0.0" prefWidth="95.0" text="Status" />
+                              <TableColumn id="cDescription" fx:id="refundId" minWidth="0.0" prefWidth="95.0" text="Refund" />
+                              <TableColumn id="cDescription" fx:id="actionId" minWidth="0.0" prefWidth="95.0" text="Action" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="82.0" prefWidth="998.0">
+                     <children>
+                        <Button fx:id="updateid" layoutX="1115.0" layoutY="20.0" mnemonicParsing="false" onAction="#btnUpdate" text="Update" />
+                        <Button fx:id="cancelId" layoutX="1030.0" layoutY="20.0" mnemonicParsing="false" onAction="#btnCancel" text="Cancel" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

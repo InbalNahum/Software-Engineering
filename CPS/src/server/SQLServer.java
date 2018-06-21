@@ -21,13 +21,14 @@ import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
 import entity.Branch;
 import entity.BranchStateRequest;
+import entity.ComplainObject;
+import entity.Complaint;
 import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import parkingLogic.BranchPark;
 import parkingLogic.BranchParkState;
-
 
 /**
  * This class overrides some of the methods in the abstract 
@@ -61,23 +62,27 @@ public class SQLServer extends AbstractServer
 				serverResponse = getBranchList(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
 				break;
-				
+
+			case customerComplaintRequest:
+				serverResponse = getCustomerComplaintRequest(clientRequest,serverConnection);
+				client.sendToClient(serverResponse);
+				break;
 			case tokenRequest:
 				serverResponse = getNextToken(serverConnection);
 				client.sendToClient(serverResponse);
 				break;
-				
+
 			case writeCasualCustomer:
 				writeCasualCustomer(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),
 						client);
 				break;
-				
+
 			case writeOneTimePreOrder:
 				writeOneTimePreOrder(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
-				
+
 			case employeeAuthentication:
 				try {		     
 					boolean result = employeeAuthentication(clientRequest,serverConnection);
@@ -90,41 +95,47 @@ public class SQLServer extends AbstractServer
 					e.printStackTrace();
 				} 
 				break;
-			
+
 			case monthlySubscription:
 				writeMonthlySubscription(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
-				
+
 			case renewMonthlySubscription:
 				writeRenewMonthlySubscription(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 			case createNewBranch:
-				
+
 				writeNewBranch(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 				
+			case updateComplaintTable:
+
+				updateComplaintTable(clientRequest, serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;
+
 			case createNewComplain:
 				writeNewComplain(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
-			
-		case getBranchState:
-			try {
-				BranchParkState State = readBranchState(clientRequest, serverConnection);
-				serverResponse = new ServerResponse();
-				serverResponse.setServerOperation(ServerOperation.getBranchState);
-				serverResponse.addTolist(State);
-				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-				client.sendToClient(serverResponse);
-			} catch (SQLException | IOException | ClassNotFoundException e ) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			break;
-			
+
+			case getBranchState:
+				try {
+					BranchParkState State = readBranchState(clientRequest, serverConnection);
+					serverResponse = new ServerResponse();
+					serverResponse.setServerOperation(ServerOperation.getBranchState);
+					serverResponse.addTolist(State);
+					serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+					client.sendToClient(serverResponse);
+				} catch (SQLException | IOException | ClassNotFoundException e ) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				break;
+
 			default:
 				break;
 			}		
@@ -133,7 +144,6 @@ public class SQLServer extends AbstractServer
 		}
 	}
 
-	
 	private void writeNewComplain(ClientRequest clientRequest, Connection serverConnection) throws SQLException{
 		CustomerComplaint customerComplaint = (CustomerComplaint) clientRequest.getObjects().get(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeNewComplain);
@@ -153,11 +163,32 @@ public class SQLServer extends AbstractServer
 		ResultSet result = queryStatement.executeQuery();
 		ServerResponse serverResponse = new ServerResponse();
 		while(result.next()) {
-		String toAdd = result.getString(2);
-		serverResponse.addTolist(toAdd);
-		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+			String toAdd = result.getString(2);
+			serverResponse.addTolist(toAdd);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 		}
 		serverResponse.setServerOperation(ServerOperation.branchListRequest);
+		return serverResponse;
+	}
+
+	private ServerResponse getCustomerComplaintRequest(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
+		PreparedStatement queryStatement = serverConnection.prepareStatement(CpsGlobals.getCustomerComplaint);
+		ResultSet result = queryStatement.executeQuery();
+		ServerResponse serverResponse = new ServerResponse();
+		while(result.next()) {
+			String carNumber = result.getString(1);
+			String id = result.getString(2);
+			String firstName = result.getString(3);
+			String lastName = result.getString(4);
+			String description = result.getString(5);
+			String 	createTime = result.getString(6);
+			String status = result.getString(7);
+			ComplainObject complainObject = new ComplainObject(firstName, lastName, id, 
+					carNumber, createTime, description, status);
+			serverResponse.addTolist(complainObject);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+		}
+		serverResponse.setServerOperation(ServerOperation.customerComplaintRequest);
 		return serverResponse;
 	}
 
@@ -248,22 +279,34 @@ public class SQLServer extends AbstractServer
 			throw new SQLException("Error: row was not found");
 		}
 	}
-	
+
 	private void writeNewBranch(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException {
 		Branch branch = (Branch) clientRequest.getObjects().get(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeNewBranch);
 		statement.setInt(1,branch.getId());
 		statement.setString(2,branch.getBranchName());
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    ObjectOutputStream oos = new ObjectOutputStream(baos);
-	    oos.writeObject(branch.getCarPark());
-	    byte[] carParkAsBytes = baos.toByteArray();
-	    ByteArrayInputStream bais = new ByteArrayInputStream(carParkAsBytes);
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.writeObject(branch.getCarPark());
+		byte[] carParkAsBytes = baos.toByteArray();
+		ByteArrayInputStream bais = new ByteArrayInputStream(carParkAsBytes);
 		statement.setBinaryStream(3, bais, carParkAsBytes.length);
 		statement.executeUpdate();
 	}
-	
-	
+
+	private void updateComplaintTable(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException {
+		ComplainObject complainObject = (ComplainObject) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.updateMonthlySubscriptionTable);
+		statement.setInt(1,Integer.parseInt(complainObject.getRefund()));
+		statement.setInt(2, Integer.parseInt(complainObject.getCarNumber()));
+		statement.executeUpdate();
+		
+		statement = serverConnection.prepareStatement(CpsGlobals.updateComplainTable);
+		statement.setInt(1,1);
+		statement.setInt(2, Integer.parseInt(complainObject.getCarNumber()));
+		statement.executeUpdate();
+	}
+
 	private BranchParkState readBranchState(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		BranchStateRequest request = (BranchStateRequest) clientRequest.getObjects().get(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranch);
@@ -271,12 +314,12 @@ public class SQLServer extends AbstractServer
 		ResultSet result = statement.executeQuery();
 		BranchPark park = null;
 		while (result.next()) {
-		      byte[] branchAsBytes = (byte[]) result.getObject(3);
-		      ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
-		      ObjectInputStream ois = new ObjectInputStream(baip);
-		      park = (BranchPark) ois.readObject();
-		      return park.getBranchState();
-		    }
+			byte[] branchAsBytes = (byte[]) result.getObject(3);
+			ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
+			ObjectInputStream ois = new ObjectInputStream(baip);
+			park = (BranchPark) ois.readObject();
+			return park.getBranchState();
+		}
 		return null;
 	}
 

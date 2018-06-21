@@ -5,6 +5,7 @@ import java.util.Optional;
 import actors.CasualCustomer;
 import entity.Branch;
 import entity.BranchStateRequest;
+import entity.ComplainObject;
 import entity.CustomerComplaint;
 import entity.MonthlySubscription;
 import entity.PreOrderCustomer;
@@ -22,4 +23,6 @@ public interface CpsServerCommunicator {
 	public void getBranchState(BranchStateRequest request, int token) throws InterruptedException;
 	public void addComplain(CustomerComplaint branch,int token);
 	public void sendBranchListRequest(int requestToken);
+	public void sendCustomerComplaintRequest(int requestToken);
+	public void updateComplaintTable(ComplainObject complainObject, int token);
 }

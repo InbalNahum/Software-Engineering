@@ -13,7 +13,7 @@
             <Label prefHeight="21.0" prefWidth="88.0" text="First Name:" />
             <Label text="Last Name:" GridPane.rowIndex="1" />
             <TextField fx:id="tf_firstName" promptText="Example: bob" GridPane.columnIndex="1" />
-            <Label text="User id:" GridPane.rowIndex="2" />
+            <Label text="Customer id:" GridPane.rowIndex="2" />
             <Label text="Car Number:" GridPane.rowIndex="3" />
             <Label text="Email:" GridPane.rowIndex="4" />
             <TextField fx:id="tf_lastName" promptText="Example: bobi" GridPane.columnIndex="1" GridPane.rowIndex="1" />

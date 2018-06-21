@@ -103,4 +103,14 @@ public class FieldValidation {
 		if(!matcher.matches())
 			throw new Exception(CpsGlobals.notValidBranchId); 
 	}
+
+	public static void isNumber(String checkNumber) throws Exception {
+
+		if(checkNumber.equals(CpsGlobals.emptyString)) {
+			throw new Exception(CpsGlobals.emptyRefund); 
+		}
+		int number = Integer.parseInt(checkNumber);	
+
+	}
+
 }

@@ -22,7 +22,7 @@ public class CpsGlobals {
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
-		tokenRequest, feedback,createNewComplain};
+		tokenRequest, feedback,createNewComplain,customerComplaintRequest, updateComplaintTable};
 
 
 	//Sql commands
@@ -47,6 +47,12 @@ public class CpsGlobals {
 	public static final String writeNewBranch = "INSERT INTO Branch("
 			+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";
 	
+	public static final String updateMonthlySubscriptionTable = "UPDATE MonthlySubscription SET "
+			+ "CustomerAccount = ? WHERE MonthlySubscription_CarNumber = ?";
+	
+	public static final String updateComplainTable = "UPDATE CustomerComplaint SET "
+			+ "CustomerComplaint_Status = ? WHERE ComplainCarNumber = ?";
+	
 	public static final String writeNewComplain = "INSERT INTO CustomerComplaint("
 			+ "ComplainCarNumber, ComplainUserId, ComplainFirstName,"
 			+ "ComplainLastName, ComplainDescription, "
@@ -67,6 +73,8 @@ public class CpsGlobals {
 	public static final String fetchToken = "SELECT * FROM TokenHolder";
 	public static final String increaseToken = "UPDATE TokenHolder SET token=token+1";
 	public static final String getBranchList = "SELECT * FROM Branch";
+	public static final String getCustomerComplaint = "SELECT * FROM CustomerComplaint";
+
 
 	//Branches
 	public static final String telHaiBranch = "Tel-Hai";
@@ -86,6 +94,7 @@ public class CpsGlobals {
 	public static final String emptyString = "";
 	public static final String emptyId = "Enter your id";
 	public static final String emptyBranchId = "Enter Branch id";
+	public static final String emptyRefund = "Enter refund number";
 	public static final String notValidId = "Id is not valid";
 	public static final String notValidBranchId = "Id is not valid";
 	public static final String notValidWidth = "Width is not valid";
@@ -99,7 +108,8 @@ public class CpsGlobals {
 	public static final String emptyCarNumber = "Enter your car number";
 	public static final String emptyCalander = "Select date and time";
 	public static final String serverIssue = "Server issues";
-
+	public static final String numberFormatException = "Click only numbers";
+	
 	//dialog messages
 	public static final String errorDialogTitle = "Error Dialog";
 	public static final String informationDialogTitle = "Information Dialog";

@@ -12,7 +12,7 @@ public class Branch implements Serializable {
 	private int id;
 	private String branchName;
 	private BranchPark carPark;
-	public Branch() {}
+
 	public Branch(int id, String branchName, BranchPark carPark) {
 		super();
 		this.id = id;

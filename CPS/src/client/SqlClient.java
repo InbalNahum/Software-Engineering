@@ -17,6 +17,7 @@ import common.CpsGlobals.ServerOperation;
 import common.CpsServerCommunicator;
 import entity.Branch;
 import entity.BranchStateRequest;
+import entity.ComplainObject;
 import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
 import ocsf.client.AbstractClient;
@@ -120,7 +121,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
-	
+
 	@Override
 	public void getBranchState(BranchStateRequest request, int token) throws InterruptedException {
 		ClientRequest clientRequest = new ClientRequest();
@@ -159,6 +160,17 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	}
 
 	@Override
+	public void updateComplaintTable(ComplainObject complainObject, int token)
+	{
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.updateComplaintTable);
+		clientRequest.addTolist(complainObject);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
+
+	@Override
 	public void sendTokenRequest() {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.tokenRequest);
@@ -195,4 +207,13 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setServerOperation(ServerOperation.branchListRequest);
 		handleMessageFromGuiClient(clientRequest);
 	}
+
+	@Override
+	public void sendCustomerComplaintRequest(int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setCommunicateToken(requestToken);
+		clientRequest.setServerOperation(ServerOperation.customerComplaintRequest);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
 }
