@@ -16,7 +16,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 	    // constructing our scene
-	    URL url = getClass().getResource("HandleComplaint.fxml");
+	    URL url = getClass().getResource("UpdatePriceListWindow.fxml");
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    

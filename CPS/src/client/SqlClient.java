@@ -20,6 +20,7 @@ import entity.BranchStateRequest;
 import entity.ComplainObject;
 import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
+import entity.PriceList;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
 
@@ -169,7 +170,16 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		handleMessageFromGuiClient(clientRequest);
 	}
 
-
+	@Override
+	public void updatePriceListTable(PriceList priceList, int token)
+	{
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.updatePriceListTable);
+		clientRequest.addTolist(priceList);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
 	@Override
 	public void sendTokenRequest() {
 		ClientRequest clientRequest = new ClientRequest();
@@ -200,6 +210,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
+	
 	@Override
 	public void sendBranchListRequest(int requestToken) {
 		ClientRequest clientRequest = new ClientRequest();
@@ -208,6 +219,14 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		handleMessageFromGuiClient(clientRequest);
 	}
 
+	@Override
+	public void sendPriceListRequest(int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setCommunicateToken(requestToken);
+		clientRequest.setServerOperation(ServerOperation.priceListRequest);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
 	@Override
 	public void sendCustomerComplaintRequest(int requestToken) {
 		ClientRequest clientRequest = new ClientRequest();

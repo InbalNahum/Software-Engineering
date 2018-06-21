@@ -14,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+
 import actors.CasualCustomer;
 import entity.MonthlySubscription;
 import client.ClientRequest;
@@ -25,6 +27,7 @@ import entity.ComplainObject;
 import entity.Complaint;
 import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
+import entity.PriceList;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import parkingLogic.BranchPark;
@@ -60,6 +63,11 @@ public class SQLServer extends AbstractServer
 			switch(clientRequest.getServerOperation()) {
 			case branchListRequest:
 				serverResponse = getBranchList(clientRequest,serverConnection);
+				client.sendToClient(serverResponse);
+				break;
+
+			case priceListRequest:
+				serverResponse = getPriceList(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
 				break;
 
@@ -110,13 +118,19 @@ public class SQLServer extends AbstractServer
 				writeNewBranch(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
-				
+
 			case updateComplaintTable:
 
 				updateComplaintTable(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 
+			case updatePriceListTable:
+
+				updatePriceListTable(clientRequest, serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;
+				
 			case createNewComplain:
 				writeNewComplain(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
@@ -168,6 +182,19 @@ public class SQLServer extends AbstractServer
 			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 		}
 		serverResponse.setServerOperation(ServerOperation.branchListRequest);
+		return serverResponse;
+	}
+
+	private ServerResponse getPriceList(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
+		PreparedStatement queryStatement = serverConnection.prepareStatement(CpsGlobals.getPriceList);
+		ResultSet result = queryStatement.executeQuery();
+		ServerResponse serverResponse = new ServerResponse();
+		while(result.next()) {
+			String toAdd = result.getString(1);
+			serverResponse.addTolist(toAdd);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+		}
+		serverResponse.setServerOperation(ServerOperation.priceListRequest);
 		return serverResponse;
 	}
 
@@ -300,10 +327,26 @@ public class SQLServer extends AbstractServer
 		statement.setInt(1,Integer.parseInt(complainObject.getRefund()));
 		statement.setInt(2, Integer.parseInt(complainObject.getCarNumber()));
 		statement.executeUpdate();
-		
+
 		statement = serverConnection.prepareStatement(CpsGlobals.updateComplainTable);
 		statement.setInt(1,1);
 		statement.setInt(2, Integer.parseInt(complainObject.getCarNumber()));
+		statement.executeUpdate();
+	}
+
+	private void updatePriceListTable(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException {
+		PriceList priceList = (PriceList) clientRequest.getObjects().get(0);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.updatePriceListTable);
+		statement.setInt(1,Integer.parseInt(priceList.getCasualParking()));
+		statement.setInt(2, 1);
+		statement.executeUpdate();
+		
+		statement.setInt(1,Integer.parseInt(priceList.getPreOrderParking()));
+		statement.setInt(2, 2);
+		statement.executeUpdate();
+		
+		statement.setInt(1,Integer.parseInt(priceList.getMonthlySubscription()));
+		statement.setInt(2, 3);
 		statement.executeUpdate();
 	}
 

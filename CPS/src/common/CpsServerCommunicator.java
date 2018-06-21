@@ -9,6 +9,7 @@ import entity.ComplainObject;
 import entity.CustomerComplaint;
 import entity.MonthlySubscription;
 import entity.PreOrderCustomer;
+import entity.PriceList;
 
 public interface CpsServerCommunicator {
 	
@@ -25,4 +26,6 @@ public interface CpsServerCommunicator {
 	public void sendBranchListRequest(int requestToken);
 	public void sendCustomerComplaintRequest(int requestToken);
 	public void updateComplaintTable(ComplainObject complainObject, int token);
+	public void sendPriceListRequest(int requestToken);
+	public void updatePriceListTable(PriceList ppriceList, int token);
 }

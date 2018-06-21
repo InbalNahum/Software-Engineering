@@ -22,7 +22,8 @@ public class CpsGlobals {
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
-		tokenRequest, feedback,createNewComplain,customerComplaintRequest, updateComplaintTable};
+		tokenRequest, feedback,createNewComplain,customerComplaintRequest, updateComplaintTable, 
+		priceListRequest, updatePriceListTable};
 
 
 	//Sql commands
@@ -50,6 +51,9 @@ public class CpsGlobals {
 	public static final String updateMonthlySubscriptionTable = "UPDATE MonthlySubscription SET "
 			+ "CustomerAccount = ? WHERE MonthlySubscription_CarNumber = ?";
 	
+	public static final String updatePriceListTable = "UPDATE PriceList SET "
+			+ "PriceList_Price = ? WHERE PriceList_ID = ?";
+	
 	public static final String updateComplainTable = "UPDATE CustomerComplaint SET "
 			+ "CustomerComplaint_Status = ? WHERE ComplainCarNumber = ?";
 	
@@ -73,6 +77,7 @@ public class CpsGlobals {
 	public static final String fetchToken = "SELECT * FROM TokenHolder";
 	public static final String increaseToken = "UPDATE TokenHolder SET token=token+1";
 	public static final String getBranchList = "SELECT * FROM Branch";
+	public static final String getPriceList = "SELECT PriceList_Price FROM PriceList";
 	public static final String getCustomerComplaint = "SELECT * FROM CustomerComplaint";
 
 
