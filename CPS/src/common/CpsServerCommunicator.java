@@ -25,4 +25,6 @@ public interface CpsServerCommunicator {
 	public void sendBranchListRequest(int requestToken);
 	public void getBranchParkParameters(String name, int token);
 	public void setOutOfOrderParking(String name, BranchParkParameters parameters, int token);
+	public void setSavedParking(String name, BranchParkParameters parameters, int token);
+	public void sendBranchByIdRequest(String id,int requestToken);
 }

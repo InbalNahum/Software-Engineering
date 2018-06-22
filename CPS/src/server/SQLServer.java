@@ -29,6 +29,7 @@ import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import parkingLogic.BranchPark;
 import parkingLogic.BranchParkState;
+import parkingLogic.Car;
 import parkingLogic.Location;
 import parkingLogic.ParkingFloor;
 
@@ -66,6 +67,11 @@ public class SQLServer extends AbstractServer
 				client.sendToClient(serverResponse);
 				break;
 				
+			case getBranchById:
+				serverResponse = getBranchListById(clientRequest, serverConnection);
+				client.sendToClient(serverResponse);
+				break;
+				
 			case tokenRequest:
 				serverResponse = getNextToken(serverConnection);
 				client.sendToClient(serverResponse);
@@ -73,8 +79,7 @@ public class SQLServer extends AbstractServer
 				
 			case writeCasualCustomer:
 				writeCasualCustomer(clientRequest,serverConnection);
-				sendOperationSuccess(clientRequest.getCommunicateToken(),
-						client);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 				
 			case writeOneTimePreOrder:
@@ -148,6 +153,15 @@ public class SQLServer extends AbstractServer
 				e.printStackTrace();
 			} 
 			break;	
+			
+		case setSavedParking:
+			try {
+				writeSavedParking(clientRequest, serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+			} catch (SQLException | IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			} 
+			break;	
 				
 			default:
 				break;
@@ -182,6 +196,23 @@ public class SQLServer extends AbstractServer
 		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 		}
 		serverResponse.setServerOperation(ServerOperation.branchListRequest);
+		return serverResponse;
+	}
+	
+	private ServerResponse getBranchListById(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
+		String id = (String)clientRequest.getObjects().get(0);
+		PreparedStatement queryStatement = serverConnection.prepareStatement(CpsGlobals.getBranchListById);
+		queryStatement.setString(1, id);
+		ResultSet result = queryStatement.executeQuery();
+		ServerResponse serverResponse = new ServerResponse();
+		while(result.next()) {
+		String toAdd = result.getString(1);
+		if(toAdd.equals("None"))
+			return getBranchList(clientRequest, serverConnection);
+		serverResponse.addTolist(toAdd);
+		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+		}
+		serverResponse.setServerOperation(ServerOperation.getBranchById);
 		return serverResponse;
 	}
 
@@ -231,7 +262,7 @@ public class SQLServer extends AbstractServer
 		statement.executeUpdate();
 	}
 
-	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
+	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException, ClassNotFoundException, IOException {
 		CasualCustomer customer = (CasualCustomer) clientRequest.getObjectAtIndex(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeCasualCustomer);
 		statement.setInt(1,customer.getId());
@@ -242,6 +273,13 @@ public class SQLServer extends AbstractServer
 		Timestamp arrivingDate = new Timestamp(customer.getArriveTime().getTime());
 		statement.setTimestamp(5, arrivingDate);
 		statement.executeUpdate();
+		writeRealTimeParking("Tel-Aviv",new Car(customer.getId(),customer.getCarNumber()),serverConnection);
+	}
+	
+	private void writeRealTimeParking(String name, Car car, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
+		Branch branch = readBranch(serverConnection, name);
+		branch.getCarPark().enterCarToPark(car);
+		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
 	}
 
 	private void writeMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
@@ -322,6 +360,22 @@ public class SQLServer extends AbstractServer
 	private void writeOutOfOrderParking(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		String name = (String) clientRequest.getObjects().get(0);
 		BranchParkParameters parameters = (BranchParkParameters) clientRequest.getObjects().get(1);
+		Branch branch = readBranch(serverConnection, name);
+		branch.getCarPark().setParkingState(new Location(parameters.getFloor(), parameters.getRaw(),
+				parameters.getColumn()[0]),parkingState.outOfOrder);
+		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
+	}
+	
+	private void writeSavedParking(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
+		String name = (String) clientRequest.getObjects().get(0);
+		BranchParkParameters parameters = (BranchParkParameters) clientRequest.getObjects().get(1);
+		Branch branch = readBranch(serverConnection, name);
+		branch.getCarPark().setParkingState(new Location(parameters.getFloor(), parameters.getRaw(),
+				parameters.getColumn()[0]),parkingState.unAvailable);
+		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
+	}
+	
+	private Branch readBranch(Connection serverConnection, String name) throws SQLException, ClassNotFoundException, IOException {
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranch);
 		statement.setString(1,name);
 		ResultSet result = statement.executeQuery();
@@ -334,9 +388,11 @@ public class SQLServer extends AbstractServer
 		      ObjectInputStream ois = new ObjectInputStream(baip);
 		      park = (BranchPark) ois.readObject();
 		    }
-		park.setParkingState(new Location(parameters.getFloor(), parameters.getRaw(),
-				parameters.getColumn()[0]),parkingState.outOfOrder);
-		statement = serverConnection.prepareStatement(CpsGlobals.writeBranchUpdate);
+		return new Branch(id, name, park);
+	}
+	
+	private void writeBranchUpdate(Connection serverConnection, int id, String name, BranchPark park) throws SQLException, IOException {
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeBranchUpdate);
 		statement.setInt(1, id);
 		statement.setString(2, name);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -347,7 +403,7 @@ public class SQLServer extends AbstractServer
 		statement.setBinaryStream(3, bais, carParkAsBytes.length);	
 		statement.executeUpdate();
 	}
-
+	
 
 	private String buildSQLErrorMessage(SQLException e){
 		String toRet = "SQLException: " + e.getMessage() + "\n";

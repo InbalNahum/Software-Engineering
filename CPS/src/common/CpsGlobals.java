@@ -22,7 +22,8 @@ public class CpsGlobals {
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
-		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking};
+		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking,
+		setSavedParking, getBranchById};
 
 
 	//Sql commands
@@ -70,6 +71,7 @@ public class CpsGlobals {
 	public static final String fetchToken = "SELECT * FROM TokenHolder";
 	public static final String increaseToken = "UPDATE TokenHolder SET token=token+1";
 	public static final String getBranchList = "SELECT * FROM Branch";
+	public static final String getBranchListById = "SELECT Employee_Branch FROM Employee WHERE Employee_ID = ?";
 
 	//Branches
 	public static final String telHaiBranch = "Tel-Hai";
@@ -83,8 +85,13 @@ public class CpsGlobals {
 	public static final String loginWindowTitle = "CPS Login";
 	public static final String createNewBranchWindowTitle = "Create new branch";
 	public static final String showBranchStateWindowTitle = "Show branch state";
-
-
+	public static final String SaveParkingWindowTitle = "Save Parking";
+	public static final String OutOfOrderManagementWindowTitle = "Out of order management";
+	public static final String MonthlySubscriptionOrderWindowTitle = "Monthly subscription order";
+	public static final String RenewMonthlySubscriptionWindowTitle = "Renew monthly subscription";
+	public static final String ComplaintFormWindowTitle = "Complaint form";
+	
+	
 	//exception messages 
 	public static final String emptyString = "";
 	public static final String emptyId = "Enter your id";

@@ -17,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
-public class ComplaintFormController {
+public class ComplaintFormWindowController {
 
 	@FXML
 	private AnchorPane anchor_pane;

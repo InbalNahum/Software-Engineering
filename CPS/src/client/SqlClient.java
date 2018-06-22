@@ -149,6 +149,16 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
+	
+	@Override
+	public void setSavedParking(String name, BranchParkParameters parameters, int token)  {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.setSavedParking);
+		clientRequest.addTolist(name);
+		clientRequest.addTolist(parameters);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
 
 
 	@Override
@@ -213,6 +223,15 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setCommunicateToken(requestToken);
 		clientRequest.setServerOperation(ServerOperation.branchListRequest);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
+	@Override
+	public void sendBranchByIdRequest(String id,int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.addTolist(id);
+		clientRequest.setCommunicateToken(requestToken);
+		clientRequest.setServerOperation(ServerOperation.getBranchById);
 		handleMessageFromGuiClient(clientRequest);
 	}
 }

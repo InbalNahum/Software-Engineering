@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
 import server.ServerResponse;
 
-public class OutOfOrderFullManagementWindowController implements Initializable {
+public class OutOfOrderManagementWindowController implements Initializable {
 
 	private BranchParkParameters parameters = null;
 	
@@ -47,12 +47,16 @@ public class OutOfOrderFullManagementWindowController implements Initializable {
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		initBranch("308108125");	
+	}
+	
+	public void initBranch(String id) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
-			sqlClient.sendBranchListRequest(requestToken);
+			sqlClient.sendBranchByIdRequest(id, requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			for(Object obj : serverResponse.get().getObjects()) {
 				String branchName = (String) obj;

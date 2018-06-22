@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
-
 import common.CpsGlobals;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,12 +17,12 @@ public class Main extends Application {
 	    // constructing our scene
 	    URL url = getClass().getResource("ShowBranchStateWindow.fxml");
 	    AnchorPane pane = FXMLLoader.load( url );
-	    Scene scene = new Scene( pane );
-	    
+	    Scene scene = new Scene( pane );	    
+
 	    // setting the stage
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
-	    primaryStage.setTitle( CpsGlobals.showBranchStateWindowTitle);
+	    primaryStage.setTitle(CpsGlobals.casualOrderWindowTitle);
 	    primaryStage.show();
 	}
 	
