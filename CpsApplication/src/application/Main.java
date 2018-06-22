@@ -16,14 +16,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 	    // constructing our scene
-	    URL url = getClass().getResource("ClientMailBox.fxml");
+	    URL url = getClass().getResource("WelcomeWindow.fxml");
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    
 	    // setting the stage
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
-	    primaryStage.setTitle( CpsGlobals.showBranchStateWindowTitle);
+	    primaryStage.setTitle( CpsGlobals.WelcomeWindowTitle);
 	    primaryStage.show();
 	}
 	

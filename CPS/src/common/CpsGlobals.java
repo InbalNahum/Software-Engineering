@@ -96,6 +96,8 @@ public class CpsGlobals {
 	public static final String loginWindowTitle = "CPS Login";
 	public static final String createNewBranchWindowTitle = "Create new branch";
 	public static final String showBranchStateWindowTitle = "Show branch state";
+	public static final String employeeLoginTitle = "Employee Login";
+	public static final String WelcomeWindowTitle = "Welcome";
 
 
 	//exception messages 
@@ -144,4 +146,5 @@ public class CpsGlobals {
 	//operation indicators
 	public static final String operationSuccess = "Operation done successfully";
 	public static final String operationFailure = "Operation failure";
+	public static final String failToLoadWindow = "Fail to load window";
 }
