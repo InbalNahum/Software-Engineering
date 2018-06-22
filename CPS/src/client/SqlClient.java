@@ -18,8 +18,10 @@ import common.CpsServerCommunicator;
 import entity.Branch;
 import entity.BranchParkParameters;
 import entity.BranchStateRequest;
+import entity.ComplainObject;
 import entity.CustomerComplaint;
 import entity.PreOrderCustomer;
+import entity.PriceList;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
 
@@ -121,7 +123,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
-	
+
 	@Override
 	public void getBranchState(BranchStateRequest request, int token)  {
 		ClientRequest clientRequest = new ClientRequest();
@@ -189,6 +191,26 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	}
 
 	@Override
+	public void updateComplaintTable(ComplainObject complainObject, int token)
+	{
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.updateComplaintTable);
+		clientRequest.addTolist(complainObject);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
+	@Override
+	public void updatePriceListTable(PriceList priceList, int token)
+	{
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.updatePriceListTable);
+		clientRequest.addTolist(priceList);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
+	@Override
 	public void sendTokenRequest() {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.tokenRequest);
@@ -218,6 +240,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setCommunicateToken(token);
 		handleMessageFromGuiClient(clientRequest);
 	}
+	
 	@Override
 	public void sendBranchListRequest(int requestToken) {
 		ClientRequest clientRequest = new ClientRequest();
@@ -232,6 +255,31 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.addTolist(id);
 		clientRequest.setCommunicateToken(requestToken);
 		clientRequest.setServerOperation(ServerOperation.getBranchById);
+		handleMessageFromGuiClient(clientRequest);
+	}
+
+	public void sendPriceListRequest(int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setCommunicateToken(requestToken);
+		clientRequest.setServerOperation(ServerOperation.priceListRequest);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
+	@Override
+	public void sendCustomerComplaintRequest(int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setCommunicateToken(requestToken);
+		clientRequest.setServerOperation(ServerOperation.customerComplaintRequest);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
+	@Override
+	public void sendUserMessagesRequest(String userId, String userCarNum, int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setCommunicateToken(requestToken);
+		clientRequest.addTolist(userId);
+		clientRequest.addTolist(userCarNum);
+		clientRequest.setServerOperation(ServerOperation.getUserMessages);
 		handleMessageFromGuiClient(clientRequest);
 	}
 }

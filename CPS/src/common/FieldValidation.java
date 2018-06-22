@@ -118,4 +118,13 @@ public class FieldValidation {
 		if(column == null)
 			throw new Exception(CpsGlobals.emptyColumnSpinner); 
 	}
+
+	public static void isNumber(String checkNumber) throws Exception {
+
+		if(checkNumber.equals(CpsGlobals.emptyString)) {
+			throw new Exception(CpsGlobals.emptyRefund); 
+		}
+		int number = Integer.parseInt(checkNumber);	
+
+	}
 }

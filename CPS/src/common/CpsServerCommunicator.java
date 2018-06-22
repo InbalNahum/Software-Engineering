@@ -6,9 +6,11 @@ import actors.CasualCustomer;
 import entity.Branch;
 import entity.BranchParkParameters;
 import entity.BranchStateRequest;
+import entity.ComplainObject;
 import entity.CustomerComplaint;
 import entity.MonthlySubscription;
 import entity.PreOrderCustomer;
+import entity.PriceList;
 
 public interface CpsServerCommunicator {
 	
@@ -27,4 +29,9 @@ public interface CpsServerCommunicator {
 	public void setOutOfOrderParking(String name, BranchParkParameters parameters, int token);
 	public void setSavedParking(String name, BranchParkParameters parameters, int token);
 	public void sendBranchByIdRequest(String id,int requestToken);
+	public void sendCustomerComplaintRequest(int requestToken);
+	public void updateComplaintTable(ComplainObject complainObject, int token);
+	public void sendPriceListRequest(int requestToken);
+	public void updatePriceListTable(PriceList ppriceList, int token);
+	public void sendUserMessagesRequest(String userId, String userCarNum, int requestToken);
 }
