@@ -65,6 +65,7 @@ public class SQLServer extends AbstractServer
 	{
 		Connection serverConnection = getSqlServerConnection();
 		ClientRequest clientRequest = (ClientRequest) object;
+		int requestToken = clientRequest.getCommunicateToken();
 		ServerResponse serverResponse = new ServerResponse();
 		try {
 			switch(clientRequest.getServerOperation()) {
@@ -109,16 +110,12 @@ public class SQLServer extends AbstractServer
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 
-			case employeeAuthentication:
-				try {		     
+			case employeeAuthentication:	     
 					boolean result = employeeAuthentication(clientRequest,serverConnection);
 					serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
 					serverResponse.addTolist(result);
 					serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 					client.sendToClient(serverResponse);
-				} catch (SQLException | IOException e) {
-					e.printStackTrace();
-				} 
 				break;
 
 			case monthlySubscription:
@@ -152,7 +149,7 @@ public class SQLServer extends AbstractServer
 				writeNewComplain(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
-			
+
 			
 		case getBranchParkParameters:
 			try {
@@ -185,24 +182,27 @@ public class SQLServer extends AbstractServer
 			} 
 			break;	
 				
+
+
 		case getBranchState:
-			try {
 				BranchParkState State = readBranchState(clientRequest, serverConnection);
 				serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.getBranchState);
 				serverResponse.addTolist(State);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
-			} catch (SQLException | IOException | ClassNotFoundException e ) {
-				e.printStackTrace();
-			} 
 			break;
+
 
 			default:
 				break;
 			}		
 		}catch (Exception e) {
-			e.printStackTrace();
+			try {
+				sendOperationFailure(requestToken,client);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -541,14 +541,6 @@ public class SQLServer extends AbstractServer
 		statement.executeUpdate();
 	}
 	
-
-	private String buildSQLErrorMessage(SQLException e){
-		String toRet = "SQLException: " + e.getMessage() + "\n";
-		toRet += "SQLState: " + e.getSQLState() + "\n";
-		toRet += "VendorError: " + e.getErrorCode() + "\n";
-		return toRet;
-	}
-
 	private Connection getSqlServerConnection() {
 		try 
 		{

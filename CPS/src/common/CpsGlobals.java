@@ -102,13 +102,17 @@ public class CpsGlobals {
 	public static final String loginWindowTitle = "CPS Login";
 	public static final String createNewBranchWindowTitle = "Create new branch";
 	public static final String showBranchStateWindowTitle = "Show branch state";
+
 	public static final String SaveParkingWindowTitle = "Save Parking";
 	public static final String OutOfOrderManagementWindowTitle = "Out of order management";
 	public static final String MonthlySubscriptionOrderWindowTitle = "Monthly subscription order";
 	public static final String RenewMonthlySubscriptionWindowTitle = "Renew monthly subscription";
 	public static final String ComplaintFormWindowTitle = "Complaint form";
-	
-	
+	public static final String employeeLoginTitle = "Employee Login";
+	public static final String WelcomeWindowTitle = "Welcome";
+
+
+
 	//exception messages 
 	public static final String emptyString = "";
 	public static final String emptyId = "Enter your id";
@@ -158,4 +162,5 @@ public class CpsGlobals {
 	//operation indicators
 	public static final String operationSuccess = "Operation done successfully";
 	public static final String operationFailure = "Operation failure";
+	public static final String failToLoadWindow = "Fail to load window";
 }

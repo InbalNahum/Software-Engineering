@@ -16,7 +16,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws IOException {
 	    // constructing our scene
 
+
 	    URL url = getClass().getResource("ShowBranchStateWindow.fxml");
+
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );	    
 
@@ -24,6 +26,7 @@ public class Main extends Application {
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
 	    primaryStage.setTitle(CpsGlobals.casualOrderWindowTitle);
+
 	    primaryStage.show();
 	}
 	
