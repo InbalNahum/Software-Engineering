@@ -123,19 +123,16 @@ public class SQLServer extends AbstractServer
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 			case createNewBranch:
-
 				writeNewBranch(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 
 			case updateComplaintTable:
-
 				updateComplaintTable(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 
 			case updatePriceListTable:
-
 				updatePriceListTable(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
