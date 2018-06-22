@@ -28,4 +28,6 @@ public interface CpsServerCommunicator {
 	public void updateComplaintTable(ComplainObject complainObject, int token);
 	public void sendPriceListRequest(int requestToken);
 	public void updatePriceListTable(PriceList ppriceList, int token);
+	public void sendUserMessagesRequest(String userId, String userCarNum, int requestToken);
+
 }

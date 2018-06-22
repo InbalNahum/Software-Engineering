@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import actors.CasualCustomer;
 import entity.MonthlySubscription;
@@ -61,6 +63,10 @@ public class SQLServer extends AbstractServer
 		ServerResponse serverResponse = new ServerResponse();
 		try {
 			switch(clientRequest.getServerOperation()) {
+			case getUserMessages:
+				serverResponse = getUserMessages(clientRequest,serverConnection);
+				client.sendToClient(serverResponse);
+				break;
 			case branchListRequest:
 				serverResponse = getBranchList(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
@@ -156,6 +162,47 @@ public class SQLServer extends AbstractServer
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private ServerResponse getUserMessages(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+        ServerResponse serverResponse = new ServerResponse();
+        serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+        serverResponse.setServerOperation(ServerOperation.getUserMessages);
+		String userId = (String) clientRequest.getObjectAtIndex(0);
+        String userCarNum = (String) clientRequest.getObjectAtIndex(1);
+		PreparedStatement renewStatement = serverConnection.prepareStatement(CpsGlobals.subscriptionRenewalReminder);
+		renewStatement.setString(1, userId);
+		renewStatement.setString(2, userCarNum);
+		ResultSet renewResult = renewStatement.executeQuery();
+        if(renewResult.next()) {
+        	//case user is subscriber
+        	Timestamp createTime = renewResult.getTimestamp(1);
+        	Date today = new Date();
+        	Timestamp currentTime = new Timestamp(today.getTime());
+        	long diff = currentTime.getTime() - createTime.getTime();
+        	long daysDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        	long daysLeft = CpsGlobals.SubscriptionDays - daysDiff;
+        	if(daysLeft < CpsGlobals.daysInWeek) {
+        		String renewReminder = String.format(CpsGlobals.subscriptionRenewalMessageFormat,
+        				daysLeft);
+        		serverResponse.addTolist(renewReminder);
+        	}
+        }
+		PreparedStatement complaintStatement = serverConnection.prepareStatement(CpsGlobals.getClientComplaint);
+		complaintStatement.setString(1, userId);
+		complaintStatement.setString(2, userCarNum);
+		ResultSet complaintResult = complaintStatement.executeQuery();
+		if(complaintResult.next()) {
+			int status = complaintResult.getInt(CpsGlobals.complaintStatus);
+			int promotional = complaintResult.getInt(CpsGlobals.complaintPromotional);
+			String statusMessage = (status == 1) ? "Wait for manager treatment" : "Closed";
+			String promotionalMessage = (promotional == 0) ? "Your account has not been credited" : "Your account has been credited";
+		    String complaintMessage = String.format(CpsGlobals.complaintFormat,
+		    		complaintResult.getString(CpsGlobals.complainDescription),
+		    		statusMessage, promotionalMessage);
+		    serverResponse.addTolist(complaintMessage);
+		} 
+        return serverResponse;
 	}
 
 	private void writeNewComplain(ClientRequest clientRequest, Connection serverConnection) throws SQLException{
