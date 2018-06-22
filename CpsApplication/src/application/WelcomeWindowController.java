@@ -27,7 +27,18 @@ public class WelcomeWindowController {
 
     @FXML
     void customer_click(ActionEvent event) {
-      
+    	try {		
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CustomerLogin.fxml"));
+    		Parent root1 = (Parent) fxmlLoader.load();
+    		Stage stage = new Stage();
+    		stage.setTitle(CpsGlobals.customerLoginTitle);
+    		stage.setScene(new Scene(root1));  
+    		stage.show();
+    		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    	}
+    	catch(IOException e) {
+    		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
+    	}
     }
 
     @FXML

@@ -23,7 +23,7 @@ public class CpsGlobals {
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
 		tokenRequest, feedback,createNewComplain,customerComplaintRequest, updateComplaintTable, 
-		priceListRequest, updatePriceListTable, getUserMessages};
+		priceListRequest, updatePriceListTable, getUserMessages, customerAuthentication};
 
 
 	//Sql commands
@@ -40,7 +40,8 @@ public class CpsGlobals {
 			+ "OneTimePreOrder_LeaveTime, OneTimePreOrder_Email) VALUES (?, ?, ?, ?, ?, ?)";
 	
 	public static final String employeeAuthentication = "select Employee_Password from Employee where Employee_ID=?";
-
+    public static final String isSubscriber = "SELECT * FROM MonthlySubscription WHERE MonthlySubscription_ID = ? "
+    		+ "AND MonthlySubscription_CarNumber = ?";
 	public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
 			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
 			+ "MonthlySubscription_StartTime, CustomerAccount) VALUES (?, ?, ?, ?)";
@@ -97,8 +98,14 @@ public class CpsGlobals {
 	public static final String createNewBranchWindowTitle = "Create new branch";
 	public static final String showBranchStateWindowTitle = "Show branch state";
 	public static final String employeeLoginTitle = "Employee Login";
+	public static final String customerLoginTitle = "Customer Login";
 	public static final String WelcomeWindowTitle = "Welcome";
+	public static final String subscriberMenuWindowTitle = "Subscriber Menu";
+	public static final String casualCustomerMenuWindowTitle = "Casual Customer Menu";
 
+	//Window names
+	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
+	public static final String subscriberMenuWindow = "SubScriberMenu.fxml";
 
 	//exception messages 
 	public static final String emptyString = "";
