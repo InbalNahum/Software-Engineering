@@ -8,10 +8,8 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
-
 import actors.CasualCustomer;
 import client.SqlClient;
-import common.CpsGlobals;
 import common.FieldValidation;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;

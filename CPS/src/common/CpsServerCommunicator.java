@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import actors.CasualCustomer;
 import entity.Branch;
+import entity.BranchParkParameters;
 import entity.BranchStateRequest;
 import entity.ComplainObject;
 import entity.CustomerComplaint;
@@ -24,10 +25,13 @@ public interface CpsServerCommunicator {
 	public void getBranchState(BranchStateRequest request, int token) throws InterruptedException;
 	public void addComplain(CustomerComplaint branch,int token);
 	public void sendBranchListRequest(int requestToken);
+	public void getBranchParkParameters(String name, int token);
+	public void setOutOfOrderParking(String name, BranchParkParameters parameters, int token);
+	public void setSavedParking(String name, BranchParkParameters parameters, int token);
+	public void sendBranchByIdRequest(String id,int requestToken);
 	public void sendCustomerComplaintRequest(int requestToken);
 	public void updateComplaintTable(ComplainObject complainObject, int token);
 	public void sendPriceListRequest(int requestToken);
 	public void updatePriceListTable(PriceList ppriceList, int token);
 	public void sendUserMessagesRequest(String userId, String userCarNum, int requestToken);
-
 }

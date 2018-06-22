@@ -22,9 +22,9 @@ public class CpsGlobals {
 	//Objects possible types
 	public static enum ServerOperation{writeCasualCustomer, writeOneTimePreOrder, monthlySubscription, 
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
-		tokenRequest, feedback,createNewComplain,customerComplaintRequest, updateComplaintTable, 
-		priceListRequest, updatePriceListTable, getUserMessages, customerAuthentication};
-
+		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking,
+		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
+		updatePriceListTable, getUserMessages, updateComplaintTable, customerAuthentication};
 
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -46,6 +46,9 @@ public class CpsGlobals {
 			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
 			+ "MonthlySubscription_StartTime, CustomerAccount) VALUES (?, ?, ?, ?)";
 
+	public static final String writeBranchUpdate = "REPLACE INTO Branch("
+			+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";
+	
 	public static final String writeNewBranch = "INSERT INTO Branch("
 			+ "Branch_ID, Branch_Name, Branch_CarPark) VALUES (?, ?, ?)";
 	
@@ -81,9 +84,11 @@ public class CpsGlobals {
 	public static final String fetchToken = "SELECT * FROM TokenHolder";
 	public static final String increaseToken = "UPDATE TokenHolder SET token=token+1";
 	public static final String getBranchList = "SELECT * FROM Branch";
+	public static final String getBranchListById = "SELECT Employee_Branch FROM Employee WHERE Employee_ID = ?";
 	public static final String getPriceList = "SELECT PriceList_Price FROM PriceList";
 	public static final String getCustomerComplaint = "SELECT * FROM CustomerComplaint";
   
+
 
 	//Branches
 	public static final String telHaiBranch = "Tel-Hai";
@@ -97,6 +102,12 @@ public class CpsGlobals {
 	public static final String loginWindowTitle = "CPS Login";
 	public static final String createNewBranchWindowTitle = "Create new branch";
 	public static final String showBranchStateWindowTitle = "Show branch state";
+
+	public static final String SaveParkingWindowTitle = "Save Parking";
+	public static final String OutOfOrderManagementWindowTitle = "Out of order management";
+	public static final String MonthlySubscriptionOrderWindowTitle = "Monthly subscription order";
+	public static final String RenewMonthlySubscriptionWindowTitle = "Renew monthly subscription";
+	public static final String ComplaintFormWindowTitle = "Complaint form";
 	public static final String employeeLoginTitle = "Employee Login";
 	public static final String customerLoginTitle = "Customer Login";
 	public static final String WelcomeWindowTitle = "Welcome";
@@ -106,6 +117,7 @@ public class CpsGlobals {
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
 	public static final String subscriberMenuWindow = "SubScriberMenu.fxml";
+
 
 	//exception messages 
 	public static final String emptyString = "";
@@ -118,6 +130,9 @@ public class CpsGlobals {
 	public static final String emptyEmail = "Enter your email";
 	public static final String notValidEmail = "Email is not valid";
 	public static final String emptyBranchName = "Select branch name";
+	public static final String emptyBranchFloor = "Select floor value";
+	public static final String emptyRawSpinner = "Select Raw value";
+	public static final String emptyColumnSpinner = "Select Column name";
 	public static final String emptyWidth = "Select width";
 	public static final String leavingBeforeArrivig = "Leaving time before arriving time";
 	public static final String invalidDate = "Time is not valid";

@@ -103,6 +103,21 @@ public class FieldValidation {
 		if(!matcher.matches())
 			throw new Exception(CpsGlobals.notValidBranchId); 
 	}
+	
+	public static void branchFloorValidation(Object floor) throws Exception {
+		if(floor == null)
+			throw new Exception(CpsGlobals.emptyBranchFloor); 
+	}
+	
+	public static void rawSpinnerValidation(Object raw) throws Exception {
+		if(raw == null)
+			throw new Exception(CpsGlobals.emptyRawSpinner); 
+	}
+	
+	public static void columnSpinnerValidation(Object column) throws Exception {
+		if(column == null)
+			throw new Exception(CpsGlobals.emptyColumnSpinner); 
+	}
 
 	public static void isNumber(String checkNumber) throws Exception {
 
@@ -112,5 +127,4 @@ public class FieldValidation {
 		int number = Integer.parseInt(checkNumber);	
 
 	}
-
 }

@@ -8,10 +8,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import client.SqlClient;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
@@ -30,7 +33,6 @@ public class ServiceMethods {
 		alert.showAndWait();
 	}
 	
-	
 	public static Date convertToDateObject(LocalDate date, Calendar calander) {
 
 		Date dateTime = calander.getTime();
@@ -39,7 +41,6 @@ public class ServiceMethods {
 		Date leavingDateTime = Date.from(dt.atZone(ZoneId.systemDefault()).toInstant());
 		return leavingDateTime;
 	}
-
 
 	public static void alertFeedback(Optional<ServerResponse> serverResponse,
 			ActionEvent event) {
@@ -50,11 +51,9 @@ public class ServiceMethods {
 		}
 		else {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.operationFailure);
-		}
-		
+		}		
 	}
-	
-	
+		
 	public static Optional<ServerResponse> waitToServerResponse(SqlClient sqlClient,int requestToken) {
 		Optional<ServerResponse> toRet;	
 		do {
@@ -63,3 +62,5 @@ public class ServiceMethods {
 		return toRet;
 	}
 }
+	
+

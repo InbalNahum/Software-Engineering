@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Optional;
 
 import client.SqlClient;
-import common.CpsGlobals;
 import common.FieldValidation;
 import common.ServiceMethods;
 import entity.CustomerComplaint;
@@ -18,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
-public class ComplaintFormController {
+public class ComplaintFormWindowController {
 
 	@FXML
 	private AnchorPane anchor_pane;
