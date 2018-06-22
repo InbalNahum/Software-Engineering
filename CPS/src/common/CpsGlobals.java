@@ -24,7 +24,7 @@ public class CpsGlobals {
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
 		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking,
 		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
-		updatePriceListTable, getUserMessages, updateComplaintTable};
+		updatePriceListTable, getUserMessages, updateComplaintTable, EnterCarToParkingWithCheck};
 		
 
 	//Sql commands
@@ -34,6 +34,11 @@ public class CpsGlobals {
 			+ "	CasualCustomer_ID, CasualCustomer_CarNumber, "
 			+ "CasualCustomer_Email, CasualCustomer_LeaveTime, "
 			+ "CasualCustomer_ArriveTime) VALUES (?, ?, ?, ?, ?)";
+	
+	public static final String readBranchFromPreOrder = "Select OneTimePreOrder_BranchName, "
+			+ "OneTimePreOrder_ArriveTime "
+			+ "FROM OneTimePreOrder WHERE OneTimePreOrder_ID = ?";
+		
 	
 	public static final String writeOneTimePreOrder = "INSERT INTO OneTimePreOrder("
 			+ "	OneTimePreOrder_ID, OneTimePreOrder_CarNumber, "
@@ -110,6 +115,7 @@ public class CpsGlobals {
 	public static final String ComplaintFormWindowTitle = "Complaint form";
 	public static final String employeeLoginTitle = "Employee Login";
 	public static final String WelcomeWindowTitle = "Welcome";
+	public static final String EnterCarToParkingWithCheckWindowTitle = "Enter Car To Parking";
 
 
 

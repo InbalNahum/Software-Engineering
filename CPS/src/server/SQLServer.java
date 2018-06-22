@@ -40,16 +40,7 @@ import parkingLogic.Car;
 import parkingLogic.Location;
 import parkingLogic.ParkingFloor;
 
-/**
- * This class overrides some of the methods in the abstract 
- * superclass in order to give more functionality to the server.
- *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
- * @version July 2000
- */
+
 public class SQLServer extends AbstractServer 
 {
 
@@ -111,11 +102,11 @@ public class SQLServer extends AbstractServer
 				break;
 
 			case employeeAuthentication:	     
-					boolean result = employeeAuthentication(clientRequest,serverConnection);
-					serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
-					serverResponse.addTolist(result);
-					serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-					client.sendToClient(serverResponse);
+				boolean result = employeeAuthentication(clientRequest,serverConnection);
+				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+				serverResponse.addTolist(result);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
 				break;
 
 			case monthlySubscription:
@@ -152,34 +143,23 @@ public class SQLServer extends AbstractServer
 
 			
 		case getBranchParkParameters:
-			try {
 				BranchParkParameters parameters = readBranchParkParameters(clientRequest, serverConnection);
 				serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.getBranchParkParameters);
 				serverResponse.addTolist(parameters);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
-			} catch (SQLException | IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			} 
 			break;
 			
 		case setOutOfOrderParking:
-			try {
 				writeOutOfOrderParking(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
-			} catch (SQLException | IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			} 
+
 			break;	
 			
 		case setSavedParking:
-			try {
 				writeSavedParking(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
-			} catch (SQLException | IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			} 
 			break;	
 				
 
@@ -192,6 +172,16 @@ public class SQLServer extends AbstractServer
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
 			break;
+			
+		case EnterCarToParkingWithCheck:
+			Object[] answer = EnterCarToParkingWithCheck(clientRequest, serverConnection);
+			serverResponse = new ServerResponse();
+			serverResponse.setServerOperation(ServerOperation.EnterCarToParkingWithCheck);
+			serverResponse.addTolist(answer[0]);
+			serverResponse.addTolist(answer[1]);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+			client.sendToClient(serverResponse);
+		break;
 
 
 			default:
@@ -200,6 +190,7 @@ public class SQLServer extends AbstractServer
 		}catch (Exception e) {
 			try {
 				sendOperationFailure(requestToken,client);
+				e.printStackTrace();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -389,6 +380,33 @@ public class SQLServer extends AbstractServer
 		Branch branch = readBranch(serverConnection, name);
 		branch.getCarPark().enterCarToPark(car);
 		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
+	}
+	
+	private Object[] EnterCarToParkingWithCheck(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
+		String id = (String) clientRequest.getObjects().get(0);
+		String carNumber = (String) clientRequest.getObjects().get(1);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranchFromPreOrder);
+		statement.setString(1, id);
+		ResultSet result = statement.executeQuery();
+		Object[] toRet = new Object[2];
+		String Message = "";
+		toRet[0] = Boolean.FALSE;
+		toRet[1] = Message;
+		if (result.next()) {
+			writeRealTimeParking(result.getString(1), new Car(Integer.parseInt(id),
+					Integer.parseInt(carNumber)), serverConnection);
+			Timestamp arriveFromOrder = result.getTimestamp(2);
+			Date today = new Date();
+        	Timestamp RealArrive = new Timestamp(today.getTime());
+        	long diff = RealArrive.getTime() - arriveFromOrder.getTime();
+        	long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+        	if(hoursDiff > 0) 
+        		Message = "We Charged your Account for 20% extra money because you are late";
+    		toRet[0] = Boolean.TRUE;
+    		toRet[1] = Message;		
+			return toRet;
+		}
+		return toRet;
 	}
 
 	private void writeMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {

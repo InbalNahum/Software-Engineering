@@ -17,7 +17,7 @@ public class Main extends Application {
 	    // constructing our scene
 
 
-	    URL url = getClass().getResource("ShowBranchStateWindow.fxml");
+	    URL url = getClass().getResource("EnterCarToParkingWithCheckWindow.fxml");
 
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );	    
@@ -25,7 +25,7 @@ public class Main extends Application {
 	    // setting the stage
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
-	    primaryStage.setTitle(CpsGlobals.casualOrderWindowTitle);
+	    primaryStage.setTitle(CpsGlobals.EnterCarToParkingWithCheckWindowTitle);
 
 	    primaryStage.show();
 	}
