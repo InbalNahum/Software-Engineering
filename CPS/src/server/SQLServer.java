@@ -69,6 +69,13 @@ public class SQLServer extends AbstractServer
 		ServerResponse serverResponse = new ServerResponse();
 		try {
 			switch(clientRequest.getServerOperation()) {
+			case customerAuthentication:
+				boolean isSubscriber = customerAuthentication(clientRequest,serverConnection);
+				serverResponse.setServerOperation(ServerOperation.customerAuthentication);
+				serverResponse.addTolist(isSubscriber);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+				break;
 			case getUserMessages:
 				serverResponse = getUserMessages(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
@@ -111,9 +118,9 @@ public class SQLServer extends AbstractServer
 				break;
 
 			case employeeAuthentication:	     
-					boolean result = employeeAuthentication(clientRequest,serverConnection);
+					boolean isEmployee = employeeAuthentication(clientRequest,serverConnection);
 					serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
-					serverResponse.addTolist(result);
+					serverResponse.addTolist(isEmployee);
 					serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 					client.sendToClient(serverResponse);
 				break;
@@ -204,6 +211,20 @@ public class SQLServer extends AbstractServer
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	private boolean customerAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		boolean isSubscriber = false;
+		int userId = (int) clientRequest.getObjectAtIndex(0);
+        int userCarNum = (int) clientRequest.getObjectAtIndex(1);
+		PreparedStatement subscriberStatement = serverConnection.prepareStatement(CpsGlobals.isSubscriber);
+		subscriberStatement.setInt(1, userId);
+		subscriberStatement.setInt(2, userCarNum);
+		ResultSet subscriberResult = subscriberStatement.executeQuery();
+        if(subscriberResult.next()) {
+        	isSubscriber = true;
+        }
+        return isSubscriber;
 	}
 
 	private ServerResponse getUserMessages(ClientRequest clientRequest, Connection serverConnection) throws SQLException {

@@ -39,6 +39,7 @@ public class LoginWindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+     
 	}
 
 	@FXML
@@ -57,7 +58,7 @@ public class LoginWindowController implements Initializable {
 		} catch (InterruptedException e) {
            ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.somethingGoWrone);
 		} catch (Exception e) {
-	           ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.notValidId);
+	           ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}
 	}
 

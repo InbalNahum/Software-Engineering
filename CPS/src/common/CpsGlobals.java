@@ -24,8 +24,7 @@ public class CpsGlobals {
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
 		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking,
 		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
-		updatePriceListTable, getUserMessages, updateComplaintTable};
-		
+		updatePriceListTable, getUserMessages, updateComplaintTable, customerAuthentication};
 
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -41,7 +40,8 @@ public class CpsGlobals {
 			+ "OneTimePreOrder_LeaveTime, OneTimePreOrder_Email) VALUES (?, ?, ?, ?, ?, ?)";
 	
 	public static final String employeeAuthentication = "select Employee_Password from Employee where Employee_ID=?";
-
+    public static final String isSubscriber = "SELECT * FROM MonthlySubscription WHERE MonthlySubscription_ID = ? "
+    		+ "AND MonthlySubscription_CarNumber = ?";
 	public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
 			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
 			+ "MonthlySubscription_StartTime, CustomerAccount) VALUES (?, ?, ?, ?)";
@@ -109,8 +109,14 @@ public class CpsGlobals {
 	public static final String RenewMonthlySubscriptionWindowTitle = "Renew monthly subscription";
 	public static final String ComplaintFormWindowTitle = "Complaint form";
 	public static final String employeeLoginTitle = "Employee Login";
+	public static final String customerLoginTitle = "Customer Login";
 	public static final String WelcomeWindowTitle = "Welcome";
+	public static final String subscriberMenuWindowTitle = "Subscriber Menu";
+	public static final String casualCustomerMenuWindowTitle = "Casual Customer Menu";
 
+	//Window names
+	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
+	public static final String subscriberMenuWindow = "SubScriberMenu.fxml";
 
 
 	//exception messages 
