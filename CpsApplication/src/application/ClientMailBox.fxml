@@ -22,6 +22,6 @@
 				<TableColumn fx:id="message_details" prefWidth="412.0" text="Message Details" />
 			</columns>
 		</TableView>
-      <Button layoutX="183.0" layoutY="561.0" mnemonicParsing="false" onAction="#cancel_click" prefHeight="25.0" prefWidth="146.0" text="Canel" />
+      <Button layoutX="183.0" layoutY="561.0" mnemonicParsing="false" onAction="#cancel_click" prefHeight="25.0" prefWidth="146.0" text="Cancel" />
 	</children>
 </AnchorPane>

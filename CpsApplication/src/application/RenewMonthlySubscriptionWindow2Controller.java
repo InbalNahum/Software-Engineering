@@ -65,7 +65,7 @@ public class RenewMonthlySubscriptionWindow2Controller {
 			sqlClient.renewMonthlySubscription(monthlySubscription,requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			ServiceMethods.alertFeedback(serverResponse,event);
-
+			cancel_click(event);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
