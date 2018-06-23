@@ -5,11 +5,9 @@
 package application;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import application.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;

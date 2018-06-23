@@ -5,8 +5,6 @@
 package application;
 
 import java.io.IOException;
-import java.net.URL;
-
 import common.CpsGlobals;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
@@ -15,12 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
 
 public class WelcomeWindowController {
 
@@ -34,7 +29,7 @@ public class WelcomeWindowController {
 	void customer_click(ActionEvent event) {
 		try {		
 
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CustomerLogin.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(CpsGlobals.customerLogin));
 			Parent root1 = (Parent) fxmlLoader.load();
 			Stage stage = new Stage();
 			stage.setTitle(CpsGlobals.customerLoginTitle);
@@ -50,7 +45,7 @@ public class WelcomeWindowController {
 	@FXML
 	void employee_click(ActionEvent event) {
 		try {		
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginWindow.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(CpsGlobals.loginWindow));
 			Parent root1 = (Parent) fxmlLoader.load();
 			Stage stage = new Stage();
 			stage.setTitle(CpsGlobals.employeeLoginTitle);

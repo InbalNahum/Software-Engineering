@@ -41,9 +41,9 @@ public class EnterCarToParkingWithCheckWindowController {
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			boolean status = (boolean) serverResponse.get().getObjectAtIndex(0);
 			if (!status)
-				throw new Exception("Your Order doesn't exist");
+				throw new Exception(CpsGlobals.orderDoesntExist);
 			String message = (String) serverResponse.get().getObjectAtIndex(1);
-			if(!message.equals(""))
+			if(!message.equals(CpsGlobals.emptyString))
 				ServiceMethods.alertDialog(AlertType.INFORMATION,message);
 			ServiceMethods.alertDialog(AlertType.INFORMATION,CpsGlobals.operationSuccess);	
 		} catch (Exception e) {

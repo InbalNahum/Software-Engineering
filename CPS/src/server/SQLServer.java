@@ -13,11 +13,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 import actors.CasualCustomer;
 import client.ClientRequest;
 import common.CpsGlobals;
-import common.ServiceMethods;
 import common.CpsGlobals.ServerOperation;
 import common.CpsGlobals.parkingState;
 import entity.Branch;
@@ -28,16 +26,12 @@ import entity.CustomerComplaint;
 import entity.MonthlySubscription;
 import entity.PreOrderCustomer;
 import entity.PriceList;
-import javafx.scene.control.Alert.AlertType;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import parkingLogic.BranchPark;
 import parkingLogic.BranchParkState;
 import parkingLogic.Car;
 import parkingLogic.Location;
-import parkingLogic.ParkingFloor;
-
-
 
 public class SQLServer extends AbstractServer 
 {

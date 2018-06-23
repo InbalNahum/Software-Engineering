@@ -136,9 +136,10 @@ public class CpsGlobals {
 	public static final String handleComplaintWindow = "HandleComplaint.fxml";
 	public static final String renewSubscriptionWindow = "RenewMonthlySubscriptionWindow.fxml";
 	public static final String subscriptionExpiredWindow = "SubscriptionExpiredWindow.fxml";
-
-
-
+	public static final String enterCarToParkingWindow= "EnterCarToParkingWindow.fxml";
+	public static final String customerLogin = "CustomerLogin.fxml";
+	public static final String loginWindow = "LoginWindow.fxml";
+	
 	//exception messages 
 	public static final String emptyString = "";
 	public static final String emptyId = "Enter your id";
@@ -161,6 +162,7 @@ public class CpsGlobals {
 	public static final String emptyCalander = "Select date and time";
 	public static final String serverIssue = "Server issues";
 	public static final String numberFormatException = "Click only numbers";
+	public static final String orderDoesntExist = "Your Order doesn't exist";
 	
 	//dialog messages
 	public static final String errorDialogTitle = "Error Dialog";
@@ -191,5 +193,6 @@ public class CpsGlobals {
 	public static final String failToLoadWindow = "Fail to load window";
 	public static final String expiredOrNotStart = "expiredOrNotStart";
 	public static final String inTokef = "inTokef";
+	
 
 }
