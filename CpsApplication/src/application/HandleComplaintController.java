@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -116,7 +115,7 @@ public class HandleComplaintController implements Initializable{
 		actionId.setCellValueFactory(
 				new PropertyValueFactory<Complaint,String>("checkbox"));
 		refundId.setCellValueFactory(
-				new PropertyValueFactory<Complaint,String>("textField"));
+				new PropertyValueFactory<Complaint,String>("textAera"));
 	}
 
 	@FXML
