@@ -119,10 +119,7 @@ public class CpsGlobals {
 	public static final String employeeLoginTitle = "Employee Login";
 	public static final String customerLoginTitle = "Customer Login";
 	public static final String WelcomeWindowTitle = "Welcome";
-
 	public static final String EnterCarToParkingWithCheckWindowTitle = "Enter Car To Parking";
-
-
 	public static final String subscriberMenuWindowTitle = "Subscriber Menu";
 	public static final String casualCustomerMenuWindowTitle = "Casual Customer Menu";
 	public static final String clientMailBoxTitle = "Mail Box";
@@ -134,10 +131,10 @@ public class CpsGlobals {
 	public static final String clientMailBoxWindow = "ClientMailBox.fxml";
 	public static final String welcomeWindow = "WelcomeWindow.fxml";
 	public static final String handleComplaintWindow = "HandleComplaint.fxml";
-	public static final String renewSubscriptionWindow = "RenewMonthlySubscriptionWindow.fxml";
+	public static final String renewSubscriptionWindow = "RenewMonthlySubscriptionWindow2.fxml";
 	public static final String subscriptionExpiredWindow = "SubscriptionExpiredWindow.fxml";
-
-
+	public static final String EnterCarToParkingWindow = "EnterCarToParkingWindow.fxml";
+	public static final String ComplaintFormWindow = "ComplaintFormWindow.fxml";
 
 	//exception messages 
 	public static final String emptyString = "";

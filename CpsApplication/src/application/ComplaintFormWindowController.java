@@ -1,18 +1,24 @@
 package application;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
 import client.SqlClient;
+import common.CpsGlobals;
 import common.FieldValidation;
 import common.ServiceMethods;
 import entity.CustomerComplaint;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
@@ -61,7 +67,7 @@ public class ComplaintFormWindowController {
 			sqlClient.addComplain(customerComplaint,requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			ServiceMethods.alertFeedback(serverResponse,event);
-
+            cancel_click(event);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
@@ -70,6 +76,8 @@ public class ComplaintFormWindowController {
 
 	@FXML
 	void cancel_click(ActionEvent event) {
+    	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
+    			CpsGlobals.subscriberMenuWindowTitle);
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 	}
 
@@ -82,5 +90,20 @@ public class ComplaintFormWindowController {
 		FieldValidation.nameValidation(ta_description.getText());
 
 	}
-
+	
+	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
+    	try {		
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
+    		Parent root1 = (Parent) fxmlLoader.load();
+    		Stage stage = new Stage();
+    		stage.setTitle(windowTitle);
+    		stage.setScene(new Scene(root1));
+    		stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
+    		stage.show();
+    		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    	}
+    	catch(IOException e) {
+    		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
+    	}
+	}
 }

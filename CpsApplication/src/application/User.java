@@ -2,7 +2,7 @@ package application;
 
 public class User {
 
-	public enum UserType{employee,customer};
+	public enum UserType{employee,casualCustomer,subscriber};
 	private String userName;
 	private String password;
 	private UserType userType;
