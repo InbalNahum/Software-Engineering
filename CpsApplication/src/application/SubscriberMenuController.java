@@ -60,6 +60,12 @@ public class SubscriberMenuController {
     		  CpsGlobals.RenewMonthlySubscriptionWindowTitle);
     }
     
+    @FXML
+    void getCar_click(ActionEvent event) {
+    	moveToWindow(event,CpsGlobals.removeCar,
+    			CpsGlobals.removeCarTitle);
+    }
+    
 
     @FXML
     void cancel_click(ActionEvent event) {

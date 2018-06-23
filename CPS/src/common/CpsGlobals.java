@@ -140,7 +140,8 @@ public class CpsGlobals {
 	public static final String updatePriceListWindowTitle = "Update Price List";
 	public static final String outOfOrderManagementWindowTitle = "Out Of Order Management";
 	public static final String employeeMenuWindowTitle = "Employee Menu";
-	
+	public static final String removeCarTitle = "Get Car Back";
+
 
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
@@ -167,7 +168,7 @@ public class CpsGlobals {
 	public static final String updatePriceListWindow = "UpdatePriceListWindow.fxml";
 	public static final String outOfOrderManagementWindow = "OutOfOrderManagementWindow.fxml";
 	public static final String employeeMenuWindow = "EmployeeMenuWindow.fxml";
-	
+	public static final String removeCar = "RemoveCarFromParkingWindow.fxml";
 
 	//exception messages 
 	public static final String emptyString = "";

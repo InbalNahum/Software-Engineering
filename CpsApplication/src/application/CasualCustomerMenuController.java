@@ -83,6 +83,13 @@ public class CasualCustomerMenuController {
        		   CpsGlobals.customerLoginTitle);
     }
     
+
+    @FXML
+    void getCarBack_click(ActionEvent event) {
+    	moveToWindow(event,CpsGlobals.removeCar,
+    			CpsGlobals.removeCarTitle);
+    }
+    
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
     	try {		
     		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
