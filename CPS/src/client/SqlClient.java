@@ -320,4 +320,14 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.setServerOperation(ServerOperation.getUserMessages);
 		handleMessageFromGuiClient(clientRequest);
 	}
+	
+	public void customerAuthentication(String customerId, String carNum, int requestToken) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.customerAuthentication);
+		clientRequest.addTolist(Integer.parseInt(customerId));
+		clientRequest.addTolist(Integer.parseInt(carNum));
+		clientRequest.setCommunicateToken(requestToken);
+		handleMessageFromGuiClient(clientRequest);	
+	}
+
 }

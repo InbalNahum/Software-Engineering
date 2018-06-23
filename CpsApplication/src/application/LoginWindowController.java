@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import application.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -39,6 +41,7 @@ public class LoginWindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+     
 	}
 
 	@FXML
@@ -48,6 +51,7 @@ public class LoginWindowController implements Initializable {
 
 		try {
 			FieldValidation.idValidation(userName);
+			User.initalizeUser(userName, password, UserType.employee);
 			if(employeeAuthentication(userName,password)) {
                //TODO - ydanan move to the employee operations window
 			}
@@ -57,7 +61,7 @@ public class LoginWindowController implements Initializable {
 		} catch (InterruptedException e) {
            ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.somethingGoWrone);
 		} catch (Exception e) {
-	           ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.notValidId);
+	           ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}
 	}
 

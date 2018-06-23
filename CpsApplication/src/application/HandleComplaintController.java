@@ -85,7 +85,8 @@ public class HandleComplaintController implements Initializable{
 				ComplainObject ComplainObject = (ComplainObject) obj;
 				Complaint complaint = new Complaint(ComplainObject.getFirstName(), ComplainObject.getLastName()
 						, ComplainObject.getCustomerId(), ComplainObject.getCarNumber(),
-						ComplainObject.getSendTime(), ComplainObject.getDescription(),ComplainObject.getStatus());
+						ComplainObject.getSendTime(), ComplainObject.getDescription(),ComplainObject.getStatus()
+						,ComplainObject.getRefund());
 				complaintData.add(complaint);
 			}
 		} catch (IOException | InterruptedException e) {
@@ -125,9 +126,6 @@ public class HandleComplaintController implements Initializable{
 			if(complaintRow.getCheckbox().isSelected()) {
 				try {
 					FieldValidation.isNumber(complaintRow.getTextField().getText());
-					String message = "Return of NIS " + complaintRow.getTextField().getText();
-					ServiceMethods.alertDialog(AlertType.INFORMATION, message);
-
 					ComplainObject complainObject = new ComplainObject(complaintRow.getCarNumber(),
 							complaintRow.getTextField().getText());
 					SqlClient sqlClient = SqlClient.getInstance();

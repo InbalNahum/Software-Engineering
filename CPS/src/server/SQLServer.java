@@ -1,7 +1,4 @@
 package server;
-// This file contains material supporting section 3.7 of the textbook:
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,12 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import actors.CasualCustomer;
-import entity.MonthlySubscription;
 import client.ClientRequest;
 import common.CpsGlobals;
 import common.ServiceMethods;
@@ -29,8 +24,8 @@ import entity.Branch;
 import entity.BranchParkParameters;
 import entity.BranchStateRequest;
 import entity.ComplainObject;
-import entity.Complaint;
 import entity.CustomerComplaint;
+import entity.MonthlySubscription;
 import entity.PreOrderCustomer;
 import entity.PriceList;
 import javafx.scene.control.Alert.AlertType;
@@ -41,6 +36,7 @@ import parkingLogic.BranchParkState;
 import parkingLogic.Car;
 import parkingLogic.Location;
 import parkingLogic.ParkingFloor;
+
 
 
 public class SQLServer extends AbstractServer 
@@ -62,6 +58,13 @@ public class SQLServer extends AbstractServer
 		ServerResponse serverResponse = new ServerResponse();
 		try {
 			switch(clientRequest.getServerOperation()) {
+			case customerAuthentication:
+				boolean isSubscriber = customerAuthentication(clientRequest,serverConnection);
+				serverResponse.setServerOperation(ServerOperation.customerAuthentication);
+				serverResponse.addTolist(isSubscriber);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+				break;
 			case getUserMessages:
 				serverResponse = getUserMessages(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
@@ -108,9 +111,10 @@ public class SQLServer extends AbstractServer
 				break;
 
 			case employeeAuthentication:	     
-				boolean result = employeeAuthentication(clientRequest,serverConnection);
+
+				boolean isEmployee = employeeAuthentication(clientRequest,serverConnection);
 				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
-				serverResponse.addTolist(result);
+				serverResponse.addTolist(isEmployee);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
 				break;
@@ -126,19 +130,16 @@ public class SQLServer extends AbstractServer
 				break;
 				
 			case createNewBranch:
-
 				writeNewBranch(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 
 			case updateComplaintTable:
-
 				updateComplaintTable(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 
 			case updatePriceListTable:
-
 				updatePriceListTable(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
@@ -219,6 +220,20 @@ public class SQLServer extends AbstractServer
 		}
 	}
 
+	private boolean customerAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		boolean isSubscriber = false;
+		int userId = (int) clientRequest.getObjectAtIndex(0);
+        int userCarNum = (int) clientRequest.getObjectAtIndex(1);
+		PreparedStatement subscriberStatement = serverConnection.prepareStatement(CpsGlobals.isSubscriber);
+		subscriberStatement.setInt(1, userId);
+		subscriberStatement.setInt(2, userCarNum);
+		ResultSet subscriberResult = subscriberStatement.executeQuery();
+        if(subscriberResult.next()) {
+        	isSubscriber = true;
+        }
+        return isSubscriber;
+	}
+
 	private ServerResponse getUserMessages(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
         ServerResponse serverResponse = new ServerResponse();
         serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
@@ -250,8 +265,8 @@ public class SQLServer extends AbstractServer
 		if(complaintResult.next()) {
 			int status = complaintResult.getInt(CpsGlobals.complaintStatus);
 			int promotional = complaintResult.getInt(CpsGlobals.complaintPromotional);
-			String statusMessage = (status == 1) ? "Wait for manager treatment" : "Closed";
-			String promotionalMessage = (promotional == 0) ? "Your account has not been credited" : "Your account has been credited";
+			String statusMessage = (status == 0) ? "Wait for manager treatment" : "Closed";
+			String promotionalMessage = (promotional == 0) ? "Your account has not been credited" : "Your account has been credited with "+ promotional;
 		    String complaintMessage = String.format(CpsGlobals.complaintFormat,
 		    		complaintResult.getString(CpsGlobals.complainDescription),
 		    		statusMessage, promotionalMessage);
@@ -329,8 +344,9 @@ public class SQLServer extends AbstractServer
 			String description = result.getString(5);
 			String 	createTime = result.getString(6);
 			String status = result.getString(7);
+			String refaunt = result.getString(8);
 			ComplainObject complainObject = new ComplainObject(firstName, lastName, id, 
-					carNumber, createTime, description, status);
+					carNumber, createTime, description, status, refaunt);
 			serverResponse.addTolist(complainObject);
 			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 		}
@@ -494,15 +510,24 @@ public class SQLServer extends AbstractServer
 
 	private void updateComplaintTable(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException {
 		ComplainObject complainObject = (ComplainObject) clientRequest.getObjects().get(0);
-		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.updateMonthlySubscriptionTable);
-		statement.setInt(1,Integer.parseInt(complainObject.getRefund()));
-		statement.setInt(2, Integer.parseInt(complainObject.getCarNumber()));
-		statement.executeUpdate();
+		PreparedStatement statement1 = serverConnection.prepareStatement(CpsGlobals.getUserAccount);
+		String carNum = complainObject.getCarNumber();
+		statement1.setString(1, carNum);
+		ResultSet accountResult = statement1.executeQuery();
+		int accountValue = 0;
+		if(accountResult.next()) {
+			accountValue = accountResult.getInt(4);
+		}
+		PreparedStatement statement2 = serverConnection.prepareStatement(CpsGlobals.updateMonthlySubscriptionTable);
+		statement2.setInt(1,Integer.parseInt(complainObject.getRefund())+accountValue);
+		statement2.setInt(2, Integer.parseInt(complainObject.getCarNumber()));
+		statement2.executeUpdate();
 
-		statement = serverConnection.prepareStatement(CpsGlobals.updateComplainTable);
-		statement.setInt(1,1);
-		statement.setInt(2, Integer.parseInt(complainObject.getCarNumber()));
-		statement.executeUpdate();
+		statement2 = serverConnection.prepareStatement(CpsGlobals.updateComplainTable);
+		statement2.setInt(1,1);
+		statement2.setInt(2,Integer.parseInt(complainObject.getRefund()));
+		statement2.setInt(3, Integer.parseInt(complainObject.getCarNumber()));
+		statement2.executeUpdate();
 	}
 
 	private void updatePriceListTable(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException {

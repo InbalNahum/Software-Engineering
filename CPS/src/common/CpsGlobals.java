@@ -25,9 +25,8 @@ public class CpsGlobals {
 		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking,
 		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
 		updatePriceListTable, getUserMessages, updateComplaintTable, EnterCarToParkingWithCheck,
-		setBranchToFullState, setBranchSetup, EnterCarToParking};
+		setBranchToFullState, setBranchSetup, EnterCarToParking, customerAuthentication};
 		
-
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
 	
@@ -47,7 +46,8 @@ public class CpsGlobals {
 			+ "OneTimePreOrder_LeaveTime, OneTimePreOrder_Email) VALUES (?, ?, ?, ?, ?, ?)";
 	
 	public static final String employeeAuthentication = "select Employee_Password from Employee where Employee_ID=?";
-
+    public static final String isSubscriber = "SELECT * FROM MonthlySubscription WHERE MonthlySubscription_ID = ? "
+    		+ "AND MonthlySubscription_CarNumber = ?";
 	public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
 			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
 			+ "MonthlySubscription_StartTime, CustomerAccount) VALUES (?, ?, ?, ?)";
@@ -61,11 +61,13 @@ public class CpsGlobals {
 	public static final String updateMonthlySubscriptionTable = "UPDATE MonthlySubscription SET "
 			+ "CustomerAccount = ? WHERE MonthlySubscription_CarNumber = ?";
 	
+	public static final String getUserAccount = "SELECT * FROM MonthlySubscription WHERE MonthlySubscription_CarNumber = ?";
+	
 	public static final String updatePriceListTable = "UPDATE PriceList SET "
 			+ "PriceList_Price = ? WHERE PriceList_ID = ?";
 	
 	public static final String updateComplainTable = "UPDATE CustomerComplaint SET "
-			+ "CustomerComplaint_Status = ? WHERE ComplainCarNumber = ?";
+			+ "CustomerComplaint_Status = ?, Promotional = ? WHERE ComplainCarNumber = ?";
 	
 	public static final String writeNewComplain = "INSERT INTO CustomerComplaint("
 			+ "ComplainCarNumber, ComplainUserId, ComplainFirstName,"
@@ -115,8 +117,22 @@ public class CpsGlobals {
 	public static final String RenewMonthlySubscriptionWindowTitle = "Renew monthly subscription";
 	public static final String ComplaintFormWindowTitle = "Complaint form";
 	public static final String employeeLoginTitle = "Employee Login";
+	public static final String customerLoginTitle = "Customer Login";
 	public static final String WelcomeWindowTitle = "Welcome";
+
 	public static final String EnterCarToParkingWithCheckWindowTitle = "Enter Car To Parking";
+
+
+	public static final String subscriberMenuWindowTitle = "Subscriber Menu";
+	public static final String casualCustomerMenuWindowTitle = "Casual Customer Menu";
+	public static final String clientMailBoxTitle = "Mail Box";
+	
+	//Window names
+	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
+	public static final String subscriberMenuWindow = "SubScriberMenu.fxml";
+	public static final String clientMailBoxWindow = "ClientMailBox.fxml";
+	public static final String welcomeWindow = "WelcomeWindow.fxml";
+	public static final String handleComplaintWindow = "HandleComplaint.fxml";
 
 
 

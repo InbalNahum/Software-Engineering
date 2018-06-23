@@ -16,9 +16,10 @@ public class Complaint{
 	private  SimpleStringProperty status;
 	private CheckBox checkbox; 
 	private TextField textField;
+	private String refund;
 
 	public Complaint(String firstName, String lastName, String customerId
-			, String carNumber, String sendTime, String description, String status) {
+			, String carNumber, String sendTime, String description, String status, String refund) {
 		super();
 		this.firstName = new SimpleStringProperty(firstName);
 		this.lastName = new SimpleStringProperty(lastName);
@@ -27,15 +28,16 @@ public class Complaint{
 		this.sendTime = new SimpleStringProperty(sendTime);
 		this.description = new SimpleStringProperty(description);
 		this.checkbox = new CheckBox();
-
+		this.textField = new TextField();
 		if(status.equals("1")) {
 			this.status = new SimpleStringProperty("Close");
 			this.checkbox.setSelected(true);
 			this.checkbox.setDisable(true);
+			this.textField.setText(refund);
+			this.textField.setEditable(false);
+			this.refund = refund;
 		}else
 			this.status = new SimpleStringProperty("Open");
-
-		this.textField = new TextField();
 	}
 
 	public TextField getTextField() {
@@ -109,6 +111,14 @@ public class Complaint{
 
 	public void getDescription(String description) {
 		this.description.set(description);
+	}
+
+	public String getRefund() {
+		return refund;
+	}
+
+	public void setRefund(String refund) {
+		this.refund = refund;
 	}
 
 }
