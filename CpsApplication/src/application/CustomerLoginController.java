@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
@@ -78,10 +79,10 @@ public class CustomerLoginController implements Initializable {
 			FieldValidation.carNumberValidation(carNum);
 			userId = customerId;
 			userCarNum = carNum;
-			User.initalizeUser(userId, userCarNum, UserType.customer);
 			ServerResponse serverResponse = customerAuthentication(customerId,carNum);
 			boolean isSubscriber = (boolean) serverResponse.getObjectAtIndex(0);
 			if(isSubscriber) {
+				User.initalizeUser(userId, userCarNum, UserType.subscriber);
 				String date = (String) serverResponse.getObjectAtIndex(1);
 				if(date.equals(CpsGlobals.inTokef)) {
 					moveToWindow(event, CpsGlobals.subscriberMenuWindow,
@@ -93,6 +94,7 @@ public class CustomerLoginController implements Initializable {
 				}
  			}
 			else {
+				User.initalizeUser(userId, userCarNum, UserType.casualCustomer);
 				moveToWindow(event, CpsGlobals.casualCustomerMenuWindow,
 						CpsGlobals.casualCustomerMenuWindowTitle);
 			}
@@ -119,7 +121,8 @@ public class CustomerLoginController implements Initializable {
     		Parent root1 = (Parent) fxmlLoader.load();
     		Stage stage = new Stage();
     		stage.setTitle(windowTitle);
-    		stage.setScene(new Scene(root1));  
+    		stage.setScene(new Scene(root1)); 
+    		stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
     		stage.show();
     		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
     	}

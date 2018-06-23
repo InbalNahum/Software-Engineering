@@ -14,12 +14,19 @@ import entity.MessageForUser;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import server.ServerResponse;
 
 public class ClientMailBoxController implements Initializable {
@@ -49,7 +56,10 @@ public class ClientMailBoxController implements Initializable {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);
 		}
 		inializeColumns();
-		table.setItems(userMessages); 
+		if(userMessages.size()!=0) {
+			table.setItems(userMessages); 
+
+		}
 	}
 	
 	private ServerResponse getMessagesFromServer() throws IOException, InterruptedException {
@@ -67,6 +77,29 @@ public class ClientMailBoxController implements Initializable {
 				new PropertyValueFactory<MessageForUser,String>("messageNumber"));
 		message_details.setCellValueFactory(
 				new PropertyValueFactory<MessageForUser,String>("messageDetails"));
+	}
+	
+    @FXML
+    void cancel_click(ActionEvent event) {
+    	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
+    			CpsGlobals.subscriberMenuWindowTitle);
+		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    }
+    
+	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
+    	try {		
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
+    		Parent root1 = (Parent) fxmlLoader.load();
+    		Stage stage = new Stage();
+    		stage.setTitle(windowTitle);
+    		stage.setScene(new Scene(root1));
+    		stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
+    		stage.show();
+    		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    	}
+    	catch(IOException e) {
+    		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
+    	}
 	}
 
 }

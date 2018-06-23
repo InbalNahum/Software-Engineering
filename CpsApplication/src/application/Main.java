@@ -18,11 +18,12 @@ public class Main extends Application {
 
 	    // constructing our scene
 	    URL url = getClass().getResource(CpsGlobals.RemoveCarFromParkingWindow);
+
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
-	    primaryStage.setTitle(CpsGlobals.EnterCarToParkingWithCheckWindowTitle);
+	    primaryStage.setTitle(CpsGlobals.WelcomeWindowTitle);
 	    primaryStage.show();
 	}
 	

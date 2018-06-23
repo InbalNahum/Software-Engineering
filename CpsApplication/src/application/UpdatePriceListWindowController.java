@@ -66,6 +66,8 @@ public class UpdatePriceListWindowController implements Initializable{
 		}
 
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.permisionFromManager);
+
 	}
 
 	@Override
