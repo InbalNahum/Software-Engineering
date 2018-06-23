@@ -68,7 +68,8 @@ public class CasualOrderWindowController {
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.addCasualCustomer(casualCustomer,requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
-			ServiceMethods.alertFeedback(serverResponse,event);
+			String message = (String) serverResponse.get().getObjectAtIndex(0);
+			ServiceMethods.alertDialog(AlertType.INFORMATION, message);
 		}catch(Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;

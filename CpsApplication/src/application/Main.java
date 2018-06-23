@@ -15,13 +15,14 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		
-	    URL url = getClass().getResource(CpsGlobals.welcomeWindow);
+
+	    // constructing our scene
+	    URL url = getClass().getResource("EnterCarToParkingWindow.fxml");
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
-	    primaryStage.setTitle( CpsGlobals.WelcomeWindowTitle);
+	    primaryStage.setTitle(CpsGlobals.EnterCarToParkingWithCheckWindowTitle);
 	    primaryStage.show();
 	}
 	

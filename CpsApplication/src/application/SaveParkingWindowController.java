@@ -44,25 +44,6 @@ public class SaveParkingWindowController implements Initializable{
     @FXML // fx:id="btn_Cancel"
     private Button btn_Cancel; // Value injected by FXMLLoader
 
-   
-	public void initBranch(String id) {
-		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
-		try {
-			SqlClient sqlClient = SqlClient.getInstance();
-			sqlClient.sendTokenRequest();
-			int requestToken = WaitToServer.waitForServerToken(sqlClient);
-			sqlClient.sendBranchByIdRequest(id, requestToken);
-			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
-			for(Object obj : serverResponse.get().getObjects()) {
-				String branchName = (String) obj;
-				comboBoxList.add(branchName);
-			}
-		} catch (IOException | InterruptedException e) {
-			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);
-		}
-		cb_Branch.setItems(comboBoxList);	
-	}
-	
     @FXML
     void Cancel_Click(ActionEvent event) {
     	((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
@@ -145,6 +126,20 @@ public class SaveParkingWindowController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initBranch("200995256");	
+		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+		try {
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
+			int requestToken = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.sendBranchByIdRequest(User.getCurrentUser().getUserName(), requestToken);
+			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
+			for(Object obj : serverResponse.get().getObjects()) {
+				String branchName = (String) obj;
+				comboBoxList.add(branchName);
+			}
+		} catch (IOException | InterruptedException e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);
+		}
+		cb_Branch.setItems(comboBoxList);		
 	}
 }

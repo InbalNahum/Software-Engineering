@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="157.0" prefWidth="363.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.EnterCarToParkingWindowController">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="153.0" prefWidth="353.0">
+         <children>
+            <Label layoutX="32.0" layoutY="27.0" prefHeight="35.0" prefWidth="321.0" text="Enter Your Car:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="btn_EnterCar" layoutX="177.0" layoutY="88.0" mnemonicParsing="false" onAction="#EnterCar_Click" prefHeight="31.0" prefWidth="127.0" text="Enter Car" />
+            <Button fx:id="btn_Cancel" layoutX="32.0" layoutY="88.0" mnemonicParsing="false" onAction="#Cancel_Click" prefHeight="31.0" prefWidth="127.0" text="Cancel" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

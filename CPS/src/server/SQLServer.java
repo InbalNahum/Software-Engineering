@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import actors.CasualCustomer;
 import client.ClientRequest;
 import common.CpsGlobals;
+import common.ServiceMethods;
 import common.CpsGlobals.ServerOperation;
 import common.CpsGlobals.parkingState;
 import entity.Branch;
@@ -27,12 +28,16 @@ import entity.CustomerComplaint;
 import entity.MonthlySubscription;
 import entity.PreOrderCustomer;
 import entity.PriceList;
+import javafx.scene.control.Alert.AlertType;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import parkingLogic.BranchPark;
 import parkingLogic.BranchParkState;
 import parkingLogic.Car;
 import parkingLogic.Location;
+import parkingLogic.ParkingFloor;
+
+
 
 public class SQLServer extends AbstractServer 
 {
@@ -61,6 +66,7 @@ public class SQLServer extends AbstractServer
 				serverResponse = getUserMessages(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
 				break;
+				
 			case branchListRequest:
 				serverResponse = getBranchList(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
@@ -89,8 +95,11 @@ public class SQLServer extends AbstractServer
 				break;
 
 			case writeCasualCustomer:
-				writeCasualCustomer(clientRequest,serverConnection);
-				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				String message = writeCasualCustomer(clientRequest,serverConnection);
+				serverResponse.setServerOperation(ServerOperation.writeCasualCustomer);
+				serverResponse.addTolist(message);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
 				break;
 
 			case writeOneTimePreOrder:
@@ -99,11 +108,12 @@ public class SQLServer extends AbstractServer
 				break;
 
 			case employeeAuthentication:	     
-					boolean isEmployee = employeeAuthentication(clientRequest,serverConnection);
-					serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
-					serverResponse.addTolist(isEmployee);
-					serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-					client.sendToClient(serverResponse);
+
+				boolean isEmployee = employeeAuthentication(clientRequest,serverConnection);
+				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+				serverResponse.addTolist(isEmployee);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
 				break;
 
 			case monthlySubscription:
@@ -115,6 +125,7 @@ public class SQLServer extends AbstractServer
 				writeRenewMonthlySubscription(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
+				
 			case createNewBranch:
 				writeNewBranch(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
@@ -137,38 +148,25 @@ public class SQLServer extends AbstractServer
 
 			
 		case getBranchParkParameters:
-			try {
 				BranchParkParameters parameters = readBranchParkParameters(clientRequest, serverConnection);
 				serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.getBranchParkParameters);
 				serverResponse.addTolist(parameters);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
-			} catch (SQLException | IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			} 
 			break;
 			
 		case setOutOfOrderParking:
-			try {
 				writeOutOfOrderParking(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
-			} catch (SQLException | IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			} 
+
 			break;	
 			
 		case setSavedParking:
-			try {
 				writeSavedParking(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
-			} catch (SQLException | IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			} 
 			break;	
 				
-
-
 		case getBranchState:
 				BranchParkState State = readBranchState(clientRequest, serverConnection);
 				serverResponse = new ServerResponse();
@@ -177,7 +175,34 @@ public class SQLServer extends AbstractServer
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
 			break;
+			
+		case EnterCarToParkingWithCheck:
+			Object[] answer = EnterCarToParkingWithCheck(clientRequest, serverConnection);
+			serverResponse = new ServerResponse();
+			serverResponse.setServerOperation(ServerOperation.EnterCarToParkingWithCheck);
+			serverResponse.addTolist(answer[0]);
+			serverResponse.addTolist(answer[1]);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+			client.sendToClient(serverResponse);
+		break;
 
+		case setBranchToFullState:
+			setBranchToFullState(clientRequest, serverConnection);
+			sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+		break;	
+		
+		case setBranchSetup:
+			setBranchSetup(clientRequest, serverConnection);
+			sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+		break;	
+		
+		case EnterCarToParking:
+			String message2 = EnterCarToParking(clientRequest, serverConnection);
+			serverResponse.setServerOperation(ServerOperation.writeCasualCustomer);
+			serverResponse.addTolist(message2);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+			client.sendToClient(serverResponse);
+		break;	
 
 			default:
 				break;
@@ -392,7 +417,9 @@ public class SQLServer extends AbstractServer
 		statement.executeUpdate();
 	}
 
-	private void writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException, ClassNotFoundException, IOException {
+	private String writeCasualCustomer(ClientRequest clientRequest,Connection serverConnection) throws SQLException, ClassNotFoundException, IOException {
+		if(checkIfBranchIsFull("Tel-Aviv", serverConnection))
+			return "Sorry, the car parking is full - please try in other branch";
 		CasualCustomer customer = (CasualCustomer) clientRequest.getObjectAtIndex(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeCasualCustomer);
 		statement.setInt(1,customer.getId());
@@ -404,12 +431,55 @@ public class SQLServer extends AbstractServer
 		statement.setTimestamp(5, arrivingDate);
 		statement.executeUpdate();
 		writeRealTimeParking("Tel-Aviv",new Car(customer.getId(),customer.getCarNumber()),serverConnection);
+		return CpsGlobals.operationSuccess;
 	}
 	
 	private void writeRealTimeParking(String name, Car car, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		Branch branch = readBranch(serverConnection, name);
 		branch.getCarPark().enterCarToPark(car);
 		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
+	}
+	
+	private boolean checkIfBranchIsFull(String name, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
+		Branch branch = readBranch(serverConnection, name);
+		return branch.getCarPark().isFull();	
+	}
+	
+	private Object[] EnterCarToParkingWithCheck(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
+		String id = (String) clientRequest.getObjects().get(0);
+		String carNumber = (String) clientRequest.getObjects().get(1);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranchFromPreOrder);
+		statement.setString(1, id);
+		ResultSet result = statement.executeQuery();
+		Object[] toRet = new Object[2];
+		String Message = "";
+		toRet[0] = Boolean.FALSE;
+		toRet[1] = Message;
+		if (result.next()) {
+			writeRealTimeParking(result.getString(1), new Car(Integer.parseInt(id),
+					Integer.parseInt(carNumber)), serverConnection);
+			Timestamp arriveFromOrder = result.getTimestamp(2);
+			Date today = new Date();
+        	Timestamp RealArrive = new Timestamp(today.getTime());
+        	long diff = RealArrive.getTime() - arriveFromOrder.getTime();
+        	long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+        	if(hoursDiff > 0) 
+        		Message = "We Charged your Account for 20% extra money because you are late";
+    		toRet[0] = Boolean.TRUE;
+    		toRet[1] = Message;		
+			return toRet;
+		}
+		return toRet;
+	}
+	
+	private String EnterCarToParking(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
+		String id = (String) clientRequest.getObjects().get(0);
+		String carNumber = (String) clientRequest.getObjects().get(1);
+		if(checkIfBranchIsFull("Tel-Aviv", serverConnection))
+			return "Sorry, the car parking is full - please try in other branch";
+		writeRealTimeParking("Tel-Aviv", new Car(Integer.parseInt(id),
+				Integer.parseInt(carNumber)), serverConnection);		
+		return CpsGlobals.operationSuccess;
 	}
 
 	private void writeMonthlySubscription(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
@@ -522,6 +592,20 @@ public class SQLServer extends AbstractServer
 		      park = (BranchPark) ois.readObject();
 		    }
 		return new BranchParkParameters(park.getNumOfFloors(),3 ,park.getColumns());
+	}
+	
+	private void setBranchToFullState(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
+		String name = (String) clientRequest.getObjects().get(0);
+		Branch branch = readBranch(serverConnection, name);
+		branch.getCarPark().setFull(Boolean.TRUE);
+		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
+	}
+	
+	private void setBranchSetup(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
+		String name = (String) clientRequest.getObjects().get(0);
+		Branch branch = readBranch(serverConnection, name);
+		writeBranchUpdate(serverConnection, branch.getId(), name,
+				new BranchPark(branch.getCarPark().getColumns()));
 	}
 	
 	private void writeOutOfOrderParking(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
