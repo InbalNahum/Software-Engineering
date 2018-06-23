@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="237.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.SetBranchToFullStaeWindowController">
+   <children>
+      <AnchorPane prefHeight="230.0" prefWidth="400.0">
+         <children>
+            <Label layoutX="37.0" layoutY="33.0" prefHeight="35.0" prefWidth="219.0" text="Full Branch Report:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <GridPane layoutX="23.0" layoutY="110.0" prefHeight="35.0" prefWidth="353.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="110.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.0" minWidth="10.0" prefWidth="243.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label prefHeight="21.0" prefWidth="116.0" text="Branch Name:" />
+                  <ComboBox fx:id="cb_BranchName" prefHeight="31.0" prefWidth="247.0" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            <Button fx:id="btn_SendReport" layoutX="249.0" layoutY="182.0" mnemonicParsing="false" onAction="#SendReport_Click" prefHeight="31.0" prefWidth="127.0" text="Send Report" />
+            <Button fx:id="btn_Cancel" layoutX="103.0" layoutY="182.0" mnemonicParsing="false" onAction="#Cancel_Click" prefHeight="31.0" prefWidth="127.0" text="Cancel" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="263.0" prefWidth="444.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.BranchSetupWindowController">
+   <children>
+      <Button fx:id="btn_Cancel" layoutX="113.0" layoutY="192.0" mnemonicParsing="false" onAction="#Cancel_Click" prefHeight="31.0" prefWidth="127.0" text="Cancel" />
+      <Button fx:id="btn_SetSetup" layoutX="259.0" layoutY="192.0" mnemonicParsing="false" onAction="#SetSetup_Click" prefHeight="31.0" prefWidth="127.0" text="Set Setup" />
+      <GridPane layoutX="33.0" layoutY="120.0" prefHeight="35.0" prefWidth="353.0">
+         <children>
+            <Label prefHeight="21.0" prefWidth="116.0" text="Branch Name:" />
+            <ComboBox fx:id="cb_BranchName" prefHeight="31.0" prefWidth="247.0" GridPane.columnIndex="1" />
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="110.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.0" minWidth="10.0" prefWidth="243.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <Label layoutX="47.0" layoutY="43.0" prefHeight="35.0" prefWidth="219.0" text="Branch Setup:">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

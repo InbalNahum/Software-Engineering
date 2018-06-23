@@ -35,4 +35,7 @@ public interface CpsServerCommunicator {
 	public void updatePriceListTable(PriceList ppriceList, int token);
 	public void sendUserMessagesRequest(String userId, String userCarNum, int requestToken);
 	public void EnterCarToParkingWithCheck(String id,String carNumber,int token);
+	public void setBranchToFullState(String name, int token);
+	public void setBranchSetup(String name, int token);
+	public void EnterCarToParking(String id,String carNumber,int token);
 }

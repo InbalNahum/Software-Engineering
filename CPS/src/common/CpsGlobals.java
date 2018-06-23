@@ -24,7 +24,8 @@ public class CpsGlobals {
 		renewMonthlySubscription, employeeAuthentication, createNewBranch, getBranchState, branchListRequest, 
 		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking,
 		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
-		updatePriceListTable, getUserMessages, updateComplaintTable, EnterCarToParkingWithCheck};
+		updatePriceListTable, getUserMessages, updateComplaintTable, EnterCarToParkingWithCheck,
+		setBranchToFullState, setBranchSetup, EnterCarToParking};
 		
 
 	//Sql commands

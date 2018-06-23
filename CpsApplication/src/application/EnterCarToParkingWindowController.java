@@ -1,9 +1,8 @@
 package application;
 
-
 import java.util.Optional;
+
 import client.SqlClient;
-import common.CpsGlobals;
 import common.FieldValidation;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
@@ -14,7 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
-public class EnterCarToParkingWithCheckWindowController {
+public class EnterCarToParkingWindowController {
 
     @FXML // fx:id="btn_Cancel"
     private Button btn_Cancel; // Value injected by FXMLLoader
@@ -37,15 +36,10 @@ public class EnterCarToParkingWithCheckWindowController {
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
-			sqlClient.EnterCarToParkingWithCheck(id, carNumber, requestToken);
+			sqlClient.EnterCarToParking(id, carNumber, requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
-			boolean status = (boolean) serverResponse.get().getObjectAtIndex(0);
-			if (!status)
-				throw new Exception("Your Order doesn't exist");
-			String message = (String) serverResponse.get().getObjectAtIndex(1);
-			if(!message.equals(""))
-				ServiceMethods.alertDialog(AlertType.INFORMATION,message);
-			ServiceMethods.alertDialog(AlertType.INFORMATION,CpsGlobals.operationSuccess);	
+			String message = (String) serverResponse.get().getObjectAtIndex(0);
+			ServiceMethods.alertDialog(AlertType.INFORMATION, message);
 		} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}

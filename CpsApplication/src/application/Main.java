@@ -17,8 +17,7 @@ public class Main extends Application {
 	    // constructing our scene
 
 
-	    URL url = getClass().getResource("EnterCarToParkingWithCheckWindow.fxml");
-
+	    URL url = getClass().getResource("EnterCarToParkingWindow.fxml");
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );	    
 

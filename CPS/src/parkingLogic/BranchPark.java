@@ -82,4 +82,8 @@ public class BranchPark implements Serializable {
 	public void setColumns(int[] columns) {
 		this.columns = columns;
 	}
+
+	public void setFull(boolean isFull) {
+		this.isFull = isFull;
+	}
 }
