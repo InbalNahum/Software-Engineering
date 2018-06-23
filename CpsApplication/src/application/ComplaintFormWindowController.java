@@ -86,7 +86,6 @@ public class ComplaintFormWindowController {
         	moveToWindow(event,CpsGlobals.casualCustomerMenuWindow,
         			CpsGlobals.casualCustomerMenuWindowTitle);
     	}
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 	}
 
 	private void isValidInput() throws Exception {

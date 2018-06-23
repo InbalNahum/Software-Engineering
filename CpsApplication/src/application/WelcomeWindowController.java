@@ -55,6 +55,7 @@ public class WelcomeWindowController {
 			Stage stage = new Stage();
 			stage.setTitle(CpsGlobals.employeeLoginTitle);
 			stage.setScene(new Scene(root1));  
+    		stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
 			stage.show();
 			((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 		}

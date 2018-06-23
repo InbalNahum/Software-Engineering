@@ -248,6 +248,9 @@ public class SQLServer extends AbstractServer
             }
 
         }
+        else {
+        	serverResponse.addTolist(isSubscriber);
+        }
         return serverResponse;
 	}
 

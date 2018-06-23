@@ -88,7 +88,6 @@ public class ClientMailBoxController implements Initializable {
         	moveToWindow(event,CpsGlobals.casualCustomerMenuWindow,
         			CpsGlobals.casualCustomerMenuWindowTitle);
     	}
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
     }
     
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {

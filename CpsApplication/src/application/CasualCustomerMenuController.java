@@ -4,9 +4,19 @@
 
 package application;
 
+import java.io.IOException;
+
+import common.CpsGlobals;
+import common.ServiceMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class CasualCustomerMenuController {
 
@@ -27,27 +37,48 @@ public class CasualCustomerMenuController {
 
     @FXML
     void preOrder_click(ActionEvent event) {
-
+        moveToWindow(event, CpsGlobals.oneTimePreOrderWindow,
+      		  CpsGlobals.oneTimePreOrderTitle);
     }
 
     @FXML
     void mailBox_click(ActionEvent event) {
-
+        moveToWindow(event, CpsGlobals.clientMailBoxWindow,
+        		CpsGlobals.clientMailBoxTitle);
     }
 
     @FXML
     void casualOrder_click(ActionEvent event) {
-
+        moveToWindow(event, CpsGlobals.casualOrderWindow,
+        		CpsGlobals.casualOrderWindowTitle);
     }
 
     @FXML
     void sendComplaint_click(ActionEvent event) {
-
+        moveToWindow(event, CpsGlobals.complaintFormWindow,
+     		   CpsGlobals.ComplaintFormWindowTitle);
     }
 
     @FXML
     void usePreOrder_click(ActionEvent event) {
-
+        moveToWindow(event, CpsGlobals.enterCarToParkingWithCheckWindow,
+      		   CpsGlobals.EnterCarToParkingWithCheckWindowTitle);
     }
+    
+	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
+    	try {		
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
+    		Parent root1 = (Parent) fxmlLoader.load();
+    		Stage stage = new Stage();
+    		stage.setTitle(windowTitle);
+    		stage.setScene(new Scene(root1));
+    		stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
+    		stage.show();
+    		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    	}
+    	catch(IOException e) {
+    		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
+    	}
+	}
 
 }
