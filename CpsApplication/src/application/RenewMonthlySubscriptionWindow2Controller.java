@@ -41,24 +41,18 @@ public class RenewMonthlySubscriptionWindow2Controller {
 	@FXML // fx:id="tf_StartingTime"
 	private CalendarTimeTextField tf_StartingTime; // Value injected by FXMLLoader
 
-	@FXML // fx:id="tf_Id"
-	private TextField tf_Id; // Value injected by FXMLLoader
-
 	@FXML // fx:id="btn_MakeOrder"
 	private Button btn_MakeOrder; // Value injected by FXMLLoader
 
 	@FXML // fx:id="window"
 	private AnchorPane window; // Value injected by FXMLLoader
 
-	@FXML // fx:id="tf_CarNumber"
-	private TextField tf_CarNumber; // Value injected by FXMLLoader
-
 	@FXML
 	void makeOrder_click(ActionEvent event) {
 		try {
 			isValidInput();
-			String id = tf_Id.getText();
-			String carNumber = tf_CarNumber.getText();
+			String id = User.getCurrentUser().getUserName();
+			String carNumber = User.getCurrentUser().getPassword();
 			LocalDate startingDate = tf_StartingDate.getValue();
 			Calendar startingCalendar = tf_StartingTime.getCalendar();
 			Date startingDateTime = ServiceMethods.convertToDateObject(startingDate, startingCalendar);	
@@ -85,8 +79,6 @@ public class RenewMonthlySubscriptionWindow2Controller {
     }
 
 	private void isValidInput() throws Exception {
-		FieldValidation.idValidation(tf_Id.getText());
-		FieldValidation.carNumberValidation(tf_CarNumber.getText());
 		FieldValidation.calendarValidation(tf_StartingDate.getValue(), CpsGlobals.emptyCalander);
 	}
 

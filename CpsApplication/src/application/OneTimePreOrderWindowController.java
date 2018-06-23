@@ -44,9 +44,6 @@ public class OneTimePreOrderWindowController implements Initializable{
 	@FXML // fx:id="tf_ArrivingDate"
 	private DatePicker tf_ArrivingDate; // Value injected by FXMLLoader
 
-	@FXML // fx:id="tf_Id"
-	private TextField tf_Id; // Value injected by FXMLLoader
-
 	@FXML // fx:id="tf_LeavingTime"
 	private CalendarTimeTextField tf_LeavingTime; // Value injected by FXMLLoader
 
@@ -55,9 +52,6 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML // fx:id="tf_ArrivingTime"
 	private CalendarTimeTextField tf_ArrivingTime; // Value injected by FXMLLoader
-
-	@FXML // fx:id="tf_CarNumber"
-	private TextField tf_CarNumber; // Value injected by FXMLLoader
 
 	@FXML // fx:id="cb_Branch"
 	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
@@ -85,8 +79,8 @@ public class OneTimePreOrderWindowController implements Initializable{
 	void makeOrderClick(ActionEvent event) {
 		try {
 			isValidInput();
-			String id = tf_Id.getText();
-			String carNumber = tf_CarNumber.getText();
+			String id = User.getCurrentUser().getUserName();
+			String carNumber = User.getCurrentUser().getPassword();
 			String email = tf_Email.getText();		
 			String branchName = cb_Branch.getValue();
 
@@ -120,8 +114,6 @@ public class OneTimePreOrderWindowController implements Initializable{
 	}
 
 	private void isValidInput() throws Exception {
-		FieldValidation.idValidation(tf_Id.getText());
-		FieldValidation.carNumberValidation(tf_CarNumber.getText());
 		FieldValidation.emailValidation(tf_Email.getText());
 		FieldValidation.branchNameValidation(cb_Branch.getValue());
 		FieldValidation.calendarValidation(tf_ArrivingDate.getValue(),tf_ArrivingTime.getCalendar());

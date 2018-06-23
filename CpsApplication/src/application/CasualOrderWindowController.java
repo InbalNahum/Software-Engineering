@@ -33,25 +33,20 @@ public class CasualOrderWindowController {
 	@FXML // fx:id="tf_LeavingDate"
 	private DatePicker tf_LeavingDate; // Value injected by FXMLLoader
 
-	@FXML // fx:id="tf_Id"
-	private TextField tf_Id; // Value injected by FXMLLoader
-
 	@FXML // fx:id="tf_LeavingTime"
 	private CalendarTimeTextField tf_LeavingTime; // Value injected by FXMLLoader
 
 	@FXML // fx:id="btn_MakeOrder"
 	private Button btn_MakeOrder; // Value injected by FXMLLoader
 
-	@FXML // fx:id="tf_CarNumber"
-	private TextField tf_CarNumber; // Value injected by FXMLLoader
-
+	
 	@FXML
 	void makeOrder_click(ActionEvent event) {
 
 		try {
 			isValidInput();
-			String id = tf_Id.getText();
-			String carNumber = tf_CarNumber.getText();
+			String id = User.getCurrentUser().getUserName();
+			String carNumber = User.getCurrentUser().getPassword();
 			String email = tf_Email.getText();
 
 
@@ -82,8 +77,6 @@ public class CasualOrderWindowController {
 	}
 
 	private void isValidInput() throws Exception {
-		FieldValidation.idValidation(tf_Id.getText());
-		FieldValidation.carNumberValidation(tf_CarNumber.getText());
 		FieldValidation.emailValidation(tf_Email.getText());
 		FieldValidation.calendarValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
 	}
