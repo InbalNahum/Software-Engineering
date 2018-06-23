@@ -25,7 +25,8 @@ public class CpsGlobals {
 		tokenRequest, feedback,createNewComplain, getBranchParkParameters, setOutOfOrderParking,
 		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
 		updatePriceListTable, getUserMessages, updateComplaintTable, EnterCarToParkingWithCheck,
-		setBranchToFullState, setBranchSetup, EnterCarToParking, customerAuthentication};
+		setBranchToFullState, setBranchSetup, EnterCarToParking, customerAuthentication
+		,cancelPreOrder};
 		
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -38,7 +39,9 @@ public class CpsGlobals {
 	public static final String readBranchFromPreOrder = "Select OneTimePreOrder_BranchName, "
 			+ "OneTimePreOrder_ArriveTime "
 			+ "FROM OneTimePreOrder WHERE OneTimePreOrder_ID = ?";
-		
+	
+	public static final String deletePreOrder = "DELETE FROM OneTimePreOrder"
+			+ " WHERE OneTimePreOrder_CarNumber = ?";
 	
 	public static final String writeOneTimePreOrder = "INSERT INTO OneTimePreOrder("
 			+ "	OneTimePreOrder_ID, OneTimePreOrder_CarNumber, "
@@ -137,6 +140,7 @@ public class CpsGlobals {
 	public static final String renewSubscriptionWindow = "RenewMonthlySubscriptionWindow.fxml";
 	public static final String subscriptionExpiredWindow = "SubscriptionExpiredWindow.fxml";
 	public static final String enterCarToParkingWindow= "EnterCarToParkingWindow.fxml";
+	public static final String CancelPreOrderWindow= "CancelPreOrderWindow.fxml";
 	public static final String customerLogin = "CustomerLogin.fxml";
 	public static final String loginWindow = "LoginWindow.fxml";
 	

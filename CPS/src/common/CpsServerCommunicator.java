@@ -38,4 +38,5 @@ public interface CpsServerCommunicator {
 	public void setBranchToFullState(String name, int token);
 	public void setBranchSetup(String name, int token);
 	public void EnterCarToParking(String id,String carNumber,int token);
+	public void CancelPreOrder(String id,String carNumber,int token);
 }

@@ -197,6 +197,16 @@ public class SQLServer extends AbstractServer
 			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 			client.sendToClient(serverResponse);
 		break;	
+		
+		case cancelPreOrder:
+			Object[] answer2 = CancelPreOrder(clientRequest, serverConnection);
+			serverResponse = new ServerResponse();
+			serverResponse.setServerOperation(ServerOperation.cancelPreOrder);
+			serverResponse.addTolist(answer2[0]);
+			serverResponse.addTolist(answer2[1]);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+			client.sendToClient(serverResponse);
+		break;	
 
 			default:
 				break;
@@ -459,6 +469,40 @@ public class SQLServer extends AbstractServer
         	long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
         	if(hoursDiff > 0) 
         		Message = "We Charged your Account for 20% extra money because you are late";
+    		toRet[0] = Boolean.TRUE;
+    		toRet[1] = Message;		
+			return toRet;
+		}
+		return toRet;
+	}
+	
+	private Object[] CancelPreOrder(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
+		String id = (String) clientRequest.getObjects().get(0);
+		String carNumber = (String) clientRequest.getObjects().get(1);
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranchFromPreOrder);
+		statement.setString(1, id);
+		ResultSet result = statement.executeQuery();
+		statement = serverConnection.prepareStatement(CpsGlobals.deletePreOrder);
+		statement.setString(1, carNumber);
+		statement.executeUpdate();
+		Object[] toRet = new Object[2];
+		String Message = "";
+		toRet[0] = Boolean.FALSE;
+		toRet[1] = Message;
+		if (result.next()) {
+			Timestamp arriveFromOrder = result.getTimestamp(2);
+			Date today = new Date();
+        	Timestamp RealArrive = new Timestamp(today.getTime());
+        	long diff = RealArrive.getTime() - arriveFromOrder.getTime();
+        	long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+        	       	
+        	if(hoursDiff > 3) 
+        		Message = "You got 90% refund from your order payment";
+        	else if (hoursDiff  < 3 && hoursDiff>1)
+        		Message = "You got 50% refund from your order payment";
+        	else
+        		Message = "You did'nt got any refund";
+     	
     		toRet[0] = Boolean.TRUE;
     		toRet[1] = Message;		
 			return toRet;

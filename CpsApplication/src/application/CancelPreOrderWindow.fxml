@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.EnterCarToParkingWithCheckWindowController">
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.CancelPreOrderWindowController">
    <children>
-      <AnchorPane prefHeight="305.0" prefWidth="400.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="305.0" prefWidth="400.0">
          <children>
             <Label layoutX="32.0" layoutY="50.0" prefHeight="35.0" prefWidth="321.0" text="Enter PreOrder Details:">
                <font>
@@ -16,23 +17,24 @@
                </font>
             </Label>
             <GridPane layoutX="35.0" layoutY="134.0" prefHeight="57.0" prefWidth="330.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="114.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="216.0" minWidth="10.0" prefWidth="216.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="29.0" minHeight="40.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="32.0" minHeight="40.0" prefHeight="32.0" vgrow="SOMETIMES" />
-              </rowConstraints>
                <children>
                   <Label prefHeight="21.0" prefWidth="110.0" text="Customer id:" />
                   <Label prefHeight="21.0" prefWidth="102.0" text="Car Number:" GridPane.rowIndex="1" />
                   <TextField fx:id="tf_Id" promptText="Example: 123456789" GridPane.columnIndex="1" />
                   <TextField fx:id="tf_CarNumber" promptText="Example: 1234567" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="114.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="216.0" minWidth="10.0" prefWidth="216.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="29.0" minHeight="40.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="32.0" minHeight="40.0" prefHeight="32.0" vgrow="SOMETIMES" />
+               </rowConstraints>
             </GridPane>
-            <Button fx:id="btn_EnterCar" layoutX="242.0" layoutY="250.0" mnemonicParsing="false" onAction="#EnterCar_Click" prefHeight="31.0" prefWidth="127.0" text="Enter Car" />
+            <Button fx:id="btn_CancelOrder" layoutX="242.0" layoutY="250.0" mnemonicParsing="false" onAction="#CancelOrder_Click" prefHeight="31.0" prefWidth="127.0" text="Cancel Order" />
             <Button fx:id="btn_Cancel" layoutX="94.0" layoutY="250.0" mnemonicParsing="false" onAction="#Cancel_Click" prefHeight="31.0" prefWidth="127.0" text="Cancel" />
-         </children></AnchorPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
