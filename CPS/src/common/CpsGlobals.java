@@ -81,7 +81,7 @@ public class CpsGlobals {
 	public static final String writeNewComplain = "INSERT INTO CustomerComplaint("
 			+ "ComplainCarNumber, ComplainUserId, ComplainFirstName,"
 			+ "ComplainLastName, ComplainDescription, "
-			+ "CustomerComplaint_CreateTime, CustomerComplaint_Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			+ "CustomerComplaint_CreateTime, CustomerComplaint_Status, 	Promotional) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String writeRenewMonthlySubscription = "REPLACE INTO MonthlySubscription("
 			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
@@ -119,7 +119,6 @@ public class CpsGlobals {
 	public static final String loginWindowTitle = "CPS Login";
 	public static final String createNewBranchWindowTitle = "Create new branch";
 	public static final String showBranchStateWindowTitle = "Show branch state";
-
 	public static final String SaveParkingWindowTitle = "Save Parking";
 	public static final String OutOfOrderManagementWindowTitle = "Out of order management";
 	public static final String MonthlySubscriptionOrderWindowTitle = "Monthly subscription order";
@@ -133,25 +132,27 @@ public class CpsGlobals {
 	public static final String casualCustomerMenuWindowTitle = "Casual Customer Menu";
 	public static final String clientMailBoxTitle = "Mail Box";
 	public static final String subscriptionExpiredTitle = "Subscription Expired";
+	public static final String OneTimePreOrderWindowTitle = "Pre parking order";
+
 
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
+	public static final String customerLogin = "CustomerLogin.fxml";
 	public static final String subscriberMenuWindow = "SubScriberMenu.fxml";
 	public static final String clientMailBoxWindow = "ClientMailBox.fxml";
 	public static final String welcomeWindow = "WelcomeWindow.fxml";
 	public static final String handleComplaintWindow = "HandleComplaint.fxml";
 	public static final String renewSubscriptionWindow = "RenewMonthlySubscriptionWindow2.fxml";
 	public static final String subscriptionExpiredWindow = "SubscriptionExpiredWindow.fxml";
-
 	public static final String enterCarToParkingWindow= "EnterCarToParkingWindow.fxml";
-	public static final String CancelPreOrderWindow= "CancelPreOrderWindow.fxml";
-	public static final String RemoveCarFromParkingWindow= "RemoveCarFromParkingWindow.fxml";	
-	public static final String customerLogin = "CustomerLogin.fxml";
-	public static final String loginWindow = "LoginWindow.fxml";
-	
+	public static final String cancelPreOrderWindow= "CancelPreOrderWindow.fxml";
+	public static final String removeCarFromParkingWindow = "RemoveCarFromParkingWindow.fxml";	
+	public static final String complaintFormWindow = "ComplaintFormWindow.fxml";
+	public static final String oneTimePreOrderWindow = "OneTimePreOrderWindow.fxml";
+	public static final String casualOrderWindow = "CasualOrderWindow.fxml";
+	public static final String enterCarToParkingWithCheckWindow = "EnterCarToParkingWithCheckWindow.fxml";
+	public static final String employeeLoginWindow = "LoginWindow.fxml";
 
-	public static final String EnterCarToParkingWindow = "EnterCarToParkingWindow.fxml";
-	public static final String ComplaintFormWindow = "ComplaintFormWindow.fxml";
 
 
 	//exception messages 

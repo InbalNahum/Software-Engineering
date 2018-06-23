@@ -6,28 +6,31 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchor_pane" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ComplaintFormWindowController">
+<AnchorPane fx:id="anchor_pane" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ComplaintFormWindowController">
    <children>
-      <GridPane layoutX="23.0" layoutY="90.0" prefHeight="225.0" prefWidth="310.0">
+      <GridPane layoutX="23.0" layoutY="90.0" prefHeight="160.0" prefWidth="287.0">
          <children>
-            <Label prefHeight="21.0" prefWidth="88.0" text="First Name:" />
-            <Label text="Last Name:" GridPane.rowIndex="1" />
+            <Label prefHeight="21.0" prefWidth="88.0" text="First Name:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label text="Last Name:" GridPane.rowIndex="1">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <TextField fx:id="tf_firstName" promptText="Example: bob" GridPane.columnIndex="1" />
-            <Label text="Customer id:" GridPane.rowIndex="2" />
-            <Label text="Car Number:" GridPane.rowIndex="3" />
-            <Label text="Email:" GridPane.rowIndex="4" />
+            <Label text="Email:" GridPane.rowIndex="2">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <TextField fx:id="tf_lastName" promptText="Example: bobi" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="tf_userId" promptText="Example: 123456789" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="tf_carNumber" promptText="Example: 1234567" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="tf_email" promptText="bob@gmail.com" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="tf_email" promptText="bob@gmail.com" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="111.0" minWidth="10.0" prefWidth="76.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="157.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -38,13 +41,13 @@
             <Font size="34.0" />
          </font>
       </Label>
-      <Button layoutX="400.0" layoutY="545.0" mnemonicParsing="false" onAction="#send_click" prefHeight="25.0" prefWidth="80.0" text="send" />
-      <Button fx:id="btn_cancel" layoutX="310.0" layoutY="545.0" mnemonicParsing="false" onAction="#cancel_click" prefHeight="25.0" prefWidth="73.0" text="Cancel" />
-      <Label layoutX="23.0" layoutY="315.0" prefHeight="35.0" prefWidth="200.0" text="Description:">
+      <Button layoutX="388.0" layoutY="470.0" mnemonicParsing="false" onAction="#send_click" prefHeight="25.0" prefWidth="80.0" text="send" />
+      <Button fx:id="btn_cancel" layoutX="310.0" layoutY="470.0" mnemonicParsing="false" onAction="#cancel_click" prefHeight="25.0" prefWidth="73.0" text="Cancel" />
+      <Label layoutX="23.0" layoutY="257.0" prefHeight="35.0" prefWidth="200.0" text="Description:">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextArea fx:id="ta_description" layoutX="23.0" layoutY="350.0" prefHeight="170.0" prefWidth="445.0" />
+      <TextArea fx:id="ta_description" layoutX="23.0" layoutY="292.0" prefHeight="170.0" prefWidth="445.0" />
    </children>
 </AnchorPane>

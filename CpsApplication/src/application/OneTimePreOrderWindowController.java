@@ -20,8 +20,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -89,7 +93,6 @@ public class OneTimePreOrderWindowController implements Initializable{
 			String carNumber = tf_CarNumber.getText();
 			String email = tf_Email.getText();		
 			String branchName = cb_Branch.getValue();
-
 			LocalDate leavingDate = tf_LeavingDate.getValue();
 			Calendar leavingCalendar = tf_LeavingTime.getCalendar();
 			Date leavingDateTime = ServiceMethods.convertToDateObject(leavingDate, leavingCalendar);	
@@ -107,7 +110,7 @@ public class OneTimePreOrderWindowController implements Initializable{
 			sqlClient.addPreOrderCustomer(preOrderCustomer,requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			ServiceMethods.alertFeedback(serverResponse,event);
-
+            cancelClick(event);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
@@ -116,7 +119,8 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML  
 	void cancelClick(ActionEvent event) {
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+        moveToWindow(event, CpsGlobals.casualCustomerMenuWindow,
+       		   CpsGlobals.casualCustomerMenuWindowTitle);
 	}
 
 	private void isValidInput() throws Exception {
@@ -126,5 +130,21 @@ public class OneTimePreOrderWindowController implements Initializable{
 		FieldValidation.branchNameValidation(cb_Branch.getValue());
 		FieldValidation.calendarValidation(tf_ArrivingDate.getValue(),tf_ArrivingTime.getCalendar());
 		FieldValidation.calendarValidation(tf_LeavingDate.getValue(), tf_LeavingTime.getCalendar());
+	}
+	
+	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
+    	try {		
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
+    		Parent root1 = (Parent) fxmlLoader.load();
+    		Stage stage = new Stage();
+    		stage.setTitle(windowTitle);
+    		stage.setScene(new Scene(root1));
+    		stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
+    		stage.show();
+    		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    	}
+    	catch(IOException e) {
+    		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
+    	}
 	}
 }

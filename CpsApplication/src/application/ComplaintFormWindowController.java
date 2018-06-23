@@ -1,9 +1,12 @@
 package application;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
+import application.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -12,6 +15,7 @@ import entity.CustomerComplaint;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,7 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
-public class ComplaintFormWindowController {
+public class ComplaintFormWindowController implements Initializable{
 
 	@FXML
 	private AnchorPane anchor_pane;
@@ -32,31 +36,25 @@ public class ComplaintFormWindowController {
 	private TextField tf_firstName;
 
 	@FXML
-	private TextField tf_userId;
-
-	@FXML
 	private Button btn_cancel;
 
 	@FXML
 	private TextField tf_lastName;
 
 	@FXML
-	private TextField tf_carNumber;
-
-	@FXML
 	private TextArea ta_description;
 
 	@FXML
 	private TextField tf_email;
-
+	private String id;
+	private String carNumber;
+	
 	@FXML
 	void send_click(ActionEvent event) {
 		try {
 			isValidInput();
 			String firstName = tf_firstName.getText();
 			String lastName = tf_lastName.getText();
-			String id = tf_userId.getText();
-			String carNumber = tf_carNumber.getText();
 			String email = tf_email.getText();
 			String description = ta_description.getText();
 			CustomerComplaint customerComplaint = new CustomerComplaint(firstName, lastName, 
@@ -76,16 +74,22 @@ public class ComplaintFormWindowController {
 
 	@FXML
 	void cancel_click(ActionEvent event) {
-    	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
-    			CpsGlobals.subscriberMenuWindowTitle);
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    	User currentUser = User.getCurrentUser();
+    	if(currentUser.getUserType().equals(UserType.subscriber)) {
+        	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
+        			CpsGlobals.subscriberMenuWindowTitle);
+    	}
+    	else {
+        	moveToWindow(event,CpsGlobals.casualCustomerMenuWindow,
+        			CpsGlobals.casualCustomerMenuWindowTitle);
+    	}
 	}
 
 	private void isValidInput() throws Exception {
 		FieldValidation.nameValidation(tf_firstName.getText());
 		FieldValidation.nameValidation(tf_lastName.getText());
-		FieldValidation.idValidation(tf_userId.getText());
-		FieldValidation.carNumberValidation(tf_carNumber.getText());	
+		FieldValidation.idValidation(id);
+		FieldValidation.carNumberValidation(carNumber);	
 		FieldValidation.emailValidation(tf_email.getText());
 		FieldValidation.nameValidation(ta_description.getText());
 
@@ -105,5 +109,13 @@ public class ComplaintFormWindowController {
     	catch(IOException e) {
     		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
     	}
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		User user = User.getCurrentUser();
+		id = user.getUserName();
+		carNumber = user.getPassword();
 	}
 }

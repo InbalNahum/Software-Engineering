@@ -37,7 +37,7 @@ public class SubscriberMenuController {
 
     @FXML
     void parkCar_click(ActionEvent event) {
-     moveToWindow(event, CpsGlobals.EnterCarToParkingWindow,
+     moveToWindow(event, CpsGlobals.enterCarToParkingWindow,
     		 CpsGlobals.EnterCarToParkingWithCheckWindowTitle);
     }
 
@@ -48,7 +48,7 @@ public class SubscriberMenuController {
 
     @FXML
     void sendComplaint_click(ActionEvent event) {
-       moveToWindow(event, CpsGlobals.ComplaintFormWindow,
+       moveToWindow(event, CpsGlobals.complaintFormWindow,
     		   CpsGlobals.ComplaintFormWindowTitle);
     }
 
