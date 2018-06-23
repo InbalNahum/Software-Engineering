@@ -2,6 +2,7 @@ package application;
 
 import java.util.Optional;
 
+import actors.User;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;

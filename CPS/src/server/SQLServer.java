@@ -11,9 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import actors.CasualCustomer;
+import actors.User;
 import client.ClientRequest;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
@@ -37,7 +40,7 @@ public class SQLServer extends AbstractServer
 {
 
 	final public static int DEFAULT_PORT = 5555;
-
+	List<User> activeUsers = new ArrayList<User>();
 
 	public SQLServer(int port) 
 	{
@@ -52,6 +55,18 @@ public class SQLServer extends AbstractServer
 		ServerResponse serverResponse = new ServerResponse();
 		try {
 			switch(clientRequest.getServerOperation()) {
+			case addNewUser:
+				boolean isFine = addNewUser(clientRequest);
+				if(isFine) {					
+					sendOperationSuccess(requestToken, client);
+				}
+				else {
+					sendOperationFailure(requestToken, client);
+				}
+				break;
+			case removeUser:
+				removeUser(clientRequest);
+				sendOperationSuccess(requestToken, client);
 			case customerAuthentication:
 				serverResponse = customerAuthentication(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
@@ -232,6 +247,23 @@ public class SQLServer extends AbstractServer
 		}
 	}
 
+	private void removeUser(ClientRequest clientRequest) {
+	    User toRemove = (User) clientRequest.getObjectAtIndex(0);
+		activeUsers.remove(toRemove);		
+	}
+
+	private boolean addNewUser(ClientRequest clientRequest) {
+		boolean toRet = true;
+	    User toAdd = (User) clientRequest.getObjectAtIndex(0);
+	    if(!activeUsers.contains(toAdd)) {
+	    	activeUsers.add(toAdd);	
+	    }
+	    else {
+	    	toRet = false;
+	    }
+	    return toRet;
+	}
+
 	private ServerResponse customerAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
 		ServerResponse serverResponse = new ServerResponse();
 		serverResponse .setServerOperation(ServerOperation.customerAuthentication);
@@ -307,6 +339,19 @@ public class SQLServer extends AbstractServer
 		    		statusMessage, promotionalMessage);
 		    serverResponse.addTolist(complaintMessage);
 		} 
+		
+		PreparedStatement orderStatement = serverConnection.prepareStatement(CpsGlobals.getUserPreorders);
+		orderStatement.setString(1, userId);
+		ResultSet orderResult = orderStatement.executeQuery();
+        while(orderResult.next()) {
+        	Timestamp startTime = orderResult.getTimestamp(4);
+        	Timestamp finishTime = orderResult.getTimestamp(5);
+        	String branchName = orderResult.getString(3);
+        	String orderMessage = String.format(CpsGlobals.preOrderMessageFormat,
+        			branchName,startTime.toString(),finishTime.toString());
+        	serverResponse.addTolist(orderMessage);
+        }
+
         return serverResponse;
 	}
 

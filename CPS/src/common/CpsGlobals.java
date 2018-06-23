@@ -26,7 +26,7 @@ public class CpsGlobals {
 		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
 		updatePriceListTable, getUserMessages, updateComplaintTable, EnterCarToParkingWithCheck,
 		setBranchToFullState, setBranchSetup, EnterCarToParking, customerAuthentication
-		,cancelPreOrder, removeCarFromParking};
+		,cancelPreOrder, removeCarFromParking, addNewUser, removeUser};
 		
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -98,6 +98,7 @@ public class CpsGlobals {
 			+ "WHERE MonthlySubscription_ID = ? AND MonthlySubscription_CarNumber = ?";
 	public static final String getClientComplaint = "SELECT * FROM CustomerComplaint WHERE ComplainUserId"
 			+ " = ? AND ComplainCarNumber = ?";
+	public static final String getUserPreorders = "SELECT * FROM OneTimePreOrder WHERE OneTimePreOrder_ID = ?";
 	public static final String fetchToken = "SELECT * FROM TokenHolder";
 	public static final String increaseToken = "UPDATE TokenHolder SET token=token+1";
 	public static final String getBranchList = "SELECT * FROM Branch";
@@ -134,7 +135,6 @@ public class CpsGlobals {
 	public static final String subscriptionExpiredTitle = "Subscription Expired";
 	public static final String OneTimePreOrderWindowTitle = "Pre parking order";
 
-
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
 	public static final String customerLogin = "CustomerLogin.fxml";
@@ -152,8 +152,6 @@ public class CpsGlobals {
 	public static final String casualOrderWindow = "CasualOrderWindow.fxml";
 	public static final String enterCarToParkingWithCheckWindow = "EnterCarToParkingWithCheckWindow.fxml";
 	public static final String employeeLoginWindow = "LoginWindow.fxml";
-
-
 
 	//exception messages 
 	public static final String emptyString = "";
@@ -179,6 +177,7 @@ public class CpsGlobals {
 	public static final String numberFormatException = "Click only numbers";
 	public static final String orderDoesntExist = "Your Order doesn't exist";
 	public static final String carDoesntExist = "Your Car doesn't exist";
+	public static final String userAlreadyConnected = "The user is already connected";
 	
 	//dialog messages
 	public static final String errorDialogTitle = "Error Dialog";
@@ -197,7 +196,8 @@ public class CpsGlobals {
 	//Client message formats
     public static final String subscriptionRenewalMessageFormat = "Your subscription ends in %s days, it's time to renew :)";
     public static final String complaintFormat = "%s\nStatus: %s\nPromotional: %s";
-
+    public static final String preOrderMessageFormat = "Branch name:%s\nArrive time:%s\nLeave time:%s";
+    
 	//parkingStatus
 	public static enum parkingState{available, unAvailable, outOfOrder,anoutOfOrder};	
 
