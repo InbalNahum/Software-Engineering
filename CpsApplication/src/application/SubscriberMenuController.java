@@ -60,6 +60,12 @@ public class SubscriberMenuController {
     		  CpsGlobals.RenewMonthlySubscriptionWindowTitle);
     }
     
+    @FXML
+    void getCar_click(ActionEvent event) {
+    	moveToWindow(event,CpsGlobals.removeCar,
+    			CpsGlobals.removeCarTitle);
+    }
+    
 
     @FXML
     void cancel_click(ActionEvent event) {
@@ -71,8 +77,8 @@ public class SubscriberMenuController {
     	} catch (IOException | InterruptedException e) {
           e.printStackTrace();
 		}
-        moveToWindow(event, CpsGlobals.employeeLoginWindow,
-       		   CpsGlobals.employeeLoginTitle);
+        moveToWindow(event, CpsGlobals.customerLogin,
+       		   CpsGlobals.customerLoginTitle);
     }
     
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {

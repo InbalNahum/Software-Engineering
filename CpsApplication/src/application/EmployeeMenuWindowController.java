@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import actors.User;
 import actors.User.UserType;
+import client.SqlClient;
 import common.CpsGlobals;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
@@ -81,6 +82,21 @@ public class EmployeeMenuWindowController {
 		moveToWindow(event, CpsGlobals.outOfOrderManagementWindow,
 				CpsGlobals.outOfOrderManagementWindowTitle);
 	}
+	
+
+    @FXML
+    void cancel_click(ActionEvent event) {
+    	try {
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
+			int token = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.removeUser(User.getCurrentUser(),token);
+    	} catch (IOException | InterruptedException e) {
+          e.printStackTrace();
+		}
+        moveToWindow(event, CpsGlobals.employeeLoginWindow,
+       		   CpsGlobals.employeeLoginTitle);
+    }
 
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
 		try {		

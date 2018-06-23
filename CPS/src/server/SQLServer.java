@@ -67,6 +67,7 @@ public class SQLServer extends AbstractServer
 			case removeUser:
 				removeUser(clientRequest);
 				sendOperationSuccess(requestToken, client);
+				break;
 			case customerAuthentication:
 				serverResponse = customerAuthentication(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);

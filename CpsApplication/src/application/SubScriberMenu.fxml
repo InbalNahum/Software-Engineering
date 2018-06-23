@@ -30,5 +30,6 @@
          </rowConstraints>
       </GridPane>
       <Button layoutX="108.0" layoutY="317.0" mnemonicParsing="false" onAction="#cancel_click" prefHeight="25.0" prefWidth="133.0" text="Cancel" />
+      <Button fx:id="getCar_btn" layoutX="110.0" layoutY="259.0" mnemonicParsing="false" onAction="#getCar_click" prefHeight="25.0" prefWidth="133.0" text="Get Car Back" />
    </children>
 </AnchorPane>

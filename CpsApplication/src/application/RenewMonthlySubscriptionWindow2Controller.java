@@ -64,7 +64,7 @@ public class RenewMonthlySubscriptionWindow2Controller {
 			sqlClient.renewMonthlySubscription(monthlySubscription,requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			ServiceMethods.alertFeedback(serverResponse,event);
-
+			cancel_click(event);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
@@ -73,6 +73,14 @@ public class RenewMonthlySubscriptionWindow2Controller {
 
     @FXML
     void cancel_click(ActionEvent event) {
+    	try {
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
+			int token = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.removeUser(User.getCurrentUser(),token);
+    	} catch (IOException | InterruptedException e) {
+          e.printStackTrace();
+		}
     	moveToWindow(event,CpsGlobals.customerLogin,
     			CpsGlobals.customerLoginTitle);
     }
