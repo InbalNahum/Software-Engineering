@@ -5,13 +5,11 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import client.ClientRequest;
+import application.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.ServiceMethods;
-import entity.Complaint;
 import entity.MessageForUser;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,10 +18,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -81,8 +79,15 @@ public class ClientMailBoxController implements Initializable {
 	
     @FXML
     void cancel_click(ActionEvent event) {
-    	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
-    			CpsGlobals.subscriberMenuWindowTitle);
+    	User currentUser = User.getCurrentUser();
+    	if(currentUser.getUserType().equals(UserType.subscriber)) {
+        	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
+        			CpsGlobals.subscriberMenuWindowTitle);
+    	}
+    	else {
+        	moveToWindow(event,CpsGlobals.casualCustomerMenuWindow,
+        			CpsGlobals.casualCustomerMenuWindowTitle);
+    	}
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
     }
     

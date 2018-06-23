@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
+import application.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -76,8 +77,15 @@ public class ComplaintFormWindowController {
 
 	@FXML
 	void cancel_click(ActionEvent event) {
-    	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
-    			CpsGlobals.subscriberMenuWindowTitle);
+    	User currentUser = User.getCurrentUser();
+    	if(currentUser.getUserType().equals(UserType.subscriber)) {
+        	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
+        			CpsGlobals.subscriberMenuWindowTitle);
+    	}
+    	else {
+        	moveToWindow(event,CpsGlobals.casualCustomerMenuWindow,
+        			CpsGlobals.casualCustomerMenuWindowTitle);
+    	}
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 	}
 
