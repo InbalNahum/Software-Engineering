@@ -116,13 +116,16 @@ public class CpsGlobals {
 	public static final String subscriberMenuWindowTitle = "Subscriber Menu";
 	public static final String casualCustomerMenuWindowTitle = "Casual Customer Menu";
 	public static final String clientMailBoxTitle = "Mail Box";
-	
+	public static final String subscriptionExpiredTitle = "Subscription Expired";
+
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
 	public static final String subscriberMenuWindow = "SubScriberMenu.fxml";
 	public static final String clientMailBoxWindow = "ClientMailBox.fxml";
 	public static final String welcomeWindow = "WelcomeWindow.fxml";
 	public static final String handleComplaintWindow = "HandleComplaint.fxml";
+	public static final String renewSubscriptionWindow = "RenewMonthlySubscriptionWindow.fxml";
+	public static final String subscriptionExpiredWindow = "SubscriptionExpiredWindow.fxml";
 
 
 	//exception messages 
@@ -175,4 +178,7 @@ public class CpsGlobals {
 	public static final String operationSuccess = "Operation done successfully";
 	public static final String operationFailure = "Operation failure";
 	public static final String failToLoadWindow = "Fail to load window";
+	public static final String expiredOrNotStart = "expiredOrNotStart";
+	public static final String inTokef = "inTokef";
+
 }

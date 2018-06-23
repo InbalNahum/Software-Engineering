@@ -54,10 +54,7 @@ public class SQLServer extends AbstractServer
 		try {
 			switch(clientRequest.getServerOperation()) {
 			case customerAuthentication:
-				boolean isSubscriber = customerAuthentication(clientRequest,serverConnection);
-				serverResponse.setServerOperation(ServerOperation.customerAuthentication);
-				serverResponse.addTolist(isSubscriber);
-				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				serverResponse = customerAuthentication(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
 				break;
 			case getUserMessages:
@@ -195,7 +192,10 @@ public class SQLServer extends AbstractServer
 		}
 	}
 
-	private boolean customerAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+	private ServerResponse customerAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse .setServerOperation(ServerOperation.customerAuthentication);
+		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 		boolean isSubscriber = false;
 		int userId = (int) clientRequest.getObjectAtIndex(0);
         int userCarNum = (int) clientRequest.getObjectAtIndex(1);
@@ -205,8 +205,25 @@ public class SQLServer extends AbstractServer
 		ResultSet subscriberResult = subscriberStatement.executeQuery();
         if(subscriberResult.next()) {
         	isSubscriber = true;
+        	serverResponse.addTolist(isSubscriber);
+        	Timestamp creationTime = subscriberResult.getTimestamp(3);
+        	Timestamp currentTime = new Timestamp(new Date().getTime());
+            if(creationTime.after(currentTime)) {
+            	serverResponse.addTolist(CpsGlobals.expiredOrNotStart);
+            }
+            else {
+            	long daysDiff = TimeUnit.DAYS.convert(currentTime.getTime()-creationTime.getTime()
+            			, TimeUnit.MILLISECONDS);
+            	if(daysDiff >= CpsGlobals.SubscriptionDays) {
+                	serverResponse.addTolist(CpsGlobals.expiredOrNotStart);
+            	}
+            	else {
+                	serverResponse.addTolist(CpsGlobals.inTokef);
+            	}
+            }
+
         }
-        return isSubscriber;
+        return serverResponse;
 	}
 
 	private ServerResponse getUserMessages(ClientRequest clientRequest, Connection serverConnection) throws SQLException {

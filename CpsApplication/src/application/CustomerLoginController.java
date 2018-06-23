@@ -81,9 +81,18 @@ public class CustomerLoginController implements Initializable {
 			userId = customerId;
 			userCarNum = carNum;
 			User.initalizeUser(userId, userCarNum, UserType.customer);
-			if(customerAuthentication(customerId,carNum)) {
-				moveToWindow(event, CpsGlobals.subscriberMenuWindow,
-						CpsGlobals.subscriberMenuWindowTitle);
+			ServerResponse serverResponse = customerAuthentication(customerId,carNum);
+			boolean isSubscriber = (boolean) serverResponse.getObjectAtIndex(0);
+			if(isSubscriber) {
+				String date = (String) serverResponse.getObjectAtIndex(1);
+				if(date.equals(CpsGlobals.inTokef)) {
+					moveToWindow(event, CpsGlobals.subscriberMenuWindow,
+							CpsGlobals.subscriberMenuWindowTitle);
+				}
+				else {
+					moveToWindow(event,CpsGlobals.subscriptionExpiredWindow,
+							CpsGlobals.subscriptionExpiredTitle);
+				}
  			}
 			else {
 				moveToWindow(event, CpsGlobals.casualCustomerMenuWindow,
@@ -97,15 +106,13 @@ public class CustomerLoginController implements Initializable {
 
 	}
 
-	private boolean customerAuthentication(String customerId, String carNum) throws InterruptedException, IOException {
-		boolean isSubscriber = false;
+	private ServerResponse customerAuthentication(String customerId, String carNum) throws InterruptedException, IOException {
 			SqlClient sqlClient = SqlClient.getInstance();
             sqlClient.sendTokenRequest();
             int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.customerAuthentication(customerId,carNum,requestToken);
 			Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
-			isSubscriber = (boolean) serverResponse.get().getObjectAtIndex(0);
-		return isSubscriber;
+		return serverResponse.get();
 	}
 	
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
