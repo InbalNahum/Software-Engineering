@@ -359,4 +359,12 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
         handleMessageFromGuiClient(clientRequest);
 	}
 
+	public void removeUser(User currentUser, int token) {
+        ClientRequest clientRequest = new ClientRequest();
+        clientRequest.setCommunicateToken(token);
+        clientRequest.setServerOperation(ServerOperation.removeUser);
+        clientRequest.addTolist(currentUser);
+        handleMessageFromGuiClient(clientRequest);
+	}
+
 }
