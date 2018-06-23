@@ -124,6 +124,16 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	}
 	
 	@Override
+	public void removeCarFromParking(String id,String carNumber,int token) {
+		ClientRequest clientRequest = new ClientRequest();
+		clientRequest.setServerOperation(ServerOperation.removeCarFromParking);
+		clientRequest.addTolist(id);
+		clientRequest.addTolist(carNumber);
+		clientRequest.setCommunicateToken(token);
+		handleMessageFromGuiClient(clientRequest);
+	}
+	
+	@Override
 	public void CancelPreOrder(String id,String carNumber,int token) {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.cancelPreOrder);

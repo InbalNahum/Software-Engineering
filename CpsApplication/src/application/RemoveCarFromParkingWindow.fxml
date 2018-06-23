@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RemoveCarFromParkingWindowController">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="188.0" prefWidth="349.0">
+         <children>
+            <Label layoutX="32.0" layoutY="50.0" prefHeight="35.0" prefWidth="321.0" text="Remove Your Car:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="btn_RemoveCar" layoutX="186.0" layoutY="122.0" mnemonicParsing="false" onAction="#RemoveCar_Click" prefHeight="31.0" prefWidth="127.0" text="Remove Car" />
+            <Button fx:id="btn_Cancel" layoutX="32.0" layoutY="122.0" mnemonicParsing="false" onAction="#Cancel_Click" prefHeight="31.0" prefWidth="127.0" text="Cancel" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -17,7 +17,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws IOException {
 
 	    // constructing our scene
-	    URL url = getClass().getResource(CpsGlobals.CancelPreOrderWindow);
+	    URL url = getClass().getResource(CpsGlobals.RemoveCarFromParkingWindow);
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    primaryStage.setScene( scene );

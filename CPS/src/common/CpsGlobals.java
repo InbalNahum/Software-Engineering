@@ -26,7 +26,7 @@ public class CpsGlobals {
 		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
 		updatePriceListTable, getUserMessages, updateComplaintTable, EnterCarToParkingWithCheck,
 		setBranchToFullState, setBranchSetup, EnterCarToParking, customerAuthentication
-		,cancelPreOrder};
+		,cancelPreOrder, removeCarFromParking};
 		
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -40,8 +40,14 @@ public class CpsGlobals {
 			+ "OneTimePreOrder_ArriveTime "
 			+ "FROM OneTimePreOrder WHERE OneTimePreOrder_ID = ?";
 	
+	public static final String readIdFromCasualCustomer = "Select CasualCustomer_ID"
+			+" FROM CasualCustomer WHERE CasualCustomer_ID = ?";
+	
 	public static final String deletePreOrder = "DELETE FROM OneTimePreOrder"
 			+ " WHERE OneTimePreOrder_CarNumber = ?";
+	
+	public static final String deleteCasualOrder = "DELETE FROM CasualCustomer"
+			+ " WHERE CasualCustomer_CarNumber = ?";
 	
 	public static final String writeOneTimePreOrder = "INSERT INTO OneTimePreOrder("
 			+ "	OneTimePreOrder_ID, OneTimePreOrder_CarNumber, "
@@ -141,6 +147,7 @@ public class CpsGlobals {
 	public static final String subscriptionExpiredWindow = "SubscriptionExpiredWindow.fxml";
 	public static final String enterCarToParkingWindow= "EnterCarToParkingWindow.fxml";
 	public static final String CancelPreOrderWindow= "CancelPreOrderWindow.fxml";
+	public static final String RemoveCarFromParkingWindow= "RemoveCarFromParkingWindow.fxml";	
 	public static final String customerLogin = "CustomerLogin.fxml";
 	public static final String loginWindow = "LoginWindow.fxml";
 	
@@ -167,6 +174,7 @@ public class CpsGlobals {
 	public static final String serverIssue = "Server issues";
 	public static final String numberFormatException = "Click only numbers";
 	public static final String orderDoesntExist = "Your Order doesn't exist";
+	public static final String carDoesntExist = "Your Car doesn't exist";
 	
 	//dialog messages
 	public static final String errorDialogTitle = "Error Dialog";

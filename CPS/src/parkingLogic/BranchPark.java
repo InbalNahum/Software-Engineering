@@ -37,11 +37,15 @@ public class BranchPark implements Serializable {
 		calculateGlobalOptimalPlace();
 	}
 	
-	public void removeCarFromPark(int carNumber) {
+	public boolean removeCarFromPark(int carNumber) {
 		Location carLocation = carPlacement.get(carNumber);
+		if(carLocation == null)
+			return false;
+			
 		park[carLocation.getX()].removeCarFromPark(new Point(carLocation.getY(),carLocation.getZ()));
 		calculateGlobalOptimalPlace();
 		carPlacement.remove(carNumber);
+		return true;
 	}
 	
 	public boolean isFull() {

@@ -207,10 +207,21 @@ public class SQLServer extends AbstractServer
 			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 			client.sendToClient(serverResponse);
 		break;	
+		
+		case removeCarFromParking:
+			Object[] answer3 = RemoveCarFromParkingWithCheck(clientRequest, serverConnection);
+			serverResponse = new ServerResponse();
+			serverResponse.setServerOperation(ServerOperation.removeCarFromParking);
+			serverResponse.addTolist(answer3[0]);
+			serverResponse.addTolist(answer3[1]);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+			client.sendToClient(serverResponse);
+		break;	
 
 			default:
 				break;
-			}		
+			}	
+			
 		}catch (Exception e) {
 			try {
 				sendOperationFailure(requestToken,client);
@@ -473,6 +484,43 @@ public class SQLServer extends AbstractServer
     		toRet[1] = Message;		
 			return toRet;
 		}
+		return toRet;
+	}
+	
+	private Object[] RemoveCarFromParkingWithCheck(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
+		String id = (String) clientRequest.getObjects().get(0);
+		String carNumber = (String) clientRequest.getObjects().get(1);	
+		Object[] toRet = new Object[2];
+		toRet[0] = Boolean.FALSE;
+		toRet[1] = "";
+		String branchName = "Tel-Aviv";
+		
+		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranchFromPreOrder);
+		statement.setString(1, id);
+		ResultSet result = statement.executeQuery();
+
+		if (result.next()) {
+			branchName = result.getString(1);
+			statement = serverConnection.prepareStatement(CpsGlobals.deletePreOrder);
+			statement.setString(1, carNumber);	
+			statement.executeUpdate();
+		}
+			
+		statement = serverConnection.prepareStatement(CpsGlobals.readIdFromCasualCustomer);
+		statement.setString(1, id);
+		result = statement.executeQuery();
+		 
+		if (result.next()) {
+			statement = serverConnection.prepareStatement(CpsGlobals.deleteCasualOrder);
+			statement.setString(1, carNumber);
+			statement.executeUpdate();
+		}
+
+		Branch branch = readBranch(serverConnection, branchName);
+		if(branch.getCarPark().removeCarFromPark(Integer.parseInt(carNumber))){
+			toRet[0] = Boolean.TRUE;
+			toRet[1] = CpsGlobals.operationSuccess;
+		}		
 		return toRet;
 	}
 	
