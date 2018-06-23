@@ -26,7 +26,7 @@ public class CpsGlobals {
 		setSavedParking, getBranchById, customerComplaintRequest, priceListRequest,
 		updatePriceListTable, getUserMessages, updateComplaintTable, EnterCarToParkingWithCheck,
 		setBranchToFullState, setBranchSetup, EnterCarToParking, customerAuthentication
-		,cancelPreOrder, removeCarFromParking};
+		,cancelPreOrder, removeCarFromParking, addNewUser, removeUser};
 		
 	//Sql commands
 	public static final String readObjectSql = "SELECT object_value FROM java_objects WHERE id = ?";
@@ -177,6 +177,7 @@ public class CpsGlobals {
 	public static final String numberFormatException = "Click only numbers";
 	public static final String orderDoesntExist = "Your Order doesn't exist";
 	public static final String carDoesntExist = "Your Car doesn't exist";
+	public static final String userAlreadyConnected = "The user is already connected";
 	
 	//dialog messages
 	public static final String errorDialogTitle = "Error Dialog";

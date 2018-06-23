@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import actors.CasualCustomer;
+import actors.User;
 import entity.MonthlySubscription;
 import common.CpsGlobals;
 import common.CpsGlobals.ServerOperation;
@@ -348,6 +349,14 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		clientRequest.addTolist(Integer.parseInt(carNum));
 		clientRequest.setCommunicateToken(requestToken);
 		handleMessageFromGuiClient(clientRequest);	
+	}
+
+	public void isValidUser(User user,int token) {
+        ClientRequest clientRequest = new ClientRequest();
+        clientRequest.setCommunicateToken(token);
+        clientRequest.setServerOperation(ServerOperation.addNewUser);
+        clientRequest.addTolist(user);
+        handleMessageFromGuiClient(clientRequest);
 	}
 
 }

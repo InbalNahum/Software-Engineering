@@ -5,7 +5,8 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import application.User.UserType;
+import actors.User;
+import actors.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.ServiceMethods;
