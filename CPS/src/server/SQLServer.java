@@ -307,6 +307,19 @@ public class SQLServer extends AbstractServer
 		    		statusMessage, promotionalMessage);
 		    serverResponse.addTolist(complaintMessage);
 		} 
+		
+		PreparedStatement orderStatement = serverConnection.prepareStatement(CpsGlobals.getUserPreorders);
+		orderStatement.setString(1, userId);
+		ResultSet orderResult = orderStatement.executeQuery();
+        while(orderResult.next()) {
+        	Timestamp startTime = orderResult.getTimestamp(4);
+        	Timestamp finishTime = orderResult.getTimestamp(5);
+        	String branchName = orderResult.getString(3);
+        	String orderMessage = String.format(CpsGlobals.preOrderMessageFormat,
+        			branchName,startTime.toString(),finishTime.toString());
+        	serverResponse.addTolist(orderMessage);
+        }
+
         return serverResponse;
 	}
 
