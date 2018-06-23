@@ -133,8 +133,13 @@ public class CpsGlobals {
 	public static final String clientMailBoxTitle = "Mail Box";
 	public static final String subscriptionExpiredTitle = "Subscription Expired";
 	public static final String OneTimePreOrderWindowTitle = "Pre parking order";
+	public static final String branchSetupWindowTitle = "branch Setup";
+	public static final String handleComplaintWindowTitle = "Complaint Management";
+	public static final String setBranchToFullStaeWindowTitle = "Set Branch To Full Stae";
+	public static final String updatePriceListWindowTitle = "Update Price List";
+	public static final String outOfOrderManagementWindowTitle = "Out Of Order Management";
 
-
+	
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
 	public static final String customerLogin = "CustomerLogin.fxml";
@@ -152,9 +157,14 @@ public class CpsGlobals {
 	public static final String casualOrderWindow = "CasualOrderWindow.fxml";
 	public static final String enterCarToParkingWithCheckWindow = "EnterCarToParkingWithCheckWindow.fxml";
 	public static final String employeeLoginWindow = "LoginWindow.fxml";
-
-
-
+	public static final String branchSetupWindow = "BranchSetupWindow.fxml";
+	public static final String createNewBranchWindow = "CreateNewBranchWindow.fxml";
+	public static final String saveParkingWindow = "SaveParkingWindow.fxml";
+	public static final String setBranchToFullStaeWindow = "SetBranchToFullStaeWindow.fxml";
+	public static final String showBranchStateWindow = "ShowBranchStateWindow.fxml";
+	public static final String updatePriceListWindow = "UpdatePriceListWindow.fxml";
+	public static final String outOfOrderManagementWindow = "OutOfOrderManagementWindow.fxml";
+	
 	//exception messages 
 	public static final String emptyString = "";
 	public static final String emptyId = "Enter your id";
