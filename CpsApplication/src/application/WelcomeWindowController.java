@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -27,29 +28,25 @@ public class WelcomeWindowController {
 
 	@FXML
 	void customer_click(ActionEvent event) {
-		try {		
-
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(CpsGlobals.customerLogin));
-			Parent root1 = (Parent) fxmlLoader.load();
-			Stage stage = new Stage();
-			stage.setTitle(CpsGlobals.customerLoginTitle);
-			stage.setScene(new Scene(root1));  
-			stage.show();
-			((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-		}
-		catch(IOException e) {
-			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
-		}
+		moveToWindow(event, CpsGlobals.customerLogin,
+				CpsGlobals.customerLoginTitle);
 	}
 
 	@FXML
 	void employee_click(ActionEvent event) {
+		moveToWindow(event, CpsGlobals.employeeLoginWindow,
+				CpsGlobals.employeeLoginTitle);
+	}
+
+	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
 		try {		
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(CpsGlobals.loginWindow));
+
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
 			Parent root1 = (Parent) fxmlLoader.load();
 			Stage stage = new Stage();
-			stage.setTitle(CpsGlobals.employeeLoginTitle);
-			stage.setScene(new Scene(root1));  
+			stage.setTitle(windowTitle);
+			stage.setScene(new Scene(root1));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
 			stage.show();
 			((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 		}
@@ -57,5 +54,4 @@ public class WelcomeWindowController {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
 		}
 	}
-
 }
