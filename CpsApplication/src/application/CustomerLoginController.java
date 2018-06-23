@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import application.User.UserType;
+import actors.User;
+import actors.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -83,6 +84,11 @@ public class CustomerLoginController implements Initializable {
 			boolean isSubscriber = (boolean) serverResponse.getObjectAtIndex(0);
 			if(isSubscriber) {
 				User.initalizeUser(userId, userCarNum, UserType.subscriber);
+				if(!isValidUser(User.getCurrentUser())) {
+					ServiceMethods.alertDialog(AlertType.ERROR,
+							CpsGlobals.userAlreadyConnected);
+					return;
+				}
 				String date = (String) serverResponse.getObjectAtIndex(1);
 				if(date.equals(CpsGlobals.inTokef)) {
 					moveToWindow(event, CpsGlobals.subscriberMenuWindow,
@@ -95,6 +101,11 @@ public class CustomerLoginController implements Initializable {
 			}
 			else {
 				User.initalizeUser(userId, userCarNum, UserType.casualCustomer);
+				if(!isValidUser(User.getCurrentUser())) {
+					ServiceMethods.alertDialog(AlertType.ERROR,
+							CpsGlobals.userAlreadyConnected);
+					return;
+				}
 				moveToWindow(event, CpsGlobals.casualCustomerMenuWindow,
 						CpsGlobals.casualCustomerMenuWindowTitle);
 			}
@@ -129,6 +140,21 @@ public class CustomerLoginController implements Initializable {
 		catch(IOException e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
 		}
+	}
+	
+	private boolean isValidUser(User user) throws IOException, InterruptedException {
+		SqlClient sqlClient = SqlClient.getInstance();
+		sqlClient.sendTokenRequest();
+		int token = WaitToServer.waitForServerToken(sqlClient);
+		sqlClient.isValidUser(user,token);
+		Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, token);
+	    String result = (String) serverResponse.get().getObjectAtIndex(0);
+	    if(result.equals(CpsGlobals.operationSuccess)) {
+	    	return true;
+	    }
+	    else {
+	    	return false;
+	    }
 	}
 
 	@FXML

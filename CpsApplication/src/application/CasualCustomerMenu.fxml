@@ -31,5 +31,6 @@
             <Button fx:id="usePreOrder_btn" mnemonicParsing="false" onAction="#usePreOrder_click" prefHeight="31.0" prefWidth="161.0" text="Use Pre-Order" GridPane.rowIndex="2" />
          </children>
       </GridPane>
+      <Button layoutX="113.0" layoutY="311.0" mnemonicParsing="false" onAction="#cancel_click" prefHeight="25.0" prefWidth="133.0" text="Cancel" />
    </children>
 </AnchorPane>

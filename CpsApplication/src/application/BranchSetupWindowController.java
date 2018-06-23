@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import actors.User;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;

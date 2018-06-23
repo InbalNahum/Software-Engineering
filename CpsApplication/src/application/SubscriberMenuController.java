@@ -6,6 +6,8 @@ package application;
 
 import java.io.IOException;
 
+import actors.User;
+import client.SqlClient;
 import common.CpsGlobals;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
@@ -56,6 +58,21 @@ public class SubscriberMenuController {
     void renewSub_click(ActionEvent event) {
       moveToWindow(event, CpsGlobals.renewSubscriptionWindow,
     		  CpsGlobals.RenewMonthlySubscriptionWindowTitle);
+    }
+    
+
+    @FXML
+    void cancel_click(ActionEvent event) {
+    	try {
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
+			int token = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.removeUser(User.getCurrentUser(),token);
+    	} catch (IOException | InterruptedException e) {
+          e.printStackTrace();
+		}
+        moveToWindow(event, CpsGlobals.employeeLoginWindow,
+       		   CpsGlobals.employeeLoginTitle);
     }
     
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
