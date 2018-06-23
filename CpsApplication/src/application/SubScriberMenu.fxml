@@ -13,29 +13,20 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <GridPane layoutX="52.0" layoutY="77.0" prefHeight="239.0" prefWidth="246.0">
+      <GridPane layoutX="32.0" layoutY="74.0" prefHeight="243.0" prefWidth="290.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="114.0" text="Button" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="114.0" text="Button" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.rowIndex="3" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.rowIndex="4" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.rowIndex="5" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Button fx:id="parkCar_btn" mnemonicParsing="false" onAction="#parkCar_click" prefHeight="25.0" prefWidth="133.0" text="Park Car" />
+            <Button fx:id="mailBox_btn" mnemonicParsing="false" onAction="#mailBox_click" prefHeight="25.0" prefWidth="136.0" text="My Mail Box" GridPane.columnIndex="1" />
+            <Button fx:id="orderSub_btn" mnemonicParsing="false" onAction="#orderSub_click" prefHeight="25.0" prefWidth="133.0" text="Order Subscription" GridPane.rowIndex="1" />
+            <Button fx:id="sendComplaint_btn" mnemonicParsing="false" onAction="#sendComplaint_click" prefHeight="25.0" prefWidth="137.0" text="Send Complaint" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="renewSub_btn" mnemonicParsing="false" onAction="#renewSub_click" prefHeight="25.0" prefWidth="133.0" text="Renew Subscription" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="139.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

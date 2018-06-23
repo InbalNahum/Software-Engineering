@@ -18,7 +18,7 @@ public class ComplainObject implements Serializable{
 	private String refund;
 
 	public ComplainObject(String firstName, String lastName, String customerId
-			, String carNumber, String sendTime, String description, String status) {
+			, String carNumber, String sendTime, String description, String status, String refund) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -27,7 +27,7 @@ public class ComplainObject implements Serializable{
 		this.sendTime = sendTime;
 		this.description = description;
 		this.status = status;
-		this.refund = "";
+		this.refund = refund;
 	}
 	
 	public ComplainObject(String carNumber, String refund) {

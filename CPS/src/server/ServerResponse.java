@@ -14,7 +14,7 @@ public class ServerResponse implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
     
-	private List<Object> objects;
+	private List<Object> objects = new ArrayList<Object>();;
 	private ServerOperation serverOperation;
 	private int communicateToken;
 
@@ -53,9 +53,6 @@ public class ServerResponse implements Serializable {
 	}	
 	
 	public void addTolist(Object object) {
-		if(objects == null) {
-			objects = new ArrayList<Object>();
-		}
 		objects.add(object);
 	}
 	

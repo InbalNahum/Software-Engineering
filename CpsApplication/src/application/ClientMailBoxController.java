@@ -32,11 +32,7 @@ public class ClientMailBoxController implements Initializable {
 
     @FXML
     private TableView<MessageForUser> table;
-    
-    //TODO ydanan - get the details from the last window
-    String currentUserId = "999999999";
-    String currentUserCarNum = "9999999";
-    
+        
 	ObservableList<MessageForUser> userMessages = FXCollections.observableArrayList();
 
 	@Override
@@ -53,15 +49,15 @@ public class ClientMailBoxController implements Initializable {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);
 		}
 		inializeColumns();
-		table.setItems(userMessages);
-
+		table.setItems(userMessages); 
 	}
 	
 	private ServerResponse getMessagesFromServer() throws IOException, InterruptedException {
 		SqlClient sqlClient = SqlClient.getInstance();
 		sqlClient.sendTokenRequest();
 		int requestToken = WaitToServer.waitForServerToken(sqlClient);
-		sqlClient.sendUserMessagesRequest(currentUserId, currentUserCarNum, requestToken);
+		User currentUser = User.getCurrentUser();
+		sqlClient.sendUserMessagesRequest(currentUser.getUserName(), currentUser.getPassword(), requestToken);
         Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 	    return serverResponse.get();
 	}

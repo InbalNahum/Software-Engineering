@@ -5,8 +5,12 @@
 package application;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
+import application.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -14,6 +18,7 @@ import common.ServiceMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -24,7 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
-public class CustomerLoginController {
+public class CustomerLoginController implements Initializable {
 
 	@FXML // fx:id="anchor_pane"
 	private AnchorPane anchor_pane; // Value injected by FXMLLoader
@@ -40,6 +45,30 @@ public class CustomerLoginController {
 
 	@FXML // fx:id="signIn_btn"
 	private Button signIn_btn; // Value injected by FXMLLoader
+	
+	private String userId;
+	private String userCarNum;
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources){
+        
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserCarNum() {
+		return userCarNum;
+	}
+
+	public void setUserCarNum(String userCarNum) {
+		this.userCarNum = userCarNum;
+	}
 
 	@FXML
 	void sigIn_click(ActionEvent event) {
@@ -49,6 +78,9 @@ public class CustomerLoginController {
 		try {
 			FieldValidation.idValidation(customerId);
 			FieldValidation.carNumberValidation(carNum);
+			userId = customerId;
+			userCarNum = carNum;
+			User.initalizeUser(userId, userCarNum, UserType.customer);
 			if(customerAuthentication(customerId,carNum)) {
 				moveToWindow(event, CpsGlobals.subscriberMenuWindow,
 						CpsGlobals.subscriberMenuWindowTitle);
@@ -90,10 +122,9 @@ public class CustomerLoginController {
     		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
     	}
 	}
-
+	
 	@FXML
 	void cancel_click(ActionEvent event) {
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 	}
-
 }

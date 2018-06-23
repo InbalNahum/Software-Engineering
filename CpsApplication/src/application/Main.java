@@ -12,19 +12,16 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-	public static Stage stage;
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-	    // constructing our scene
-		this.stage = primaryStage;
-	    URL url = getClass().getResource("WelcomeWindow.fxml");
+		
+	    URL url = getClass().getResource(CpsGlobals.welcomeWindow);
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
 	    primaryStage.setTitle( CpsGlobals.WelcomeWindowTitle);
-	    stage.setResizable(false);
 	    primaryStage.show();
 	}
 	
