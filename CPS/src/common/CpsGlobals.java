@@ -168,7 +168,8 @@ public class CpsGlobals {
 	public static final String successMessage = "Order done successfully!";
 	public static final String somethingGoWrone = "Something go wrong";
 	public static final String wrongUserOrPassword = "User name or password are incorrect";
-	
+	public static final String permisionFromManager = "Manager permit the price update";
+
 	//column names
 	public static final String employeePassword = "Employee_Password";
 	public static final String complaintStatus = "CustomerComplaint_Status";
