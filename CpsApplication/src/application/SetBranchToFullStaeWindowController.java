@@ -56,13 +56,15 @@ public class SetBranchToFullStaeWindowController implements Initializable {
 		FieldValidation.branchNameValidation(cb_BranchName.getValue());
 	}
 	
-	public void initBranch(String id) {
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
-			sqlClient.sendBranchByIdRequest(id, requestToken);
+			sqlClient.sendBranchByIdRequest(User.getCurrentUser().getUserName(), requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			for(Object obj : serverResponse.get().getObjects()) {
 				String branchName = (String) obj;
@@ -71,11 +73,6 @@ public class SetBranchToFullStaeWindowController implements Initializable {
 		} catch (IOException | InterruptedException e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);
 		}
-		cb_BranchName.setItems(comboBoxList);	
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		initBranch("222222222");
+		cb_BranchName.setItems(comboBoxList);
 	}
 }

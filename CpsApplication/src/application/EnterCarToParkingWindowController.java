@@ -21,18 +21,11 @@ public class EnterCarToParkingWindowController {
     @FXML // fx:id="btn_EnterCar"
     private Button btn_EnterCar; // Value injected by FXMLLoader
 
-    @FXML // fx:id="tf_Id"
-    private TextField tf_Id; // Value injected by FXMLLoader
-
-    @FXML // fx:id="tf_CarNumber"
-    private TextField tf_CarNumber; // Value injected by FXMLLoader
-
     @FXML
     void EnterCar_Click(ActionEvent event) {
     	try {
-    		isValidInput();		
-			String id = tf_Id.getText();
-			String carNumber = tf_CarNumber.getText();		
+			String id = User.getCurrentUser().getUserName();
+			String carNumber = User.getCurrentUser().getPassword();		
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
@@ -50,10 +43,4 @@ public class EnterCarToParkingWindowController {
     void Cancel_Click(ActionEvent event) {
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
     }
-    
-	private void isValidInput() throws Exception {
-		FieldValidation.idValidation(tf_Id.getText());
-		FieldValidation.carNumberValidation(tf_CarNumber.getText());
-	}
-
 }

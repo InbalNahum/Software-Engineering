@@ -47,16 +47,12 @@ public class OutOfOrderManagementWindowController implements Initializable {
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initBranch("308108125");	
-	}
-	
-	public void initBranch(String id) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
-			sqlClient.sendBranchByIdRequest(id, requestToken);
+			sqlClient.sendBranchByIdRequest(User.getCurrentUser().getUserName(), requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			for(Object obj : serverResponse.get().getObjects()) {
 				String branchName = (String) obj;
@@ -67,7 +63,7 @@ public class OutOfOrderManagementWindowController implements Initializable {
 		}
 		cb_Branch.setItems(comboBoxList);	
 	}
-
+	
     
     @FXML
     void Cancel_Click(ActionEvent event) {
