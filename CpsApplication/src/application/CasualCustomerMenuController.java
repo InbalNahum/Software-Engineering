@@ -5,7 +5,10 @@
 package application;
 
 import java.io.IOException;
+import java.util.Optional;
 
+import actors.User;
+import client.SqlClient;
 import common.CpsGlobals;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
@@ -17,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import server.ServerResponse;
 
 public class CasualCustomerMenuController {
 
@@ -63,6 +67,20 @@ public class CasualCustomerMenuController {
     void usePreOrder_click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.enterCarToParkingWithCheckWindow,
       		   CpsGlobals.EnterCarToParkingWithCheckWindowTitle);
+    }
+    
+    @FXML
+    void cancel_click(ActionEvent event) {
+    	try {
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
+			int token = WaitToServer.waitForServerToken(sqlClient);
+			sqlClient.removeUser(User.getCurrentUser(),token);
+    	} catch (IOException | InterruptedException e) {
+          e.printStackTrace();
+		}
+        moveToWindow(event, CpsGlobals.customerLogin,
+       		   CpsGlobals.customerLoginTitle);
     }
     
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
