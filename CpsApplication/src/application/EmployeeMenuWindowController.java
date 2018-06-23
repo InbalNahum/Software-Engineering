@@ -6,6 +6,8 @@ package application;
 
 import java.io.IOException;
 
+import actors.User;
+import actors.User.UserType;
 import common.CpsGlobals;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
@@ -40,6 +42,10 @@ public class EmployeeMenuWindowController {
 
 	@FXML
 	void complaintClicked(ActionEvent event) {
+		if(User.getCurrentUser().getUserType() == UserType.branchEmployee) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.permisionDenied);
+			return;
+		}
 		moveToWindow(event, CpsGlobals.handleComplaintWindow,
 				CpsGlobals.handleComplaintWindowTitle);
 	}
@@ -52,12 +58,20 @@ public class EmployeeMenuWindowController {
 
 	@FXML
 	void showBranchStateClicked(ActionEvent event) {
+		if(User.getCurrentUser().getUserType() != UserType.manager) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.permisionDenied);
+			return;
+		}
 		moveToWindow(event, CpsGlobals.showBranchStateWindow,
 				CpsGlobals.showBranchStateWindowTitle);
 	}
 
 	@FXML
 	void updatePriceClicked(ActionEvent event) {
+		if(User.getCurrentUser().getUserType() != UserType.manager) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.permisionDenied);
+			return;
+		}
 		moveToWindow(event, CpsGlobals.updatePriceListWindow,
 				CpsGlobals.updatePriceListWindowTitle);
 	}

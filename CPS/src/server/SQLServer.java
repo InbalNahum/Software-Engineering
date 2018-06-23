@@ -117,12 +117,8 @@ public class SQLServer extends AbstractServer
 				break;
 
 			case employeeAuthentication:	     
-
-				boolean isEmployee = employeeAuthentication(clientRequest,serverConnection);
-				serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
-				serverResponse.addTolist(isEmployee);
-				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-				client.sendToClient(serverResponse);
+				ServerResponse serverResponse2 = employeeAuthentication(clientRequest,serverConnection);
+				client.sendToClient(serverResponse2);
 				break;
 
 			case monthlySubscription:
@@ -450,20 +446,28 @@ public class SQLServer extends AbstractServer
 		return serverResponse;
 	}
 
-	private boolean employeeAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+	private ServerResponse employeeAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setServerOperation(ServerOperation.employeeAuthentication);
+		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 		boolean answer = false;
 		int id = (int) clientRequest.getObjectAtIndex(0);
 		String password = (String) clientRequest.getObjectAtIndex(1);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.employeeAuthentication);
 		statement.setInt(1, id);
 		ResultSet result = statement.executeQuery();
+		String position = "";
 		if(result.next()) {
-			String databasePass = result.getString(CpsGlobals.employeePassword);
+			String databasePass = result.getString(2);
 			if(databasePass.equals(password)) {
 				answer = true;
 			}
+			 position = result.getString(3);
+			
 		}
-		return answer;
+		serverResponse.addTolist(answer);
+		serverResponse.addTolist(position);
+		return serverResponse;
 	}
 
 

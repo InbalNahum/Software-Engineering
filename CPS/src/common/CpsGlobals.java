@@ -54,7 +54,7 @@ public class CpsGlobals {
 			+ "OneTimePreOrder_BranchName, OneTimePreOrder_ArriveTime, "
 			+ "OneTimePreOrder_LeaveTime, OneTimePreOrder_Email) VALUES (?, ?, ?, ?, ?, ?)";
 	
-	public static final String employeeAuthentication = "select Employee_Password from Employee where Employee_ID=?";
+	public static final String employeeAuthentication = "select * from Employee where Employee_ID=?";
     public static final String isSubscriber = "SELECT * FROM MonthlySubscription WHERE MonthlySubscription_ID = ? "
     		+ "AND MonthlySubscription_CarNumber = ?";
 	public static final String writeMonthlySubscription = "INSERT INTO MonthlySubscription("
@@ -202,6 +202,7 @@ public class CpsGlobals {
 	public static final String somethingGoWrone = "Something go wrong";
 	public static final String wrongUserOrPassword = "User name or password are incorrect";
 	public static final String permisionFromManager = "Manager permit the price update";
+	public static final String permisionDenied = "Permision denied";
 
 	//column names
 	public static final String employeePassword = "Employee_Password";
@@ -226,6 +227,12 @@ public class CpsGlobals {
 	public static final String failToLoadWindow = "Fail to load window";
 	public static final String expiredOrNotStart = "expiredOrNotStart";
 	public static final String inTokef = "inTokef";
+	
+	//Positions names
+	public static final String BranchWorker = "Branch Worker";
+	public static final String CEO = "CEO";
+	public static final String BranchManager = "Branch Manager";
+	public static final String CustomerServiceWorker = "Customer Service Worker";
 	
 
 }

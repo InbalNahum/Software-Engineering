@@ -94,7 +94,9 @@ public class OutOfOrderManagementWindowController implements Initializable {
 			ServiceMethods.alertFeedback(serverResponse,event);
 		} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
-		}   	
+		}  
+		moveToWindow(event,CpsGlobals.employeeMenuWindow,
+				CpsGlobals.employeeMenuWindowTitle);
 	}
 
 
@@ -115,9 +117,7 @@ public class OutOfOrderManagementWindowController implements Initializable {
 			cb_floor.setItems(comboBoxList);		
 		} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
-		}
-		moveToWindow(event,CpsGlobals.employeeMenuWindow,
-				CpsGlobals.employeeMenuWindowTitle);	
+		}	
 	}
 
 	@FXML

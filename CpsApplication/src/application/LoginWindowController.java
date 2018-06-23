@@ -57,9 +57,25 @@ public class LoginWindowController implements Initializable {
 		try {
 			FieldValidation.idValidation(userName);
 			User.initalizeUser(userName, password, UserType.employee);
-			if(employeeAuthentication(userName,password)) {
+			ServerResponse serverResponse = employeeAuthentication(userName,password);
+			boolean isEmployee = (boolean) serverResponse.getObjectAtIndex(0);
+			if(isEmployee) {
+				String position = (String) serverResponse.getObjectAtIndex(1);
+				if(position.equals(CpsGlobals.CEO))
+					User.getCurrentUser().setUserType(UserType.manager);
+				
+				if(position.equals(CpsGlobals.BranchManager))
+					User.getCurrentUser().setUserType(UserType.manager);
+				
+				if(position.equals(CpsGlobals.CustomerServiceWorker))
+					User.getCurrentUser().setUserType(UserType.customerService);
+				
+				if(position.equals(CpsGlobals.BranchWorker))
+					User.getCurrentUser().setUserType(UserType.branchEmployee);
+				
 				moveToWindow(event,CpsGlobals.employeeMenuWindow,
-						CpsGlobals.employeeMenuWindowTitle);			}
+						CpsGlobals.employeeMenuWindowTitle);	
+			}
 			else {
 				ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.wrongUserOrPassword);
 			}
@@ -70,21 +86,18 @@ public class LoginWindowController implements Initializable {
 		}
 	}
 
-	private boolean employeeAuthentication(String userName, String password) throws InterruptedException {
-		boolean isAuth = false;
+	private ServerResponse employeeAuthentication(String userName, String password) throws InterruptedException {
+		Optional<ServerResponse> serverResponse = null;
 		try {
 			SqlClient sqlClient = SqlClient.getInstance();
 			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.employeeAuthentication(userName,password,requestToken);
-			Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
-
-			isAuth = (boolean) serverResponse.get().getObjectAtIndex(0);
+		    serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
 		} catch (IOException e) {
-			isAuth = false;
 			e.printStackTrace();
 		}
-		return isAuth;
+		return serverResponse.get();
 	}
 
 	@FXML

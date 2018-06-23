@@ -9,7 +9,7 @@ public class User implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public enum UserType{employee,casualCustomer,subscriber};
+	public enum UserType{manager, customerService, branchEmployee, employee ,casualCustomer,subscriber};
 	private String userName;
 	private String password;
 	private UserType userType;
@@ -78,4 +78,7 @@ public class User implements Serializable{
 		return userType;
 	}
 
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
 }
