@@ -36,7 +36,7 @@ public class SubscriberMenuController {
 
     @FXML
     void parkCar_click(ActionEvent event) {
-
+     
     }
 
     @FXML
@@ -56,7 +56,8 @@ public class SubscriberMenuController {
 
     @FXML
     void renewSub_click(ActionEvent event) {
-
+      moveToWindow(event, CpsGlobals.renewSubscriptionWindow,
+    		  CpsGlobals.RenewMonthlySubscriptionWindowTitle);
     }
     
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
