@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="249.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.WelcomeWindowController">
+<AnchorPane prefHeight="249.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.WelcomeWindowController">
    <children>
       <Label layoutX="54.0" layoutY="31.0" prefHeight="35.0" prefWidth="193.0" text="Welcome To CPS ">
          <font>
@@ -16,6 +15,6 @@
       </Label>
       <Label layoutX="81.0" layoutY="66.0" text="Smarter parking system" />
       <Button fx:id="customer_btn" layoutX="96.0" layoutY="125.0" mnemonicParsing="false" onAction="#customer_click" text="I'm a customer" />
-      <Button fx:id="employee_btn" layoutX="96.0" layoutY="176.0" mnemonicParsing="false" onAction="#employee_click" prefHeight="25.0" prefWidth="95.0" text="I'm employee" />
+      <Button fx:id="employee_btn" layoutX="96.0" layoutY="176.0" mnemonicParsing="false" onAction="#employee_click" prefHeight="31.0" prefWidth="118.0" text="I'm employee" />
    </children>
 </AnchorPane>
