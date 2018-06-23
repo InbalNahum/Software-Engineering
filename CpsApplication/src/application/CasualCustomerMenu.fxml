@@ -8,17 +8,18 @@
 
 <AnchorPane prefHeight="350.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CasualCustomerMenuController">
    <children>
-      <Label layoutX="50.0" layoutY="30.0" text="Casual Customer Menu">
+      <Label layoutX="77.0" layoutY="23.0" text="Casual Customer Menu">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <GridPane layoutX="26.0" layoutY="75.0" prefHeight="236.0" prefWidth="368.0">
+      <GridPane layoutX="19.0" layoutY="88.0" prefHeight="190.0" prefWidth="362.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="155.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="175.0" />
         </columnConstraints>
         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -29,9 +30,11 @@
             <Button fx:id="casualOrder_btn" mnemonicParsing="false" onAction="#casualOrder_click" prefHeight="31.0" prefWidth="161.0" text="Casual Parking Order" GridPane.rowIndex="1" />
             <Button fx:id="sendComplaint_btn" mnemonicParsing="false" onAction="#sendComplaint_click" prefHeight="31.0" prefWidth="169.0" text="Send complaint" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button fx:id="usePreOrder_btn" mnemonicParsing="false" onAction="#usePreOrder_click" prefHeight="31.0" prefWidth="161.0" text="Use Pre-Order" GridPane.rowIndex="2" />
-            <Button fx:id="getCar_btn" mnemonicParsing="false" onAction="#getCarBack_click" prefHeight="31.0" prefWidth="161.0" text="Get Car Back" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="getCar_btn" mnemonicParsing="false" onAction="#getCarBack_click" prefHeight="31.0" prefWidth="170.0" text="Get Car Back" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#cancelPreOrder_click" prefHeight="31.0" prefWidth="161.0" text="Cancel Pre-Order" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" onAction="#purchaseSubscription_click" prefHeight="31.0" prefWidth="170.0" text="Purchase Subscription" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <Button layoutX="113.0" layoutY="311.0" mnemonicParsing="false" onAction="#cancel_click" prefHeight="25.0" prefWidth="133.0" text="Cancel" />
+      <Button layoutX="119.0" layoutY="311.0" mnemonicParsing="false" onAction="#cancel_click" prefHeight="25.0" prefWidth="133.0" text="Cancel" />
    </children>
 </AnchorPane>

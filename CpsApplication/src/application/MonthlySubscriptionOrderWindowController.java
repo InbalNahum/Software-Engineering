@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,10 +13,14 @@ import common.FieldValidation;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -46,8 +51,9 @@ public class MonthlySubscriptionOrderWindowController {
     private Button btn_Cancel; // Value injected by FXMLLoader
 
     @FXML
-    void cancel_click(MouseEvent event) {
-    	((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    void cancel_click(ActionEvent event) {
+    	moveToWindow(event,CpsGlobals.casualCustomerMenuWindow,
+    			CpsGlobals.casualCustomerMenuWindowTitle);
     }
 
     @FXML
@@ -67,11 +73,28 @@ public class MonthlySubscriptionOrderWindowController {
 			sqlClient.addMonthlySubscription(monthlySubscription,requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			ServiceMethods.alertFeedback(serverResponse,event);
+			cancel_click(event);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;
 		}
     }
+    
+	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
+    	try {		
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
+    		Parent root1 = (Parent) fxmlLoader.load();
+    		Stage stage = new Stage();
+    		stage.setTitle(windowTitle);
+    		stage.setScene(new Scene(root1));
+    		stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
+    		stage.show();
+    		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    	}
+    	catch(IOException e) {
+    		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
+    	}
+	}
     
 	private void isValidInput() throws Exception {
 		FieldValidation.idValidation(tf_Id.getText());

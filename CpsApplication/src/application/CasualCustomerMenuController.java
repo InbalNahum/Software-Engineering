@@ -85,9 +85,23 @@ public class CasualCustomerMenuController {
     
 
     @FXML
+    void cancelPreOrder_click(ActionEvent event) {
+        moveToWindow(event, CpsGlobals.cancelPreOrder,
+        		   CpsGlobals.cancelPreOrderTitle);
+    }
+    
+
+    @FXML
     void getCarBack_click(ActionEvent event) {
     	moveToWindow(event,CpsGlobals.removeCar,
     			CpsGlobals.removeCarTitle);
+    }
+    
+
+    @FXML
+    void purchaseSubscription_click(ActionEvent event) {
+    	moveToWindow(event,CpsGlobals.MonthlySubscriptionOrderWindow,
+    			CpsGlobals.MonthlySubscriptionOrderWindowTitle);
     }
     
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
