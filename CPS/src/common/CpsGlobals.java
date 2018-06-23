@@ -10,8 +10,8 @@ public class CpsGlobals {
 	public static final String cpsIconPath = "cps-icon.png";
 
 	//Server Connection Details
-	public static final int port = 5555;
-	public static final String host = "localhost";
+	public static  int port = 5555;
+	public static  String host = "localhost";
 
 	//MySql Connection Details
 	public static final String url = "jdbc:mysql://cs.telhai.ac.il/studentDB_cs203495098";
@@ -142,6 +142,8 @@ public class CpsGlobals {
 	public static final String employeeMenuWindowTitle = "Employee Menu";
 	public static final String removeCarTitle = "Get Car Back";
 	public static final String cancelPreOrderTitle = "Cancel Pre-Order";
+	public static final String ServerConfigWindowTitle = "Server Configurations";
+
 
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
@@ -171,6 +173,7 @@ public class CpsGlobals {
 	public static final String removeCar = "RemoveCarFromParkingWindow.fxml";
 	public static final String cancelPreOrder = "CancelPreOrderWindow.fxml";
 	public static final String MonthlySubscriptionOrderWindow = "MonthlySubscriptionOrderWindow.fxml";
+	public static final String ServerConfigWindow = "ServerConfig.fxml";
 
 
 	//exception messages 
@@ -198,7 +201,9 @@ public class CpsGlobals {
 	public static final String orderDoesntExist = "Your Order doesn't exist";
 	public static final String carDoesntExist = "Your Car doesn't exist";
 	public static final String userAlreadyConnected = "The user is already connected";
-	
+	public static final String invalidIp = "You entered invalid ip address";
+	public static final String invalidPort = "You entered invalid port number";
+
 	//dialog messages
 	public static final String errorDialogTitle = "Error Dialog";
 	public static final String informationDialogTitle = "Information Dialog";

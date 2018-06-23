@@ -16,12 +16,12 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 
-		URL url = getClass().getResource(CpsGlobals.welcomeWindow);
+		URL url = getClass().getResource(CpsGlobals.ServerConfigWindow);
 	    AnchorPane pane = FXMLLoader.load( url );
 	    Scene scene = new Scene( pane );
 	    primaryStage.setScene( scene );
 	    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
-	    primaryStage.setTitle(CpsGlobals.WelcomeWindowTitle);
+	    primaryStage.setTitle(CpsGlobals.ServerConfigWindowTitle);
 	    primaryStage.show();
 	}
 	
