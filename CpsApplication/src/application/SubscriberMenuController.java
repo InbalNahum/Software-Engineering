@@ -71,8 +71,8 @@ public class SubscriberMenuController {
     	} catch (IOException | InterruptedException e) {
           e.printStackTrace();
 		}
-        moveToWindow(event, CpsGlobals.employeeLoginWindow,
-       		   CpsGlobals.employeeLoginTitle);
+        moveToWindow(event, CpsGlobals.customerLogin,
+       		   CpsGlobals.customerLoginTitle);
     }
     
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
