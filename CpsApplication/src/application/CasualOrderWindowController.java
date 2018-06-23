@@ -76,6 +76,7 @@ public class CasualOrderWindowController {
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			String message = (String) serverResponse.get().getObjectAtIndex(0);
 			ServiceMethods.alertDialog(AlertType.INFORMATION, message);
+			cancel_click(event);
 		}catch(Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;

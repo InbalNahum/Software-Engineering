@@ -72,7 +72,7 @@ public class CpsGlobals {
 	public static final String writeNewComplain = "INSERT INTO CustomerComplaint("
 			+ "ComplainCarNumber, ComplainUserId, ComplainFirstName,"
 			+ "ComplainLastName, ComplainDescription, "
-			+ "CustomerComplaint_CreateTime, CustomerComplaint_Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			+ "CustomerComplaint_CreateTime, CustomerComplaint_Status, 	Promotional) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String writeRenewMonthlySubscription = "REPLACE INTO MonthlySubscription("
 			+ "MonthlySubscription_ID, MonthlySubscription_CarNumber, "
@@ -110,7 +110,6 @@ public class CpsGlobals {
 	public static final String loginWindowTitle = "CPS Login";
 	public static final String createNewBranchWindowTitle = "Create new branch";
 	public static final String showBranchStateWindowTitle = "Show branch state";
-
 	public static final String SaveParkingWindowTitle = "Save Parking";
 	public static final String OutOfOrderManagementWindowTitle = "Out of order management";
 	public static final String MonthlySubscriptionOrderWindowTitle = "Monthly subscription order";
@@ -129,6 +128,7 @@ public class CpsGlobals {
 
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
+	public static final String customerLogin = "CustomerLogin.fxml";
 	public static final String subscriberMenuWindow = "SubScriberMenu.fxml";
 	public static final String clientMailBoxWindow = "ClientMailBox.fxml";
 	public static final String welcomeWindow = "WelcomeWindow.fxml";
@@ -140,6 +140,7 @@ public class CpsGlobals {
 	public static final String oneTimePreOrderWindow = "OneTimePreOrderWindow.fxml";
 	public static final String casualOrderWindow = "CasualOrderWindow.fxml";
 	public static final String enterCarToParkingWithCheckWindow = "EnterCarToParkingWithCheckWindow.fxml";
+	public static final String employeeLoginWindow = "LoginWindow.fxml";
 
 
 	//exception messages 

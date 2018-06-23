@@ -93,7 +93,6 @@ public class OneTimePreOrderWindowController implements Initializable{
 			String carNumber = tf_CarNumber.getText();
 			String email = tf_Email.getText();		
 			String branchName = cb_Branch.getValue();
-
 			LocalDate leavingDate = tf_LeavingDate.getValue();
 			Calendar leavingCalendar = tf_LeavingTime.getCalendar();
 			Date leavingDateTime = ServiceMethods.convertToDateObject(leavingDate, leavingCalendar);	
@@ -111,7 +110,7 @@ public class OneTimePreOrderWindowController implements Initializable{
 			sqlClient.addPreOrderCustomer(preOrderCustomer,requestToken);
 			Optional<ServerResponse> serverResponse = WaitToServer.waitToServerResponse(sqlClient, requestToken);
 			ServiceMethods.alertFeedback(serverResponse,event);
-
+            cancelClick(event);
 		}catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 			return;

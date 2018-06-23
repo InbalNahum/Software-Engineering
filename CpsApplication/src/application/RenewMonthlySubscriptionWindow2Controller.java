@@ -79,9 +79,8 @@ public class RenewMonthlySubscriptionWindow2Controller {
 
     @FXML
     void cancel_click(ActionEvent event) {
-    	moveToWindow(event,CpsGlobals.subscriberMenuWindow,
-    			CpsGlobals.subscriberMenuWindowTitle);
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+    	moveToWindow(event,CpsGlobals.customerLogin,
+    			CpsGlobals.customerLoginTitle);
     }
 
 	private void isValidInput() throws Exception {

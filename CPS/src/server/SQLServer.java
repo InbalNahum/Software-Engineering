@@ -306,6 +306,7 @@ public class SQLServer extends AbstractServer
 		Timestamp arrivingDate = new Timestamp(customerComplaint.getSendTime().getTime());
 		statement.setTimestamp(6,arrivingDate);
 		statement.setInt(7, customerComplaint.getStatus().ordinal());
+		statement.setInt(8, 0);
 		statement.executeUpdate();	
 	}
 

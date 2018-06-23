@@ -51,10 +51,10 @@ public class EnterCarToParkingWithCheckWindowController {
 			if(!message.equals(""))
 				ServiceMethods.alertDialog(AlertType.INFORMATION,message);
 			ServiceMethods.alertDialog(AlertType.INFORMATION,CpsGlobals.operationSuccess);	
-		} catch (Exception e) {
+		    Cancel_Click(event);
+    	} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
     }
 
     @FXML
