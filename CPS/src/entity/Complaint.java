@@ -1,6 +1,7 @@
 package entity;
 
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.CheckBox;
 
@@ -14,7 +15,7 @@ public class Complaint{
 	private  SimpleStringProperty description;
 	private  SimpleStringProperty status;
 	private CheckBox checkbox; 
-	private TextArea textAera;
+	private TextField textField;
 	private String refund;
 
 	public Complaint(String firstName, String lastName, String customerId
@@ -27,25 +28,24 @@ public class Complaint{
 		this.sendTime = new SimpleStringProperty(sendTime);
 		this.description = new SimpleStringProperty(description);
 		this.checkbox = new CheckBox();
-		this.textAera = new TextArea();
-		this.textAera.setPrefHeight(40);
+		this.textField = new TextField();
 		if(status.equals("1")) {
 			this.status = new SimpleStringProperty("Close");
 			this.checkbox.setSelected(true);
 			this.checkbox.setDisable(true);
-			this.textAera.setText(refund);
-			this.textAera.setEditable(false);
+			this.textField.setText(refund);
+			this.textField.setEditable(false);
 			this.refund = refund;
 		}else
 			this.status = new SimpleStringProperty("Open");
 	}
 
-	public TextArea getTextField() {
-		return this.textAera;
+	public TextField getTextField() {
+		return this.textField;
 	}
 
-	public void setTextField(TextArea textArea) {
-		this.textAera = textArea;
+	public void setTextField(TextField textField) {
+		this.textField = textField;
 	}
 
 	public CheckBox getCheckbox() {

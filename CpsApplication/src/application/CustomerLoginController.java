@@ -44,13 +44,13 @@ public class CustomerLoginController implements Initializable {
 
 	@FXML // fx:id="signIn_btn"
 	private Button signIn_btn; // Value injected by FXMLLoader
-	
+
 	private String userId;
 	private String userCarNum;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
-        
+
 	}
 
 	public String getUserId() {
@@ -92,7 +92,7 @@ public class CustomerLoginController implements Initializable {
 					moveToWindow(event,CpsGlobals.subscriptionExpiredWindow,
 							CpsGlobals.subscriptionExpiredTitle);
 				}
- 			}
+			}
 			else {
 				User.initalizeUser(userId, userCarNum, UserType.casualCustomer);
 				moveToWindow(event, CpsGlobals.casualCustomerMenuWindow,
@@ -107,32 +107,33 @@ public class CustomerLoginController implements Initializable {
 	}
 
 	private ServerResponse customerAuthentication(String customerId, String carNum) throws InterruptedException, IOException {
-			SqlClient sqlClient = SqlClient.getInstance();
-            sqlClient.sendTokenRequest();
-            int requestToken = WaitToServer.waitForServerToken(sqlClient);
-			sqlClient.customerAuthentication(customerId,carNum,requestToken);
-			Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
+		SqlClient sqlClient = SqlClient.getInstance();
+		sqlClient.sendTokenRequest();
+		int requestToken = WaitToServer.waitForServerToken(sqlClient);
+		sqlClient.customerAuthentication(customerId,carNum,requestToken);
+		Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
 		return serverResponse.get();
 	}
-	
+
 	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
-    	try {		
-    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
-    		Parent root1 = (Parent) fxmlLoader.load();
-    		Stage stage = new Stage();
-    		stage.setTitle(windowTitle);
-    		stage.setScene(new Scene(root1)); 
-    		stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
-    		stage.show();
-    		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-    	}
-    	catch(IOException e) {
-    		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
-    	}
+		try {		
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
+			Parent root1 = (Parent) fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setTitle(windowTitle);
+			stage.setScene(new Scene(root1)); 
+			stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
+			stage.show();
+			((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		}
+		catch(IOException e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
+		}
 	}
-	
+
 	@FXML
 	void cancel_click(ActionEvent event) {
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		moveToWindow(event,CpsGlobals.welcomeWindow,
+				CpsGlobals.WelcomeWindowTitle);		
 	}
 }

@@ -13,38 +13,42 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import server.ServerResponse;
 
 public class OutOfOrderManagementWindowController implements Initializable {
 
 	private BranchParkParameters parameters = null;
-	
-    @FXML // fx:id="cb_Branch"
-    private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
 
-    @FXML // fx:id="cb_floor"
-    private ComboBox<Integer> cb_floor; // Value injected by FXMLLoader
+	@FXML // fx:id="cb_Branch"
+	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
 
-    @FXML // fx:id="spinner_Row"
-    private Spinner<Integer> spinner_Row; // Value injected by FXMLLoader
+	@FXML // fx:id="cb_floor"
+	private ComboBox<Integer> cb_floor; // Value injected by FXMLLoader
 
-    @FXML // fx:id="spinner_Column"
-    private Spinner<Integer> spinner_Column; // Value injected by FXMLLoader
+	@FXML // fx:id="spinner_Row"
+	private Spinner<Integer> spinner_Row; // Value injected by FXMLLoader
 
-    @FXML // fx:id="btn_UpdateParking"
-    private Button btn_UpdateParking; // Value injected by FXMLLoader
+	@FXML // fx:id="spinner_Column"
+	private Spinner<Integer> spinner_Column; // Value injected by FXMLLoader
 
-    @FXML // fx:id="btn_Cancel"
-    private Button btn_Cancel; // Value injected by FXMLLoader
+	@FXML // fx:id="btn_UpdateParking"
+	private Button btn_UpdateParking; // Value injected by FXMLLoader
 
-    
+	@FXML // fx:id="btn_Cancel"
+	private Button btn_Cancel; // Value injected by FXMLLoader
+
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
@@ -63,24 +67,25 @@ public class OutOfOrderManagementWindowController implements Initializable {
 		}
 		cb_Branch.setItems(comboBoxList);	
 	}
-	
-    
-    @FXML
-    void Cancel_Click(ActionEvent event) {
-    	((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-    }
 
-    @FXML
-    void UpdateParking_Click(ActionEvent event) {
-    	try {
-    		isValidInput();
-    		String name = cb_Branch.getValue();
-    		int floor = cb_floor.getValue()-1;
-    		int row = spinner_Row.getValue()-1;
-    		int column[] = new int[1];
-    		column[0] = spinner_Column.getValue()-1;  			
-    		SqlClient sqlClient = SqlClient.getInstance();
-        	sqlClient.sendTokenRequest();
+
+	@FXML
+	void Cancel_Click(ActionEvent event) {
+		moveToWindow(event,CpsGlobals.employeeMenuWindow,
+				CpsGlobals.employeeMenuWindowTitle);	
+	}
+
+	@FXML
+	void UpdateParking_Click(ActionEvent event) {
+		try {
+			isValidInput();
+			String name = cb_Branch.getValue();
+			int floor = cb_floor.getValue()-1;
+			int row = spinner_Row.getValue()-1;
+			int column[] = new int[1];
+			column[0] = spinner_Column.getValue()-1;  			
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.setOutOfOrderParking(name, new BranchParkParameters(floor, row, column), requestToken);
 			Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
@@ -88,15 +93,15 @@ public class OutOfOrderManagementWindowController implements Initializable {
 		} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}   	
-    }
-    
+	}
 
-    @FXML
-    void BranchName_Selected(ActionEvent event) {
-    	try {
-    		String name = cb_Branch.getValue();
-        	SqlClient sqlClient = SqlClient.getInstance();
-        	sqlClient.sendTokenRequest();
+
+	@FXML
+	void BranchName_Selected(ActionEvent event) {
+		try {
+			String name = cb_Branch.getValue();
+			SqlClient sqlClient = SqlClient.getInstance();
+			sqlClient.sendTokenRequest();
 			int requestToken = WaitToServer.waitForServerToken(sqlClient);
 			sqlClient.getBranchParkParameters(name,requestToken);
 			Optional<ServerResponse> serverResponse = ServiceMethods.waitToServerResponse(sqlClient,requestToken);
@@ -109,39 +114,57 @@ public class OutOfOrderManagementWindowController implements Initializable {
 		} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}
-    }
-	
-    @FXML
-    void Floor_Selected(ActionEvent event) {
-    	try {
-    		setBranchParkRaw(spinner_Row);
-    		if(cb_floor.getValue() == null)
-    			setBranchParkColumn(spinner_Column,1); 	
-    		else 
-    			setBranchParkColumn(spinner_Column,cb_floor.getValue());
+		moveToWindow(event,CpsGlobals.employeeMenuWindow,
+				CpsGlobals.employeeMenuWindowTitle);	
+	}
+
+	@FXML
+	void Floor_Selected(ActionEvent event) {
+		try {
+			setBranchParkRaw(spinner_Row);
+			if(cb_floor.getValue() == null)
+				setBranchParkColumn(spinner_Column,1); 	
+			else 
+				setBranchParkColumn(spinner_Column,cb_floor.getValue());
 		} catch (Exception e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}
-    }
-	
+	}
+
 	private void setBranchParkRaw(Spinner<Integer> spinner) {
-        SpinnerValueFactory<Integer> valueFactory =
-                new SpinnerValueFactory.IntegerSpinnerValueFactory
-                (1, parameters.getRaw(), parameters.getRaw()/2);
-        spinner.setValueFactory(valueFactory);
+		SpinnerValueFactory<Integer> valueFactory =
+				new SpinnerValueFactory.IntegerSpinnerValueFactory
+				(1, parameters.getRaw(), parameters.getRaw()/2);
+		spinner.setValueFactory(valueFactory);
 	}
-	
+
 	private void setBranchParkColumn(Spinner<Integer> spinner, int floor) {	
-        SpinnerValueFactory<Integer> valueFactory =
-                new SpinnerValueFactory.IntegerSpinnerValueFactory
-                (1, parameters.getColumn()[floor], parameters.getColumn()[floor]/2);
-        spinner.setValueFactory(valueFactory);
+		SpinnerValueFactory<Integer> valueFactory =
+				new SpinnerValueFactory.IntegerSpinnerValueFactory
+				(1, parameters.getColumn()[floor], parameters.getColumn()[floor]/2);
+		spinner.setValueFactory(valueFactory);
 	}
-	
+
 	private void isValidInput() throws Exception {
 		FieldValidation.branchNameValidation(cb_Branch.getValue());
 		FieldValidation.branchFloorValidation(cb_floor.getValue());
 		FieldValidation.rawSpinnerValidation(spinner_Row.getValue());
 		FieldValidation.columnSpinnerValidation(spinner_Column.getValue());
+	}
+
+	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
+		try {		
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
+			Parent root1 = (Parent) fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setTitle(windowTitle);
+			stage.setScene(new Scene(root1));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
+			stage.show();
+			((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		}
+		catch(IOException e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
+		}
 	}
 }

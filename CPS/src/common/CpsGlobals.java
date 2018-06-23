@@ -138,7 +138,7 @@ public class CpsGlobals {
 	public static final String setBranchToFullStaeWindowTitle = "Set Branch To Full Stae";
 	public static final String updatePriceListWindowTitle = "Update Price List";
 	public static final String outOfOrderManagementWindowTitle = "Out Of Order Management";
-
+	public static final String employeeMenuWindowTitle = "Employee Menu";
 	
 	//Window names
 	public static final String casualCustomerMenuWindow = "CasualCustomerMenu.fxml";
@@ -164,6 +164,7 @@ public class CpsGlobals {
 	public static final String showBranchStateWindow = "ShowBranchStateWindow.fxml";
 	public static final String updatePriceListWindow = "UpdatePriceListWindow.fxml";
 	public static final String outOfOrderManagementWindow = "OutOfOrderManagementWindow.fxml";
+	public static final String employeeMenuWindow = "EmployeeMenuWindow.fxml";
 	
 	//exception messages 
 	public static final String emptyString = "";

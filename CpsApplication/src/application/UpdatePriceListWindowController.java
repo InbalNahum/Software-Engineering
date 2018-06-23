@@ -17,9 +17,13 @@ import common.ServiceMethods;
 import entity.PriceList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import server.ServerResponse;
@@ -40,7 +44,8 @@ public class UpdatePriceListWindowController implements Initializable{
 
 	@FXML
 	void Cancel_Clicked(ActionEvent event) {
-		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		moveToWindow(event,CpsGlobals.employeeMenuWindow,
+				CpsGlobals.employeeMenuWindowTitle);		
 	}
 
 	@FXML
@@ -67,6 +72,8 @@ public class UpdatePriceListWindowController implements Initializable{
 
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 		ServiceMethods.alertDialog(AlertType.INFORMATION, CpsGlobals.permisionFromManager);
+		moveToWindow(event,CpsGlobals.employeeMenuWindow,
+				CpsGlobals.employeeMenuWindowTitle);	
 
 	}
 
@@ -91,6 +98,22 @@ public class UpdatePriceListWindowController implements Initializable{
 
 		} catch (IOException | InterruptedException e) {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.serverIssue);		
+		}
+	}
+
+	private void moveToWindow(ActionEvent event,String windowName,String windowTitle) {
+		try {		
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(windowName));
+			Parent root1 = (Parent) fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setTitle(windowTitle);
+			stage.setScene(new Scene(root1));
+			stage.getIcons().add(new Image(getClass().getResourceAsStream(CpsGlobals.cpsIconPath)));
+			stage.show();
+			((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+		}
+		catch(IOException e) {
+			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
 		}
 	}
 }
