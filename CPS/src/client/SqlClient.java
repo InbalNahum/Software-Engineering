@@ -26,6 +26,11 @@ import entity.PriceList;
 import ocsf.client.AbstractClient;
 import server.ServerResponse;
 
+/**
+ * Handle messages from client to server and vice versa 
+ * @author OmerG
+ *
+ */
 public class SqlClient extends AbstractClient implements CpsServerCommunicator
 {
 	private static SqlClient instance = null;
@@ -33,6 +38,11 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 	Map<Integer,ServerResponse> responseMap = new HashMap();
 	List<Integer> freeTokenList = new ArrayList<Integer>();
 
+	/**
+	 * 
+	 * @return SqlClient
+	 * @throws IOException
+	 */
 	public static SqlClient getInstance() throws IOException {
 		if(instance == null) {
 			instance = new SqlClient(CpsGlobals.host, CpsGlobals.port);			   
@@ -40,6 +50,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		return instance;
 	}
 
+	
 	private SqlClient(String host, int port) 
 			throws IOException 
 	{
@@ -47,6 +58,10 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		openConnection();
 	}
 
+	/**
+	 * handle Message From Server
+	 * @param msg
+	 */
 	public void handleMessageFromServer(Object msg) 
 	{
 		ServerResponse serverResponse = (ServerResponse) msg;
@@ -72,6 +87,9 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		}
 	}
 
+	/**
+	 * close Connection
+	 */
 	public void quit()
 	{
 		try
@@ -82,6 +100,11 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		System.exit(0);
 	}
 
+	/**
+	 * get Response By Token
+	 * @param token
+	 * @return
+	 */
 	public Optional<ServerResponse> getResponseByToken(int token) {
 		Optional<ServerResponse> toRet;
 		synchronized (this) {
@@ -342,6 +365,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		handleMessageFromGuiClient(clientRequest);
 	}
 	
+	@Override
 	public void customerAuthentication(String customerId, String carNum, int requestToken) {
 		ClientRequest clientRequest = new ClientRequest();
 		clientRequest.setServerOperation(ServerOperation.customerAuthentication);
@@ -351,6 +375,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
 		handleMessageFromGuiClient(clientRequest);	
 	}
 
+	@Override
 	public void isValidUser(User user,int token) {
         ClientRequest clientRequest = new ClientRequest();
         clientRequest.setCommunicateToken(token);
@@ -359,6 +384,7 @@ public class SqlClient extends AbstractClient implements CpsServerCommunicator
         handleMessageFromGuiClient(clientRequest);
 	}
 
+	@Override
 	public void removeUser(User currentUser, int token) {
         ClientRequest clientRequest = new ClientRequest();
         clientRequest.setCommunicateToken(token);

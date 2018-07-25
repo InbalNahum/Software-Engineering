@@ -18,8 +18,18 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
+/**
+ * all mutual service Methods 
+ * @author OmerG
+ *
+ */
 public class ServiceMethods {
 	
+	/**
+	 * alert Dialog
+	 * @param alertType
+	 * @param message
+	 */
 	public static void alertDialog(AlertType alertType, String message) {
 		Alert alert = new Alert(alertType);
 
@@ -33,6 +43,12 @@ public class ServiceMethods {
 		alert.showAndWait();
 	}
 	
+	/**
+	 * convert To Date Object
+	 * @param date
+	 * @param calander
+	 * @return
+	 */
 	public static Date convertToDateObject(LocalDate date, Calendar calander) {
 
 		Date dateTime = calander.getTime();
@@ -42,6 +58,11 @@ public class ServiceMethods {
 		return leavingDateTime;
 	}
 
+	/**
+	 * alert Feedback
+	 * @param serverResponse
+	 * @param event
+	 */
 	public static void alertFeedback(Optional<ServerResponse> serverResponse,
 			ActionEvent event) {
 		String result = (String)serverResponse.get().getObjectAtIndex(0);
@@ -54,6 +75,12 @@ public class ServiceMethods {
 		}		
 	}
 		
+	/**
+	 * wait To Server Response
+	 * @param sqlClient
+	 * @param requestToken
+	 * @return
+	 */
 	public static Optional<ServerResponse> waitToServerResponse(SqlClient sqlClient,int requestToken) {
 		Optional<ServerResponse> toRet;	
 		do {

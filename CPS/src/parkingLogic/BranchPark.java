@@ -7,6 +7,11 @@ import java.util.Map;
 
 import common.CpsGlobals.parkingState;
 
+/**
+ * Branch Park Details
+ * @author OmerG
+ *
+ */
 public class BranchPark implements Serializable {
 	/**
 	 * 
@@ -19,6 +24,10 @@ public class BranchPark implements Serializable {
 	boolean isFull;
 	int columns[];
 	
+	/**
+	 * C'tor
+	 * @param columns
+	 */
 	public BranchPark(int columns[]) {
 		park = new ParkingFloor[numOfFloors];
 		this.columns = new int[3];
@@ -31,12 +40,21 @@ public class BranchPark implements Serializable {
 		isFull = false;
 	}
 	
+	/**
+	 * enter Car To Park
+	 * @param car
+	 */
 	public void enterCarToPark(Car car) {
 		park[globalOptimalLocation.getX()].enterCarToPark(car);
 		carPlacement.put(car.getCarNumber(), globalOptimalLocation);
 		calculateGlobalOptimalPlace();
 	}
 	
+	/**
+	 * remove Car From Park
+	 * @param carNumber
+	 * @return
+	 */
 	public boolean removeCarFromPark(int carNumber) {
 		Location carLocation = carPlacement.get(carNumber);
 		if(carLocation == null)
@@ -48,6 +66,10 @@ public class BranchPark implements Serializable {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @return isFull
+	 */
 	public boolean isFull() {
 		return isFull;
 	}
@@ -63,30 +85,59 @@ public class BranchPark implements Serializable {
 		isFull = true;
 	}
 	
+	/**
+	 * 
+	 * @return BranchParkState
+	 */
 	public BranchParkState getBranchState() {
 		return new BranchParkState(park, columns);
 	}
 	
+	/**
+	 * 
+	 * @param carLocation
+	 * @param state
+	 */
 	public void setParkingState(Location carLocation, parkingState state) {
 		park[carLocation.getX()].setParkingState(new Point(carLocation.getY(), carLocation.getZ()), state);
 	}
 
+	/**
+	 * 
+	 * @return numOfFloors
+	 */
 	public int getNumOfFloors() {
 		return numOfFloors;
 	}
 
+	/**
+	 * 
+	 * @param numOfFloors
+	 */
 	public void setNumOfFloors(int numOfFloors) {
 		this.numOfFloors = numOfFloors;
 	}
 
+	/**
+	 * 
+	 * @return columns
+	 */
 	public int[] getColumns() {
 		return columns;
 	}
 
+	/**
+	 * 
+	 * @param columns
+	 */
 	public void setColumns(int[] columns) {
 		this.columns = columns;
 	}
 
+	/**
+	 * 
+	 * @param isFull
+	 */
 	public void setFull(boolean isFull) {
 		this.isFull = isFull;
 	}

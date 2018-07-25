@@ -2,6 +2,11 @@ package actors;
 
 import java.io.Serializable;
 
+/**
+ * User Details
+ * @author OmerG
+ *
+ */
 public class User implements Serializable{
 
 	/**
@@ -15,10 +20,20 @@ public class User implements Serializable{
 	private UserType userType;
 	private static User currentUser = null;
 	
+	/**
+	 * 
+	 * @return currentUser
+	 */
 	public static User getCurrentUser() {
         return currentUser;
 	}
 	
+	/**
+	 * Initialize user details
+	 * @param userName
+	 * @param password
+	 * @param userType
+	 */
 	public static void initalizeUser(String userName, String password, UserType userType) {
 		currentUser = new User(userName,password,userType);
 	}
@@ -30,15 +45,21 @@ public class User implements Serializable{
 		this.userType = userType;
 	}
 
+	/**
+	 * 
+	 * @return userName
+	 */
 	public String getUserName() {
 		return userName;
 	}
 
-
+	/**
+	 * 
+	 * @return password
+	 */
 	public String getPassword() {
 		return password;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -74,10 +95,18 @@ public class User implements Serializable{
 		return true;
 	}
 
+	/**
+	 * 
+	 * @return userType
+	 */
 	public UserType getUserType() {
 		return userType;
 	}
 
+	/**
+	 * 
+	 * @param userType
+	 */
 	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}

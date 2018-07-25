@@ -4,6 +4,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+/**
+ * convert sql result to matrix
+ * @author OmerG
+ *
+ */
 public class SqlResultConverter {
 
 	public static SqlResult convertResultToSqlResult(ResultSet result) throws SQLException{

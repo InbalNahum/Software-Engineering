@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * result from sql query
+ * @author OmerG
+ *
+ */
 public class SqlResult implements Serializable {
 
 	/**
@@ -13,10 +18,14 @@ public class SqlResult implements Serializable {
 	public List<String> columnNames;
 	public List<Object> rowData;
 	
+	/**
+	 * empty C'tor
+	 */
 	public SqlResult(){
 		columnNames = new ArrayList<>();
 		rowData = new ArrayList<>();
 	}
+	
 	
 	public int getRowCount(){
 		return rowData.size()/columnNames.size();

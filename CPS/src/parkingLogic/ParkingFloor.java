@@ -5,6 +5,11 @@ import java.io.Serializable;
 
 import common.CpsGlobals.parkingState;
 
+/**
+ * Parking Floor Details
+ * @author OmerG
+ *
+ */
 public class ParkingFloor implements Serializable {
 	/**
 	 * 
@@ -16,6 +21,10 @@ public class ParkingFloor implements Serializable {
 	private Point optimalPlace;
 	private boolean isFull;
 
+	/**
+	 * C'tor
+	 * @param columns
+	 */
 	public ParkingFloor(int columns) {
 		parkingFloor = new CarPark[rows][columns];
 		optimalPlace = new Point(0, 0);
@@ -32,14 +41,26 @@ public class ParkingFloor implements Serializable {
 		}
 	}
 
+	/**
+	 * 
+	 * @return optimalPlace
+	 */
 	public Point getOptimalPlace() {
 		return optimalPlace;
 	}
 
+	/**
+	 * 
+	 * @return isFull
+	 */
 	public boolean getIsFull() {
 		return isFull;
 	}
 
+	/**
+	 * remove Car From Park
+	 * @param carLocation
+	 */
 	public void removeCarFromPark(Point carLocation) {
 		isFull = false;
 		CarPark carPark = parkingFloor[carLocation.x][carLocation.y];
@@ -47,6 +68,11 @@ public class ParkingFloor implements Serializable {
 		calculateOptimal();
 	}
 	
+	/**
+	 * enter Car To Park
+	 * @param car
+	 * @return
+	 */
 	public Point enterCarToPark(Car car) {
 		CarPark carPark = parkingFloor[optimalPlace.x][optimalPlace.y];
 		carPark.addCar(car);
@@ -67,6 +93,10 @@ public class ParkingFloor implements Serializable {
 		isFull = true;
 	}
 	
+	/**
+	 * 
+	 * @return state
+	 */
 	public parkingState[][] getFloorState(){
 		parkingState[][] state = new parkingState[rows][columns];
 		for(int i=0; i<rows; i++) {
@@ -77,6 +107,11 @@ public class ParkingFloor implements Serializable {
 		return state;
 	}
 	
+	/**
+	 * 
+	 * @param Location
+	 * @param state
+	 */
 	public void setParkingState(Point Location, parkingState state) {
 		parkingFloor[Location.x][Location.y].setState(state); 
 	}
