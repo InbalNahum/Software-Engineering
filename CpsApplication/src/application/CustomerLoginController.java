@@ -28,7 +28,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
-
+/**
+ * Window controller for customer login
+ * @author inahum
+ *
+ */
 public class CustomerLoginController implements Initializable {
 
 	@FXML // fx:id="anchor_pane"
@@ -49,27 +53,45 @@ public class CustomerLoginController implements Initializable {
 	private String userId;
 	private String userCarNum;
 
+	/**
+	 * @param Location url and resource bundle
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
 
 	}
-
+/**
+ * Return user id
+ * @return
+ */
 	public String getUserId() {
 		return userId;
 	}
-
+/**
+ * Set user id
+ * @param userId
+ */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
+/**
+ * Get user car number
+ * @return
+ */
 	public String getUserCarNum() {
 		return userCarNum;
 	}
-
+/**
+ * Set user car number
+ * @param userCarNum
+ */
 	public void setUserCarNum(String userCarNum) {
 		this.userCarNum = userCarNum;
 	}
-
+/**
+ * Customer clicked on login 
+ * @param event
+ */
 	@FXML
 	void sigIn_click(ActionEvent event) {
 		String customerId = id_tf.getText();
@@ -156,7 +178,10 @@ public class CustomerLoginController implements Initializable {
 	    	return false;
 	    }
 	}
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML
 	void cancel_click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.welcomeWindow,

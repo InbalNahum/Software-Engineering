@@ -24,7 +24,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import server.ServerResponse;
-
+/**
+ * Window controller for branch setup Window controller
+ * @author inahum
+ *
+ */
 public class BranchSetupWindowController implements Initializable {
 
     @FXML // fx:id="btn_Cancel"
@@ -35,12 +39,18 @@ public class BranchSetupWindowController implements Initializable {
 
     @FXML // fx:id="btn_SetSetup"
     private Button btn_SetSetup; // Value injected by FXMLLoader
-
+/**
+ * Cancel clicked
+ * @param event
+ */
     @FXML
     void Cancel_Click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
 				CpsGlobals.employeeMenuWindowTitle);	    }
-
+/**
+ * User Click Update
+ * @param event
+ */
     @FXML
     void SetSetup_Click(ActionEvent event) {
     	try {
@@ -64,6 +74,10 @@ public class BranchSetupWindowController implements Initializable {
 		FieldValidation.branchNameValidation(cb_BranchName.getValue());
 	}
 	
+	/**
+	 * @param Location url and resource bundle
+	 * Initializing the list of branches
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();

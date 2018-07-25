@@ -29,7 +29,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
-
+/**
+ * Window controller for login 
+ * @author inahum
+ *
+ */
 public class LoginWindowController implements Initializable {
 
 	@FXML // fx:id="anchor_pane"
@@ -48,7 +52,10 @@ public class LoginWindowController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 	}
-
+/**
+ * The user clicked on sigIn
+ * @param event
+ */
 	@FXML
 	void sigIn_click(ActionEvent event) {
 		String userName = tf_UserName.getText();
@@ -99,7 +106,10 @@ public class LoginWindowController implements Initializable {
 		}
 		return serverResponse.get();
 	}
-
+/**
+ * Cancel clicked 
+ * @param event
+ */
 	@FXML
 	void cancel_click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.welcomeWindow,

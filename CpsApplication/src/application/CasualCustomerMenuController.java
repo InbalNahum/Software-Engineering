@@ -5,8 +5,6 @@
 package application;
 
 import java.io.IOException;
-import java.util.Optional;
-
 import actors.User;
 import client.SqlClient;
 import common.CpsGlobals;
@@ -20,8 +18,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import server.ServerResponse;
-
+/**
+ * 
+ * @author inahum
+ *Window controller menu for casual customer
+ */
 public class CasualCustomerMenuController {
 
     @FXML // fx:id="mailBox_btn"
@@ -39,36 +40,55 @@ public class CasualCustomerMenuController {
     @FXML // fx:id="sendComplaint_btn"
     private Button sendComplaint_btn; // Value injected by FXMLLoader
 
+    /**
+     * pre order customer wants parking
+     * @param event
+     */
     @FXML
     void preOrder_click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.oneTimePreOrderWindow,
       		  CpsGlobals.oneTimePreOrderTitle);
     }
-
+/**
+ * User wants to enter their mail box
+ * @param event
+ */
     @FXML
     void mailBox_click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.clientMailBoxWindow,
         		CpsGlobals.clientMailBoxTitle);
     }
-
+/**
+ * casual customer wants parking
+ * @param event
+ */
     @FXML
     void casualOrder_click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.casualOrderWindow,
         		CpsGlobals.casualOrderWindowTitle);
     }
-
+/**
+ * User wants to send a complaint
+ * @param event
+ */
     @FXML
     void sendComplaint_click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.complaintFormWindow,
      		   CpsGlobals.ComplaintFormWindowTitle);
     }
-
+/**
+ * A customer has made a reservation to the car park
+ * @param event
+ */
     @FXML
     void usePreOrder_click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.enterCarToParkingWithCheckWindow,
       		   CpsGlobals.EnterCarToParkingWithCheckWindowTitle);
     }
-    
+    /**
+     * Cancel clicked
+     * @param event
+     */
     @FXML
     void cancel_click(ActionEvent event) {
     	try {
@@ -83,21 +103,30 @@ public class CasualCustomerMenuController {
        		   CpsGlobals.customerLoginTitle);
     }
     
-
+/**
+ * Cancel clicked
+ * @param event
+ */
     @FXML
     void cancelPreOrder_click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.cancelPreOrder,
         		   CpsGlobals.cancelPreOrderTitle);
     }
     
-
+/**
+ * A customer wants the vehicle from the parking lot
+ * @param event
+ */
     @FXML
     void getCarBack_click(ActionEvent event) {
     	moveToWindow(event,CpsGlobals.removeCar,
     			CpsGlobals.removeCarTitle);
     }
     
-
+/**
+ * Create a new subscription
+ * @param event
+ */
     @FXML
     void purchaseSubscription_click(ActionEvent event) {
     	moveToWindow(event,CpsGlobals.MonthlySubscriptionOrderWindow,

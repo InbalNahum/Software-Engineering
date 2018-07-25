@@ -21,12 +21,15 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 import server.ServerResponse;
-
+/**
+ * Window controller for monthly subscription order
+ * @author inahum
+ *
+ */
 public class MonthlySubscriptionOrderWindowController {
 
     @FXML // fx:id="window"
@@ -49,13 +52,19 @@ public class MonthlySubscriptionOrderWindowController {
 
     @FXML // fx:id="btn_Cancel"
     private Button btn_Cancel; // Value injected by FXMLLoader
-
+/**
+ * Cancel clicked
+ * @param event
+ */
     @FXML
     void cancel_click(ActionEvent event) {
     	moveToWindow(event,CpsGlobals.casualCustomerMenuWindow,
     			CpsGlobals.casualCustomerMenuWindowTitle);
     }
-
+/**
+ * sSubscription make a new order
+ * @param event
+ */
     @FXML
     void makeOrder_click(ActionEvent event) {
 		try {

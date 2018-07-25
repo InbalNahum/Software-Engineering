@@ -20,7 +20,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import parkingLogic.BranchPark;
 import server.ServerResponse;
-
+/**
+ * Window controller for create a new branch 
+ * @author inahum
+ *
+ */
 public class CreateNewBranchWindowController {
 
 	@FXML // fx:id="tf_Id"
@@ -44,12 +48,19 @@ public class CreateNewBranchWindowController {
 	@FXML // fx:id="btn_Cancel"
 	private Button btn_Cancel; // Value injected by FXMLLoader
 
+	/**
+	 * Cancel clicked
+	 * @param event
+	 */
 	@FXML
 	void Cancel_Click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
 				CpsGlobals.employeeMenuWindowTitle);	    
 	}
-
+/**
+ * Employee create a new branch 
+ * @param event
+ */
 	@FXML
 	void CreateBranch_Click(ActionEvent event) {
 		try {

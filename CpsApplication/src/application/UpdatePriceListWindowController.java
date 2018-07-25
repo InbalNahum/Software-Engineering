@@ -27,7 +27,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import server.ServerResponse;
-
+/**
+ * Window controller for update price list
+ * Access only management 
+ * @author inahum
+ *
+ */
 public class UpdatePriceListWindowController implements Initializable{
 
 	@FXML // fx:id="tf_Subscription"
@@ -41,13 +46,19 @@ public class UpdatePriceListWindowController implements Initializable{
 
 	@FXML // fx:id="tf_casual"
 	private TextField tf_casual; // Value injected by FXMLLoader
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML
 	void Cancel_Clicked(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
 				CpsGlobals.employeeMenuWindowTitle);		
 	}
-
+/**
+ * Management update the price list
+ * @param event
+ */
 	@FXML
 	void Updet_Clicked(ActionEvent event) {
 
@@ -76,7 +87,10 @@ public class UpdatePriceListWindowController implements Initializable{
 				CpsGlobals.employeeMenuWindowTitle);	
 
 	}
-
+/**
+ * @param Location url and resource bundle
+ * Shows current prices to the manager
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ArrayList<String> priceList = new ArrayList<String>();

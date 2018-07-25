@@ -27,7 +27,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-
+/**
+ * Window controller for save parking
+ * @author inahum
+ *
+ */
 public class SaveParkingWindowController implements Initializable{
 
 	private BranchParkParameters parameters = null;
@@ -49,13 +53,19 @@ public class SaveParkingWindowController implements Initializable{
 
 	@FXML // fx:id="btn_Cancel"
 	private Button btn_Cancel; // Value injected by FXMLLoader
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML
 	void Cancel_Click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
 				CpsGlobals.employeeMenuWindowTitle);	    
 	}
-
+/**
+ * The employee update the parking
+ * @param event
+ */
 	@FXML
 	void UpdateParking_Click(ActionEvent event) {
 		try {
@@ -78,7 +88,10 @@ public class SaveParkingWindowController implements Initializable{
 				CpsGlobals.employeeMenuWindowTitle);	
 	}
 
-
+/**
+ * Branch name selected
+ * @param event
+ */
 	@FXML
 	void BranchName_Selected(ActionEvent event) {
 		try {
@@ -98,7 +111,10 @@ public class SaveParkingWindowController implements Initializable{
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}
 	}
-
+/**
+ * Floor selected
+ * @param event
+ */
 	@FXML
 	void Floor_Selected(ActionEvent event) {
 		try {
@@ -132,7 +148,10 @@ public class SaveParkingWindowController implements Initializable{
 		FieldValidation.rawSpinnerValidation(spinner_Row.getValue());
 		FieldValidation.columnSpinnerValidation(spinner_Column.getValue());
 	}
-
+/**
+ * @param Location url and resource bundle
+ * Get correct branch name from the server
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();

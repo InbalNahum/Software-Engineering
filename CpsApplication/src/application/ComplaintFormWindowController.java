@@ -28,6 +28,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
 
+/**
+ * Window controller for complain form
+ * @author inahum
+ *
+ */
 public class ComplaintFormWindowController implements Initializable{
 
 	@FXML
@@ -50,6 +55,9 @@ public class ComplaintFormWindowController implements Initializable{
 	private String id;
 	private String carNumber;
 	
+	/*
+	 * Send new complain clicked 
+	 */
 	@FXML
 	void send_click(ActionEvent event) {
 		try {
@@ -72,7 +80,10 @@ public class ComplaintFormWindowController implements Initializable{
 			return;
 		}
 	}
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML
 	void cancel_click(ActionEvent event) {
     	User currentUser = User.getCurrentUser();
@@ -111,7 +122,10 @@ public class ComplaintFormWindowController implements Initializable{
     		ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.failToLoadWindow);
     	}
 	}
-
+/**
+ * @param Location url and resource bundle
+ * update the current user & user id & car number
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		

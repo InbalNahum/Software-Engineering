@@ -20,27 +20,43 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
+/**
+ * Window controller for employee menu
+ * @author inahum
+ *
+ */
 public class EmployeeMenuWindowController {
-
+/**
+ * Employee clicked on branch setup 
+ * @param event
+ */
 	@FXML
 	void branchSetupClicked(ActionEvent event) {
 		moveToWindow(event, CpsGlobals.branchSetupWindow,
 				CpsGlobals.branchSetupWindowTitle);
 	}
-
+/**
+ * Employee want to creat new branch
+ * @param event
+ */
 	@FXML
 	void createBranchClicked(ActionEvent event) {
 		moveToWindow(event, CpsGlobals.createNewBranchWindow,
 				CpsGlobals.createNewBranchWindowTitle);
 	}
-
+/**
+ * Employee save new parking 
+ * @param event
+ */
 	@FXML
 	void saveParkingClicked(ActionEvent event) {
 		moveToWindow(event, CpsGlobals.saveParkingWindow,
 				CpsGlobals.SaveParkingWindowTitle);
 	}
-
+/**
+ * Employee want to see the complaints
+ * @param event
+ */
 	@FXML
 	void complaintClicked(ActionEvent event) {
 		if(User.getCurrentUser().getUserType() == UserType.branchEmployee) {
@@ -50,13 +66,19 @@ public class EmployeeMenuWindowController {
 		moveToWindow(event, CpsGlobals.handleComplaintWindow,
 				CpsGlobals.handleComplaintWindowTitle);
 	}
-
+/**
+ * Employee update that the parking is full 
+ * @param event
+ */
 	@FXML
 	void setFullStateClicked(ActionEvent event) {
 		moveToWindow(event, CpsGlobals.setBranchToFullStaeWindow,
 				CpsGlobals.setBranchToFullStaeWindowTitle);
 	}
-
+/**
+ * Show branch state clicked
+ * @param event
+ */
 	@FXML
 	void showBranchStateClicked(ActionEvent event) {
 		if(User.getCurrentUser().getUserType() != UserType.manager) {
@@ -66,7 +88,10 @@ public class EmployeeMenuWindowController {
 		moveToWindow(event, CpsGlobals.showBranchStateWindow,
 				CpsGlobals.showBranchStateWindowTitle);
 	}
-
+/**
+ * The manager want to update the price of the parking
+ * @param event
+ */
 	@FXML
 	void updatePriceClicked(ActionEvent event) {
 		if(User.getCurrentUser().getUserType() != UserType.manager) {
@@ -76,14 +101,20 @@ public class EmployeeMenuWindowController {
 		moveToWindow(event, CpsGlobals.updatePriceListWindow,
 				CpsGlobals.updatePriceListWindowTitle);
 	}
-
+/**
+ * Report on parking is wrong
+ * @param event
+ */
 	@FXML
 	void outOfOrderClicked(ActionEvent event) {
 		moveToWindow(event, CpsGlobals.outOfOrderManagementWindow,
 				CpsGlobals.outOfOrderManagementWindowTitle);
 	}
 	
-
+/**
+ * Cancel cliked
+ * @param event
+ */
     @FXML
     void cancel_click(ActionEvent event) {
     	try {

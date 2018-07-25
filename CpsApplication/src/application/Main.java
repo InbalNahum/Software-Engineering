@@ -10,9 +10,17 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-
+/**
+ * Main class for the client
+ * Start with ServerConfigWindow
+ * @author inahum
+ *
+ */
 public class Main extends Application {
-
+/**
+ * @param primary stage
+ * Open the start window 
+ */
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 

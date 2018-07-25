@@ -28,7 +28,11 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 import server.ServerResponse;
-
+/**
+ * Window controller for casual order
+ * @author inahum
+ *
+ */
 public class CasualOrderWindowController {
 
 	@FXML // fx:id="tf_Email"
@@ -46,7 +50,10 @@ public class CasualOrderWindowController {
 	@FXML // fx:id="btn_MakeOrder"
 	private Button btn_MakeOrder; // Value injected by FXMLLoader
 
-	
+	/**
+	 * A casual customer creates a new order
+	 * @param event
+	 */
 	@FXML
 	void makeOrder_click(ActionEvent event) {
 
@@ -78,7 +85,10 @@ public class CasualOrderWindowController {
 			return;
 		}
 	}
-
+/**
+ * Cancel clicked
+ * @param event
+ */
     @FXML
     void cancel_click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.casualCustomerMenuWindow,

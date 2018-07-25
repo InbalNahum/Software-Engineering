@@ -12,16 +12,28 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-
+/**
+ * Window controller for a customer whose subscription has expired
+ * @author inahum
+ *
+ */
 public class SubscriptionExpiredWindowController {
-
+/**
+ * Clicked on renew
+ * The customer wont to renew the subscription
+ * @param event
+ */
 	@FXML
 	void renew_click(ActionEvent event) {
 		moveToWindow(event,
 				CpsGlobals.renewSubscriptionWindow,
 				CpsGlobals.RenewMonthlySubscriptionWindowTitle);
 	}
-
+/**
+ * MybeLater clicked
+ * The customer wont to renew the subscription later
+ * @param event
+ */
 	@FXML
 	void mybeLater_click(ActionEvent event) {
 		moveToWindow(event,

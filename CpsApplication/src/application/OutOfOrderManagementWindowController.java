@@ -27,7 +27,11 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import server.ServerResponse;
-
+/**
+ * Window controller for out of order management
+ * @author inahum
+ *
+ */
 public class OutOfOrderManagementWindowController implements Initializable {
 
 	private BranchParkParameters parameters = null;
@@ -50,7 +54,10 @@ public class OutOfOrderManagementWindowController implements Initializable {
 	@FXML // fx:id="btn_Cancel"
 	private Button btn_Cancel; // Value injected by FXMLLoader
 
-
+/**
+ * @param Location url and resource bundle
+ * Get from the server the branch list 
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
@@ -70,13 +77,19 @@ public class OutOfOrderManagementWindowController implements Initializable {
 		cb_Branch.setItems(comboBoxList);	
 	}
 
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML
 	void Cancel_Click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
 				CpsGlobals.employeeMenuWindowTitle);	
 	}
-
+/**
+ * Management update the parking
+ * @param event
+ */
 	@FXML
 	void UpdateParking_Click(ActionEvent event) {
 		try {
@@ -99,7 +112,10 @@ public class OutOfOrderManagementWindowController implements Initializable {
 				CpsGlobals.employeeMenuWindowTitle);
 	}
 
-
+/**
+ * Management selected a branch name
+ * @param event
+ */
 	@FXML
 	void BranchName_Selected(ActionEvent event) {
 		try {
@@ -119,7 +135,10 @@ public class OutOfOrderManagementWindowController implements Initializable {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}	
 	}
-
+/**
+ * Management selected a floor in the parking
+ * @param event
+ */
 	@FXML
 	void Floor_Selected(ActionEvent event) {
 		try {

@@ -36,6 +36,11 @@ public class SetBranchToFullStaeWindowController implements Initializable {
 	@FXML // fx:id="cb_BranchName"
 	private ComboBox<String> cb_BranchName; // Value injected by FXMLLoader
 
+	/**
+	 * Send report clicked 
+	 * Update that the branch is full 
+	 * @param event
+	 */
 	@FXML
 	void SendReport_Click(ActionEvent event) {
 		try {
@@ -54,7 +59,10 @@ public class SetBranchToFullStaeWindowController implements Initializable {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
 				CpsGlobals.employeeMenuWindowTitle);	
 	}
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML
 	void Cancel_Click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
@@ -65,7 +73,10 @@ public class SetBranchToFullStaeWindowController implements Initializable {
 		FieldValidation.branchNameValidation(cb_BranchName.getValue());
 	}
 
-
+/**
+ * @param Location url and resource bundle
+ * Update the branch list from the server
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();

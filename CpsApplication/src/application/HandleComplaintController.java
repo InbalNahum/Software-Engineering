@@ -31,7 +31,12 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerResponse;
-
+/**
+ * Window controller for handle complaint
+ * Window for employee
+ * @author inahum
+ *
+ */
 public class HandleComplaintController implements Initializable{
 
 	@FXML // fx:id="anchor_pane"
@@ -74,7 +79,10 @@ public class HandleComplaintController implements Initializable{
 	private TableColumn<Complaint, String> refundId;
 
 	ObservableList<Complaint> complaintData = FXCollections.observableArrayList();
-
+/**
+ * @param  Url location and Resource bundle
+ * Get from the server the existing complaints
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -121,7 +129,10 @@ public class HandleComplaintController implements Initializable{
 		refundId.setCellValueFactory(
 				new PropertyValueFactory<Complaint,String>("textField"));
 	}
-
+/**
+ * Updating complaints received clicked
+ * @param event
+ */
 	@FXML
 	void btnUpdate(ActionEvent event) {
 
@@ -144,7 +155,10 @@ public class HandleComplaintController implements Initializable{
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
 				CpsGlobals.employeeMenuWindowTitle);	
 	}
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML
 	void btnCancel(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,

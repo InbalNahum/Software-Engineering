@@ -18,7 +18,12 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-
+/**
+ * Welcome window
+ * Display option for type of user: customer or employee
+ * @author inahum
+ *
+ */
 public class WelcomeWindowController {
 
 	@FXML // fx:id="customer_btn"
@@ -26,13 +31,21 @@ public class WelcomeWindowController {
 
 	@FXML // fx:id="employee_btn"
 	private Button employee_btn; // Value injected by FXMLLoader
-
+/**
+ * The user is customer
+ * Move to a new window that fits the customer
+ * @param event
+ */
 	@FXML
 	void customer_click(ActionEvent event) {
 		moveToWindow(event, CpsGlobals.customerLogin,
 				CpsGlobals.customerLoginTitle);
 	}
-
+/**
+ * The user is employee 
+ * Move to a new window that fits the employee
+ * @param event
+ */
 	@FXML
 	void employee_click(ActionEvent event) {
 		moveToWindow(event, CpsGlobals.employeeLoginWindow,

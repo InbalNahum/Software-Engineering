@@ -18,7 +18,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import server.ServerResponse;
-
+/**
+ * Window controller for enter car to parking with check
+ * @author inahum
+ *
+ */
 public class EnterCarToParkingWithCheckWindowController {
 
     @FXML // fx:id="btn_Cancel"
@@ -33,6 +37,10 @@ public class EnterCarToParkingWithCheckWindowController {
     @FXML // fx:id="tf_CarNumber"
     private TextField tf_CarNumber; // Value injected by FXMLLoader
 
+    /**
+     * Enter new car to the parking
+     * @param event
+     */
     @FXML
     void EnterCar_Click(ActionEvent event) {
     	try {
@@ -56,7 +64,10 @@ public class EnterCarToParkingWithCheckWindowController {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}
     }
-
+/**
+ * Cancel clicked
+ * @param event
+ */
     @FXML
     void Cancel_Click(ActionEvent event) {
         moveToWindow(event, CpsGlobals.casualCustomerMenuWindow,

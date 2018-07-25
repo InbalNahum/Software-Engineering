@@ -29,7 +29,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 import server.ServerResponse;
-
+/**
+ * Window controller for renew monthly subscription
+ * @author inahum
+ *
+ */
 public class RenewMonthlySubscriptionWindow2Controller {
 
 	@FXML // fx:id="btn_Cancel"
@@ -47,6 +51,10 @@ public class RenewMonthlySubscriptionWindow2Controller {
 	@FXML // fx:id="window"
 	private AnchorPane window; // Value injected by FXMLLoader
 
+	/**
+	 * Customer clicked on make order
+	 * @param event
+	 */
 	@FXML
 	void makeOrder_click(ActionEvent event) {
 		try {
@@ -70,7 +78,10 @@ public class RenewMonthlySubscriptionWindow2Controller {
 			return;
 		}
 	}
-
+/**
+ * Cancle clicked
+ * @param event
+ */
     @FXML
     void cancel_click(ActionEvent event) {
     	try {

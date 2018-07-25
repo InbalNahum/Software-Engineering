@@ -7,7 +7,6 @@ import actors.User;
 import actors.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
-import common.FieldValidation;
 import common.ServiceMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,12 +14,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import server.ServerResponse;
-
+/**
+ * Window controller for remove car from the parking
+ * @author inahum
+ *
+ */
 public class RemoveCarFromParkingWindowController {
 
     @FXML // fx:id="btn_Cancel"
@@ -28,7 +30,10 @@ public class RemoveCarFromParkingWindowController {
 
     @FXML // fx:id="btn_RemoveCar"
     private Button btn_RemoveCar; // Value injected by FXMLLoader
-
+/**
+ * Remove car from the parking clicked
+ * @param event
+ */
     @FXML
     void RemoveCar_Click(ActionEvent event) {
     	try {	
@@ -48,7 +53,10 @@ public class RemoveCarFromParkingWindowController {
 			ServiceMethods.alertDialog(AlertType.ERROR, e.getMessage());
 		}
     }
-
+/**
+ * Cancel clicked
+ * @param event
+ */
     @FXML
     void Cancel_Click(ActionEvent event) {
     	User currentUser = User.getCurrentUser();

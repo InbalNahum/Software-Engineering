@@ -27,7 +27,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import server.ServerResponse;
-
+/**
+ * Window controller for client mail box
+ * @author inahum
+ *
+ */
 public class ClientMailBoxController implements Initializable {
 
     @FXML
@@ -41,6 +45,11 @@ public class ClientMailBoxController implements Initializable {
         
 	ObservableList<MessageForUser> userMessages = FXCollections.observableArrayList();
 
+	/**
+	 * @param Location url and resource bundle
+	 * Get location Url and resources
+	 * Displays the subscriber's mailbox
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ServerResponse messages = null;
@@ -77,7 +86,10 @@ public class ClientMailBoxController implements Initializable {
 		message_details.setCellValueFactory(
 				new PropertyValueFactory<MessageForUser,String>("messageDetails"));
 	}
-	
+	/**
+	 * Cancel clicked
+	 * @param event
+	 */
     @FXML
     void cancel_click(ActionEvent event) {
     	User currentUser = User.getCurrentUser();

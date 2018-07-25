@@ -35,7 +35,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jfxtras.scene.control.CalendarTimeTextField;
 import server.ServerResponse;
-
+/**
+ * Window controller for one time preOrder 
+ * @author inahum
+ *
+ */
 public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML // fx:id="tf_Email"
@@ -61,7 +65,9 @@ public class OneTimePreOrderWindowController implements Initializable{
 
 	@FXML // fx:id="cb_Branch"
 	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
-
+/**
+ * @param Location url and resource bundle
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
@@ -80,7 +86,10 @@ public class OneTimePreOrderWindowController implements Initializable{
 		}
 		cb_Branch.setItems(comboBoxList);
 	}
-
+/**
+ * Subscription clicked on make order
+ * @param event
+ */
 	@FXML
 	void makeOrderClick(ActionEvent event) {
 		try {
@@ -112,7 +121,10 @@ public class OneTimePreOrderWindowController implements Initializable{
 			return;
 		}
 	}
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML  
 	void cancelClick(ActionEvent event) {
         moveToWindow(event, CpsGlobals.casualCustomerMenuWindow,

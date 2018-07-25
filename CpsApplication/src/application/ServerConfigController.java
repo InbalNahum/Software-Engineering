@@ -18,7 +18,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
+/**
+ * Window controller for server configuration 
+ * @author inahum
+ *
+ */
 public class ServerConfigController {
 
 	@FXML // fx:id="port_tf"
@@ -26,7 +30,11 @@ public class ServerConfigController {
 
 	@FXML // fx:id="ip_tf"
 	private TextField ip_tf; // Value injected by FXMLLoader
-
+/**
+ * Set clicked 
+ * Update the IP address & port number for connection with the server 
+ * @param event
+ */
 	@FXML
 	void set_click(ActionEvent event) {
 		String ip = ip_tf.getText();
@@ -48,7 +56,11 @@ public class ServerConfigController {
 			ServiceMethods.alertDialog(AlertType.ERROR, CpsGlobals.invalidPort);
 		}
 	}
-
+/**
+ *Default clicked
+ *Default IP & port number
+ * @param event
+ */
 	@FXML
 	void default_click(ActionEvent event) {
 		moveToWindow(event, CpsGlobals.welcomeWindow,

@@ -28,7 +28,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import parkingLogic.BranchParkState;
 import server.ServerResponse;
-
+/**
+ * Window controller for show branch state
+ * @author inahum
+ *
+ */
 public class ShowBranchStateWindowController implements Initializable {
 
 	@FXML // fx:id="btn_GetBranchState"
@@ -49,6 +53,10 @@ public class ShowBranchStateWindowController implements Initializable {
 	@FXML // fx:id="cb_Branch"
 	private ComboBox<String> cb_Branch; // Value injected by FXMLLoader
 
+	/**
+	 * @param Location url and resource bundle
+	 * Update branch list from the server 
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ObservableList<String> comboBoxList = FXCollections.observableArrayList();
@@ -67,7 +75,10 @@ public class ShowBranchStateWindowController implements Initializable {
 		}
 		cb_Branch.setItems(comboBoxList);
 	}
-
+/**
+ * The user want to see the branch state 
+ * @param event
+ */
 	@FXML
 	void GetBranchState_Click(ActionEvent event) {
 		try {
@@ -92,13 +103,22 @@ public class ShowBranchStateWindowController implements Initializable {
 		}	
 
 	}
-
+/**
+ * Cancel clicked
+ * @param event
+ */
 	@FXML
 	void Cancel_Click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.employeeMenuWindow,
 				CpsGlobals.employeeMenuWindowTitle);	    
 	}
-
+/**
+ * Draw the parking state 
+ * @param gc
+ * @param floor
+ * @param rows
+ * @param columns
+ */
 	public void drawParkingState(GraphicsContext gc, parkingState[][] floor, int rows, int columns) {
 		int xAxis = 30, yAxis = 25;
 		gc.clearRect(0, 0, 276, 121);

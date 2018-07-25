@@ -2,7 +2,11 @@ package application;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ * Class helper for IP address validation
+ * @author inahum
+ *
+ */
 public class IPAddressValidator {
     private Pattern pattern;
     private Matcher matcher;
@@ -12,7 +16,9 @@ public class IPAddressValidator {
 		"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 		"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 		"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-	  
+	  /**
+	   * Deafault c'tor
+	   */
     public IPAddressValidator(){
 	  pattern = Pattern.compile(IPADDRESS_PATTERN);
     }

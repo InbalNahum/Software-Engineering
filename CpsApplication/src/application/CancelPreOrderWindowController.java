@@ -2,9 +2,6 @@ package application;
 
 import java.io.IOException;
 import java.util.Optional;
-
-import actors.User;
-import actors.User.UserType;
 import client.SqlClient;
 import common.CpsGlobals;
 import common.FieldValidation;
@@ -20,7 +17,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import server.ServerResponse;
-
+/**
+ * Window controller for cancel order for preOrder
+ * @author inahum
+ *
+ */
 public class CancelPreOrderWindowController {
 
 	@FXML // fx:id="btn_CancelOrder"
@@ -35,6 +36,10 @@ public class CancelPreOrderWindowController {
 	@FXML // fx:id="tf_CarNumber"
 	private TextField tf_CarNumber; // Value injected by FXMLLoader
 
+	/**
+	 * Cancle clicked 
+	 * @param event
+	 */
 	@FXML
 	void CancelOrder_Click(ActionEvent event) {
 		try {
@@ -56,7 +61,10 @@ public class CancelPreOrderWindowController {
 		}
 		Cancel_Click(event);
 	}
-
+	/**
+	 * The user clicked Cancel
+	 * @param event
+	 */
 	@FXML
 	void Cancel_Click(ActionEvent event) {
 		moveToWindow(event,CpsGlobals.casualCustomerMenuWindow,
