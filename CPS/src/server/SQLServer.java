@@ -42,11 +42,18 @@ public class SQLServer extends AbstractServer
 	final public static int DEFAULT_PORT = 5555;
 	List<User> activeUsers = new ArrayList<User>();
 
+	/**
+	 * c'tor
+	 * @param port
+	 */
 	public SQLServer(int port) 
 	{
 		super(port);
 	}
 
+	/**
+	 * handle message that sent from the client
+	 */
 	public void handleMessageFromClient(Object object, ConnectionToClient client)
 	{
 		Connection serverConnection = getSqlServerConnection();
@@ -76,18 +83,18 @@ public class SQLServer extends AbstractServer
 				serverResponse = getUserMessages(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
 				break;
-				
+
 			case branchListRequest:
 				serverResponse = getBranchList(clientRequest,serverConnection);
 				client.sendToClient(serverResponse);
 				break;
 
-				
+
 			case getBranchById:
 				serverResponse = getBranchListById(clientRequest, serverConnection);
 				client.sendToClient(serverResponse);
 				break;
-				
+
 
 			case priceListRequest:
 				serverResponse = getPriceList(clientRequest,serverConnection);
@@ -131,7 +138,7 @@ public class SQLServer extends AbstractServer
 				writeRenewMonthlySubscription(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
-				
+
 			case createNewBranch:
 				writeNewBranch(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
@@ -146,94 +153,94 @@ public class SQLServer extends AbstractServer
 				updatePriceListTable(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
-				
+
 			case createNewComplain:
 				writeNewComplain(clientRequest,serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 				break;
 
-			
-		case getBranchParkParameters:
+
+			case getBranchParkParameters:
 				BranchParkParameters parameters = readBranchParkParameters(clientRequest, serverConnection);
 				serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.getBranchParkParameters);
 				serverResponse.addTolist(parameters);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
-			break;
-			
-		case setOutOfOrderParking:
+				break;
+
+			case setOutOfOrderParking:
 				writeOutOfOrderParking(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
 
-			break;	
-			
-		case setSavedParking:
+				break;	
+
+			case setSavedParking:
 				writeSavedParking(clientRequest, serverConnection);
 				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
-			break;	
-				
-		case getBranchState:
+				break;	
+
+			case getBranchState:
 				BranchParkState State = readBranchState(clientRequest, serverConnection);
 				serverResponse = new ServerResponse();
 				serverResponse.setServerOperation(ServerOperation.getBranchState);
 				serverResponse.addTolist(State);
 				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 				client.sendToClient(serverResponse);
-			break;
-			
-		case EnterCarToParkingWithCheck:
-			Object[] answer = EnterCarToParkingWithCheck(clientRequest, serverConnection);
-			serverResponse = new ServerResponse();
-			serverResponse.setServerOperation(ServerOperation.EnterCarToParkingWithCheck);
-			serverResponse.addTolist(answer[0]);
-			serverResponse.addTolist(answer[1]);
-			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-			client.sendToClient(serverResponse);
-		break;
+				break;
 
-		case setBranchToFullState:
-			setBranchToFullState(clientRequest, serverConnection);
-			sendOperationSuccess(clientRequest.getCommunicateToken(),client);
-		break;	
-		
-		case setBranchSetup:
-			setBranchSetup(clientRequest, serverConnection);
-			sendOperationSuccess(clientRequest.getCommunicateToken(),client);
-		break;	
-		
-		case EnterCarToParking:
-			String message2 = EnterCarToParking(clientRequest, serverConnection);
-			serverResponse.setServerOperation(ServerOperation.writeCasualCustomer);
-			serverResponse.addTolist(message2);
-			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-			client.sendToClient(serverResponse);
-		break;	
-		
-		case cancelPreOrder:
-			Object[] answer2 = CancelPreOrder(clientRequest, serverConnection);
-			serverResponse = new ServerResponse();
-			serverResponse.setServerOperation(ServerOperation.cancelPreOrder);
-			serverResponse.addTolist(answer2[0]);
-			serverResponse.addTolist(answer2[1]);
-			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-			client.sendToClient(serverResponse);
-		break;	
-		
-		case removeCarFromParking:
-			Object[] answer3 = RemoveCarFromParkingWithCheck(clientRequest, serverConnection);
-			serverResponse = new ServerResponse();
-			serverResponse.setServerOperation(ServerOperation.removeCarFromParking);
-			serverResponse.addTolist(answer3[0]);
-			serverResponse.addTolist(answer3[1]);
-			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-			client.sendToClient(serverResponse);
-		break;	
+			case EnterCarToParkingWithCheck:
+				Object[] answer = EnterCarToParkingWithCheck(clientRequest, serverConnection);
+				serverResponse = new ServerResponse();
+				serverResponse.setServerOperation(ServerOperation.EnterCarToParkingWithCheck);
+				serverResponse.addTolist(answer[0]);
+				serverResponse.addTolist(answer[1]);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+				break;
+
+			case setBranchToFullState:
+				setBranchToFullState(clientRequest, serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;	
+
+			case setBranchSetup:
+				setBranchSetup(clientRequest, serverConnection);
+				sendOperationSuccess(clientRequest.getCommunicateToken(),client);
+				break;	
+
+			case EnterCarToParking:
+				String message2 = EnterCarToParking(clientRequest, serverConnection);
+				serverResponse.setServerOperation(ServerOperation.writeCasualCustomer);
+				serverResponse.addTolist(message2);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+				break;	
+
+			case cancelPreOrder:
+				Object[] answer2 = CancelPreOrder(clientRequest, serverConnection);
+				serverResponse = new ServerResponse();
+				serverResponse.setServerOperation(ServerOperation.cancelPreOrder);
+				serverResponse.addTolist(answer2[0]);
+				serverResponse.addTolist(answer2[1]);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+				break;	
+
+			case removeCarFromParking:
+				Object[] answer3 = RemoveCarFromParkingWithCheck(clientRequest, serverConnection);
+				serverResponse = new ServerResponse();
+				serverResponse.setServerOperation(ServerOperation.removeCarFromParking);
+				serverResponse.addTolist(answer3[0]);
+				serverResponse.addTolist(answer3[1]);
+				serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+				client.sendToClient(serverResponse);
+				break;	
 
 			default:
 				break;
 			}	
-			
+
 		}catch (Exception e) {
 			try {
 				sendOperationFailure(requestToken,client);
@@ -245,20 +252,20 @@ public class SQLServer extends AbstractServer
 	}
 
 	private void removeUser(ClientRequest clientRequest) {
-	    User toRemove = (User) clientRequest.getObjectAtIndex(0);
+		User toRemove = (User) clientRequest.getObjectAtIndex(0);
 		activeUsers.remove(toRemove);		
 	}
 
 	private boolean addNewUser(ClientRequest clientRequest) {
 		boolean toRet = true;
-	    User toAdd = (User) clientRequest.getObjectAtIndex(0);
-	    if(!activeUsers.contains(toAdd)) {
-	    	activeUsers.add(toAdd);	
-	    }
-	    else {
-	    	toRet = false;
-	    }
-	    return toRet;
+		User toAdd = (User) clientRequest.getObjectAtIndex(0);
+		if(!activeUsers.contains(toAdd)) {
+			activeUsers.add(toAdd);	
+		}
+		else {
+			toRet = false;
+		}
+		return toRet;
 	}
 
 	private ServerResponse customerAuthentication(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
@@ -267,61 +274,61 @@ public class SQLServer extends AbstractServer
 		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 		boolean isSubscriber = false;
 		int userId = (int) clientRequest.getObjectAtIndex(0);
-        int userCarNum = (int) clientRequest.getObjectAtIndex(1);
+		int userCarNum = (int) clientRequest.getObjectAtIndex(1);
 		PreparedStatement subscriberStatement = serverConnection.prepareStatement(CpsGlobals.isSubscriber);
 		subscriberStatement.setInt(1, userId);
 		subscriberStatement.setInt(2, userCarNum);
 		ResultSet subscriberResult = subscriberStatement.executeQuery();
-        if(subscriberResult.next()) {
-        	isSubscriber = true;
-        	serverResponse.addTolist(isSubscriber);
-        	Timestamp creationTime = subscriberResult.getTimestamp(3);
-        	Timestamp currentTime = new Timestamp(new Date().getTime());
-            if(creationTime.after(currentTime)) {
-            	serverResponse.addTolist(CpsGlobals.expiredOrNotStart);
-            }
-            else {
-            	long daysDiff = TimeUnit.DAYS.convert(currentTime.getTime()-creationTime.getTime()
-            			, TimeUnit.MILLISECONDS);
-            	if(daysDiff >= CpsGlobals.SubscriptionDays) {
-                	serverResponse.addTolist(CpsGlobals.expiredOrNotStart);
-            	}
-            	else {
-                	serverResponse.addTolist(CpsGlobals.inTokef);
-            	}
-            }
+		if(subscriberResult.next()) {
+			isSubscriber = true;
+			serverResponse.addTolist(isSubscriber);
+			Timestamp creationTime = subscriberResult.getTimestamp(3);
+			Timestamp currentTime = new Timestamp(new Date().getTime());
+			if(creationTime.after(currentTime)) {
+				serverResponse.addTolist(CpsGlobals.expiredOrNotStart);
+			}
+			else {
+				long daysDiff = TimeUnit.DAYS.convert(currentTime.getTime()-creationTime.getTime()
+						, TimeUnit.MILLISECONDS);
+				if(daysDiff >= CpsGlobals.SubscriptionDays) {
+					serverResponse.addTolist(CpsGlobals.expiredOrNotStart);
+				}
+				else {
+					serverResponse.addTolist(CpsGlobals.inTokef);
+				}
+			}
 
-        }
-        else {
-        	serverResponse.addTolist(isSubscriber);
-        }
-        return serverResponse;
+		}
+		else {
+			serverResponse.addTolist(isSubscriber);
+		}
+		return serverResponse;
 	}
 
 	private ServerResponse getUserMessages(ClientRequest clientRequest, Connection serverConnection) throws SQLException {
-        ServerResponse serverResponse = new ServerResponse();
-        serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
-        serverResponse.setServerOperation(ServerOperation.getUserMessages);
+		ServerResponse serverResponse = new ServerResponse();
+		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+		serverResponse.setServerOperation(ServerOperation.getUserMessages);
 		String userId = (String) clientRequest.getObjectAtIndex(0);
-        String userCarNum = (String) clientRequest.getObjectAtIndex(1);
+		String userCarNum = (String) clientRequest.getObjectAtIndex(1);
 		PreparedStatement renewStatement = serverConnection.prepareStatement(CpsGlobals.subscriptionRenewalReminder);
 		renewStatement.setString(1, userId);
 		renewStatement.setString(2, userCarNum);
 		ResultSet renewResult = renewStatement.executeQuery();
-        if(renewResult.next()) {
-        	//case user is subscriber
-        	Timestamp createTime = renewResult.getTimestamp(1);
-        	Date today = new Date();
-        	Timestamp currentTime = new Timestamp(today.getTime());
-        	long diff = currentTime.getTime() - createTime.getTime();
-        	long daysDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-        	long daysLeft = CpsGlobals.SubscriptionDays - daysDiff;
-        	if(daysLeft < CpsGlobals.daysInWeek) {
-        		String renewReminder = String.format(CpsGlobals.subscriptionRenewalMessageFormat,
-        				daysLeft);
-        		serverResponse.addTolist(renewReminder);
-        	}
-        }
+		if(renewResult.next()) {
+			//case user is subscriber
+			Timestamp createTime = renewResult.getTimestamp(1);
+			Date today = new Date();
+			Timestamp currentTime = new Timestamp(today.getTime());
+			long diff = currentTime.getTime() - createTime.getTime();
+			long daysDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+			long daysLeft = CpsGlobals.SubscriptionDays - daysDiff;
+			if(daysLeft < CpsGlobals.daysInWeek) {
+				String renewReminder = String.format(CpsGlobals.subscriptionRenewalMessageFormat,
+						daysLeft);
+				serverResponse.addTolist(renewReminder);
+			}
+		}
 		PreparedStatement complaintStatement = serverConnection.prepareStatement(CpsGlobals.getClientComplaint);
 		complaintStatement.setString(1, userId);
 		complaintStatement.setString(2, userCarNum);
@@ -331,25 +338,25 @@ public class SQLServer extends AbstractServer
 			int promotional = complaintResult.getInt(CpsGlobals.complaintPromotional);
 			String statusMessage = (status == 0) ? "Wait for manager treatment" : "Closed";
 			String promotionalMessage = (promotional == 0) ? "Your account has not been credited" : "Your account has been credited with "+ promotional;
-		    String complaintMessage = String.format(CpsGlobals.complaintFormat,
-		    		complaintResult.getString(CpsGlobals.complainDescription),
-		    		statusMessage, promotionalMessage);
-		    serverResponse.addTolist(complaintMessage);
+			String complaintMessage = String.format(CpsGlobals.complaintFormat,
+					complaintResult.getString(CpsGlobals.complainDescription),
+					statusMessage, promotionalMessage);
+			serverResponse.addTolist(complaintMessage);
 		} 
-		
+
 		PreparedStatement orderStatement = serverConnection.prepareStatement(CpsGlobals.getUserPreorders);
 		orderStatement.setString(1, userId);
 		ResultSet orderResult = orderStatement.executeQuery();
-        while(orderResult.next()) {
-        	Timestamp startTime = orderResult.getTimestamp(4);
-        	Timestamp finishTime = orderResult.getTimestamp(5);
-        	String branchName = orderResult.getString(3);
-        	String orderMessage = String.format(CpsGlobals.preOrderMessageFormat,
-        			branchName,startTime.toString(),finishTime.toString());
-        	serverResponse.addTolist(orderMessage);
-        }
+		while(orderResult.next()) {
+			Timestamp startTime = orderResult.getTimestamp(4);
+			Timestamp finishTime = orderResult.getTimestamp(5);
+			String branchName = orderResult.getString(3);
+			String orderMessage = String.format(CpsGlobals.preOrderMessageFormat,
+					branchName,startTime.toString(),finishTime.toString());
+			serverResponse.addTolist(orderMessage);
+		}
 
-        return serverResponse;
+		return serverResponse;
 	}
 
 	private void writeNewComplain(ClientRequest clientRequest, Connection serverConnection) throws SQLException{
@@ -379,7 +386,7 @@ public class SQLServer extends AbstractServer
 		serverResponse.setServerOperation(ServerOperation.branchListRequest);
 		return serverResponse;
 	}
-	
+
 	private ServerResponse getBranchListById(ClientRequest clientRequest,Connection serverConnection) throws SQLException {
 		String id = (String)clientRequest.getObjects().get(0);
 		PreparedStatement queryStatement = serverConnection.prepareStatement(CpsGlobals.getBranchListById);
@@ -387,11 +394,11 @@ public class SQLServer extends AbstractServer
 		ResultSet result = queryStatement.executeQuery();
 		ServerResponse serverResponse = new ServerResponse();
 		while(result.next()) {
-		String toAdd = result.getString(1);
-		if(toAdd.equals("None"))
-			return getBranchList(clientRequest, serverConnection);
-		serverResponse.addTolist(toAdd);
-		serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
+			String toAdd = result.getString(1);
+			if(toAdd.equals("None"))
+				return getBranchList(clientRequest, serverConnection);
+			serverResponse.addTolist(toAdd);
+			serverResponse.setCommunicateToken(clientRequest.getCommunicateToken());
 		}
 		serverResponse.setServerOperation(ServerOperation.getBranchById);
 		return serverResponse;
@@ -463,8 +470,8 @@ public class SQLServer extends AbstractServer
 			if(databasePass.equals(password)) {
 				answer = true;
 			}
-			 position = result.getString(3);
-			
+			position = result.getString(3);
+
 		}
 		serverResponse.addTolist(answer);
 		serverResponse.addTolist(position);
@@ -502,18 +509,18 @@ public class SQLServer extends AbstractServer
 		writeRealTimeParking("Tel-Aviv",new Car(customer.getId(),customer.getCarNumber()),serverConnection);
 		return CpsGlobals.operationSuccess;
 	}
-	
+
 	private void writeRealTimeParking(String name, Car car, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		Branch branch = readBranch(serverConnection, name);
 		branch.getCarPark().enterCarToPark(car);
 		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
 	}
-	
+
 	private boolean checkIfBranchIsFull(String name, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		Branch branch = readBranch(serverConnection, name);
 		return branch.getCarPark().isFull();	
 	}
-	
+
 	private Object[] EnterCarToParkingWithCheck(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
 		String id = (String) clientRequest.getObjects().get(0);
 		String carNumber = (String) clientRequest.getObjects().get(1);
@@ -529,18 +536,18 @@ public class SQLServer extends AbstractServer
 					Integer.parseInt(carNumber)), serverConnection);
 			Timestamp arriveFromOrder = result.getTimestamp(2);
 			Date today = new Date();
-        	Timestamp RealArrive = new Timestamp(today.getTime());
-        	long diff = RealArrive.getTime() - arriveFromOrder.getTime();
-        	long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
-        	if(hoursDiff > 0) 
-        		Message = "We Charged your Account for 20% extra money because you are late";
-    		toRet[0] = Boolean.TRUE;
-    		toRet[1] = Message;		
+			Timestamp RealArrive = new Timestamp(today.getTime());
+			long diff = RealArrive.getTime() - arriveFromOrder.getTime();
+			long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+			if(hoursDiff > 0) 
+				Message = "We Charged your Account for 20% extra money because you are late";
+			toRet[0] = Boolean.TRUE;
+			toRet[1] = Message;		
 			return toRet;
 		}
 		return toRet;
 	}
-	
+
 	private Object[] RemoveCarFromParkingWithCheck(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
 		String id = (String) clientRequest.getObjects().get(0);
 		String carNumber = (String) clientRequest.getObjects().get(1);	
@@ -548,7 +555,7 @@ public class SQLServer extends AbstractServer
 		toRet[0] = Boolean.FALSE;
 		toRet[1] = "";
 		String branchName = "Tel-Aviv";
-		
+
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranchFromPreOrder);
 		statement.setString(1, id);
 		ResultSet result = statement.executeQuery();
@@ -559,11 +566,11 @@ public class SQLServer extends AbstractServer
 			statement.setString(1, carNumber);	
 			statement.executeUpdate();
 		}
-			
+
 		statement = serverConnection.prepareStatement(CpsGlobals.readIdFromCasualCustomer);
 		statement.setString(1, id);
 		result = statement.executeQuery();
-		 
+
 		if (result.next()) {
 			statement = serverConnection.prepareStatement(CpsGlobals.deleteCasualOrder);
 			statement.setString(1, carNumber);
@@ -577,7 +584,7 @@ public class SQLServer extends AbstractServer
 		}		
 		return toRet;
 	}
-	
+
 	private Object[] CancelPreOrder(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
 		String id = (String) clientRequest.getObjects().get(0);
 		String carNumber = (String) clientRequest.getObjects().get(1);
@@ -594,24 +601,24 @@ public class SQLServer extends AbstractServer
 		if (result.next()) {
 			Timestamp arriveFromOrder = result.getTimestamp(2);
 			Date today = new Date();
-        	Timestamp RealArrive = new Timestamp(today.getTime());
-        	long diff = RealArrive.getTime() - arriveFromOrder.getTime();
-        	long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
-        	       	
-        	if(hoursDiff > 3) 
-        		Message = "You got 90% refund from your order payment";
-        	else if (hoursDiff  < 3 && hoursDiff>1)
-        		Message = "You got 50% refund from your order payment";
-        	else
-        		Message = "You did'nt got any refund";
-     	
-    		toRet[0] = Boolean.TRUE;
-    		toRet[1] = Message;		
+			Timestamp RealArrive = new Timestamp(today.getTime());
+			long diff = RealArrive.getTime() - arriveFromOrder.getTime();
+			long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+
+			if(hoursDiff > 3) 
+				Message = "You got 90% refund from your order payment";
+			else if (hoursDiff  < 3 && hoursDiff>1)
+				Message = "You got 50% refund from your order payment";
+			else
+				Message = "You did'nt got any refund";
+
+			toRet[0] = Boolean.TRUE;
+			toRet[1] = Message;		
 			return toRet;
 		}
 		return toRet;
 	}
-	
+
 	private String EnterCarToParking(ClientRequest clientRequest, Connection serverConnection) throws SQLException, NumberFormatException, ClassNotFoundException, IOException {
 		String id = (String) clientRequest.getObjects().get(0);
 		String carNumber = (String) clientRequest.getObjects().get(1);
@@ -693,11 +700,11 @@ public class SQLServer extends AbstractServer
 		statement.setInt(1,Integer.parseInt(priceList.getCasualParking()));
 		statement.setInt(2, 1);
 		statement.executeUpdate();
-		
+
 		statement.setInt(1,Integer.parseInt(priceList.getPreOrderParking()));
 		statement.setInt(2, 2);
 		statement.executeUpdate();
-		
+
 		statement.setInt(1,Integer.parseInt(priceList.getMonthlySubscription()));
 		statement.setInt(2, 3);
 		statement.executeUpdate();
@@ -718,7 +725,7 @@ public class SQLServer extends AbstractServer
 		}
 		return null;
 	}
-	
+
 	private BranchParkParameters readBranchParkParameters(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		String name = (String) clientRequest.getObjects().get(0);
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranch);
@@ -726,28 +733,28 @@ public class SQLServer extends AbstractServer
 		ResultSet result = statement.executeQuery();
 		BranchPark park = null;
 		while (result.next()) {
-		      byte[] branchAsBytes = (byte[]) result.getObject(3);
-		      ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
-		      ObjectInputStream ois = new ObjectInputStream(baip);
-		      park = (BranchPark) ois.readObject();
-		    }
+			byte[] branchAsBytes = (byte[]) result.getObject(3);
+			ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
+			ObjectInputStream ois = new ObjectInputStream(baip);
+			park = (BranchPark) ois.readObject();
+		}
 		return new BranchParkParameters(park.getNumOfFloors(),3 ,park.getColumns());
 	}
-	
+
 	private void setBranchToFullState(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		String name = (String) clientRequest.getObjects().get(0);
 		Branch branch = readBranch(serverConnection, name);
 		branch.getCarPark().setFull(Boolean.TRUE);
 		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
 	}
-	
+
 	private void setBranchSetup(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		String name = (String) clientRequest.getObjects().get(0);
 		Branch branch = readBranch(serverConnection, name);
 		writeBranchUpdate(serverConnection, branch.getId(), name,
 				new BranchPark(branch.getCarPark().getColumns()));
 	}
-	
+
 	private void writeOutOfOrderParking(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		String name = (String) clientRequest.getObjects().get(0);
 		BranchParkParameters parameters = (BranchParkParameters) clientRequest.getObjects().get(1);
@@ -756,7 +763,7 @@ public class SQLServer extends AbstractServer
 				parameters.getColumn()[0]),parkingState.outOfOrder);
 		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
 	}
-	
+
 	private void writeSavedParking(ClientRequest clientRequest, Connection serverConnection) throws SQLException, IOException, ClassNotFoundException {
 		String name = (String) clientRequest.getObjects().get(0);
 		BranchParkParameters parameters = (BranchParkParameters) clientRequest.getObjects().get(1);
@@ -765,7 +772,7 @@ public class SQLServer extends AbstractServer
 				parameters.getColumn()[0]),parkingState.unAvailable);
 		writeBranchUpdate(serverConnection, branch.getId(), name, branch.getCarPark());
 	}
-	
+
 	private Branch readBranch(Connection serverConnection, String name) throws SQLException, ClassNotFoundException, IOException {
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.readBranch);
 		statement.setString(1,name);
@@ -773,28 +780,28 @@ public class SQLServer extends AbstractServer
 		BranchPark park = null;
 		int id = 0;
 		while (result.next()) {
-			  id = result.getInt(1);
-		      byte[] branchAsBytes = (byte[]) result.getObject(3);
-		      ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
-		      ObjectInputStream ois = new ObjectInputStream(baip);
-		      park = (BranchPark) ois.readObject();
-		    }
+			id = result.getInt(1);
+			byte[] branchAsBytes = (byte[]) result.getObject(3);
+			ByteArrayInputStream baip = new ByteArrayInputStream(branchAsBytes);
+			ObjectInputStream ois = new ObjectInputStream(baip);
+			park = (BranchPark) ois.readObject();
+		}
 		return new Branch(id, name, park);
 	}
-	
+
 	private void writeBranchUpdate(Connection serverConnection, int id, String name, BranchPark park) throws SQLException, IOException {
 		PreparedStatement statement = serverConnection.prepareStatement(CpsGlobals.writeBranchUpdate);
 		statement.setInt(1, id);
 		statement.setString(2, name);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    ObjectOutputStream oos = new ObjectOutputStream(baos);
-	    oos.writeObject(park);
-	    byte[] carParkAsBytes = baos.toByteArray();
-	    ByteArrayInputStream bais = new ByteArrayInputStream(carParkAsBytes);
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.writeObject(park);
+		byte[] carParkAsBytes = baos.toByteArray();
+		ByteArrayInputStream bais = new ByteArrayInputStream(carParkAsBytes);
 		statement.setBinaryStream(3, bais, carParkAsBytes.length);	
 		statement.executeUpdate();
 	}
-	
+
 	private Connection getSqlServerConnection() {
 		try 
 		{
@@ -818,8 +825,8 @@ public class SQLServer extends AbstractServer
 		serverResponse.setCommunicateToken(requestToken);
 		client.sendToClient(serverResponse);
 	}
-	
-	
+
+
 
 	private void sendOperationFailure(int requestToken,ConnectionToClient client) throws IOException {
 		ServerResponse serverResponse = new ServerResponse();
@@ -842,7 +849,10 @@ public class SQLServer extends AbstractServer
 		("Server has stopped listening for connections.");
 	}
 
-
+	/**
+	 * main class that turn on the server
+	 * @param args
+	 */
 	public static void main(String[] args) 
 	{
 		int port = 0; //Port to listen on
